@@ -23,7 +23,7 @@ export default function Home() {
   
   // PWA Instalación y Detección
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [isStandalone, setIsStandalone] = useState(true); // Asumimos true para que no parpadee, luego verificamos
+  const [isStandalone, setIsStandalone] = useState(true);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
@@ -75,11 +75,9 @@ export default function Home() {
       navigator.serviceWorker.register('/sw.js').catch(console.error);
     }
 
-    // Verificar si ya está instalada o es Safari
     const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     setIsStandalone(checkStandalone);
     
-    // Detectar si es dispositivo iOS
     const iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     setIsIOS(iosDevice);
 
@@ -98,14 +96,12 @@ export default function Home() {
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
-      // Android / Chrome: Lanzar aviso nativo
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
         setDeferredPrompt(null);
       }
     } else {
-      // iOS / Safari o si ya se descartó el automático: Mostrar guía hermosa
       setShowInstallGuide(true);
     }
   };
@@ -118,10 +114,11 @@ export default function Home() {
     
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
       setSelectedTags(u.user_metadata.tags);
-      if(!activeCategory) setActiveCategory(u.user_metadata.tags[0]);
+      // CORRECCIÓN DEL BRINCO: Solo establece la categoría si aún no hay ninguna activa. 
+      // Usamos el 'prev' para leer la memoria actual exacta y no reiniciar el feed.
+      setActiveCategory((prev) => prev ? prev : u.user_metadata.tags[0]);
     } else {
       setSelectedTags([]);
-      setActiveCategory("");
     }
   };
 
@@ -207,7 +204,8 @@ export default function Home() {
     }
   };
 
-  const toggleLike = async (photo) => {
+  const toggleLike = async (photo, e) => {
+    if (e) e.preventDefault(); // Previene cualquier salto nativo del navegador
     if (!user) return setShowAuthModal(true);
     let newLikes = [...likes];
     const exists = newLikes.find(p => p.id === photo.id);
@@ -262,7 +260,9 @@ export default function Home() {
   const startPress = (id) => {
     pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
   };
-  const cancelPress = () => clearTimeout(pressTimer.current);
+  const cancelPress = () => {
+    clearTimeout(pressTimer.current);
+  };
 
   const t = dict[lang] || dict.es;
 
@@ -325,7 +325,7 @@ export default function Home() {
               return (
                 <div key={photo.id} className="relative group bg-neutral-50 overflow-hidden rounded-md">
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <button onClick={() => toggleLike(photo)} className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
+                  <button onClick={(e) => toggleLike(photo, e)} className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
                     <svg className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-neutral-400 fill-none'}`} stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                   </button>
                 </div>
