@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
 const dict = {
-  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", avatar: "URL de tu foto de perfil (Opcional)", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña" },
-  en: { explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", terms: "I accept Terms and Privacy Policy", register: "Sign Up", empty: "No flashes saved yet.", delete: "Delete", deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", audio: "Audio", newPass: "New password", avatar: "Profile photo URL (Optional)", forgot: "Forgot your password?", recover: "Recover password" }
+  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña" },
+  en: { explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", terms: "I accept Terms and Privacy Policy", register: "Sign Up", empty: "No flashes saved yet.", delete: "Delete", deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", audio: "Audio", newPass: "New password", forgot: "Forgot your password?", recover: "Recover password" }
 };
 
 const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities", "flowers", "colors", "ocean", "botanical", "warm", "desert", "abstract", "vintage", "neon", "geometry", "texture", "landscape", "portrait", "macro"];
@@ -19,11 +19,11 @@ export default function Home() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [appMessage, setAppMessage] = useState(null); // Modales hermosos { title: '', text: '' }
   
   // Perfil
   const [likes, setLikes] = useState([]);
   const [userPhrase, setUserPhrase] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
   const [profileName, setProfileName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
@@ -71,7 +71,6 @@ export default function Home() {
     setUser(u);
     if (u.user_metadata?.likes) setLikes(u.user_metadata.likes);
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
-    if (u.user_metadata?.avatarUrl) setAvatarUrl(u.user_metadata.avatarUrl);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
@@ -127,15 +126,19 @@ export default function Home() {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.origin,
       });
-      if (error) alert(error.message);
-      else {
-        alert("Te enviamos un enlace para recuperar tu contraseña.");
+      if (error) {
+        setAppMessage({ title: "Error", text: error.message });
+      } else {
+        setAppMessage({ title: "Enlace enviado", text: "Te enviamos un correo con las instrucciones para recuperar tu contraseña." });
         setShowAuthModal(false);
       }
       return;
     }
 
-    if (!isLogin && !acceptedTerms) return alert(dict[lang].terms);
+    if (!isLogin && !acceptedTerms) {
+      setAppMessage({ title: "Aviso", text: dict[lang].terms });
+      return;
+    }
 
     let authResult;
     if (isLogin) {
@@ -143,12 +146,23 @@ export default function Home() {
     } else {
       authResult = await supabase.auth.signUp({ 
         email, password, 
-        options: { data: { full_name: name, likes: [], phrase: "", tags: [], avatarUrl: "" } }
+        options: { data: { full_name: name, likes: [], phrase: "", tags: [] } }
       });
     }
 
-    if (authResult.error) alert(authResult.error.message);
-    else setShowAuthModal(false);
+    if (authResult.error) {
+      setAppMessage({ title: "Error", text: authResult.error.message });
+    } else {
+      // Verificamos si necesita confirmar correo
+      if (!isLogin && authResult.data?.user && !authResult.data?.session) {
+        setAppMessage({ 
+          title: "Confirma tu correo", 
+          text: "Hemos enviado un enlace de confirmación a tu correo. Por favor, confírmalo para poder iniciar sesión y guardar tu galería." 
+        });
+        setIsLogin(true);
+      }
+      setShowAuthModal(false);
+    }
   };
 
   const toggleLike = async (photo) => {
@@ -172,14 +186,17 @@ export default function Home() {
   };
 
   const saveProfile = async () => {
-    const updates = { data: { full_name: profileName, phrase: userPhrase, avatarUrl } };
+    const updates = { data: { full_name: profileName, phrase: userPhrase } };
     await supabase.auth.updateUser(updates);
     if (newPassword) {
       const { error } = await supabase.auth.updateUser({ password: newPassword });
-      if (error) alert(error.message);
+      if (error) {
+        setAppMessage({ title: "Error", text: error.message });
+        return;
+      }
       else setNewPassword("");
     }
-    alert(dict[lang].save + " ✓");
+    setAppMessage({ title: "Actualizado", text: dict[lang].save + " con éxito." });
   };
 
   const toggleTag = async (tag) => {
@@ -205,7 +222,9 @@ export default function Home() {
   const startPress = (id) => {
     pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
   };
-  const cancelPress = () => clearTimeout(pressTimer.current);
+  const cancelPress = () => {
+    clearTimeout(pressTimer.current);
+  };
 
   const onTouchStart = (e, id) => setSwipeStartX({ x: e.touches[0].clientX, id });
   const onTouchMove = (e, id) => {
@@ -227,30 +246,30 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-800 pb-24 font-light">
       
-      {/* HEADER */}
-      <header className="py-8 px-6 flex justify-between items-center sticky top-0 bg-white/80 backdrop-blur-md z-40 border-b border-neutral-100">
-        <h1 className="text-xl tracking-widest uppercase font-normal">Maeum</h1>
-        <div className="flex items-center gap-6">
-          {!user && (
-            <button 
-              onClick={() => { setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
-              className="text-[10px] sm:text-xs tracking-widest uppercase text-neutral-400 hover:text-neutral-900 transition-colors"
-            >
-              Iniciar sesión / Regístrate
+      {/* HEADER CON ETIQUETAS ESTATICAS */}
+      <header className="sticky top-0 bg-white/90 backdrop-blur-md z-40 border-b border-neutral-100 flex flex-col transition-all">
+        <div className="py-6 px-6 flex justify-between items-center">
+          <h1 className="text-xl tracking-widest uppercase font-normal">Maeum</h1>
+          <div className="flex items-center gap-6">
+            {!user && (
+              <button 
+                onClick={() => { setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
+                className="text-[10px] sm:text-xs tracking-widest uppercase text-neutral-400 hover:text-neutral-900 transition-colors"
+              >
+                Iniciar sesión / Regístrate
+              </button>
+            )}
+            <button onClick={toggleAudio} className={`p-2 rounded-full transition-all ${isPlaying ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-400'}`}>
+               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 19V6l12-3v13M9 19c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zm12-3c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zM9 10l12-3"/></svg>
             </button>
-          )}
-          <button onClick={toggleAudio} className={`p-2 rounded-full transition-all ${isPlaying ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-400'}`}>
-             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 19V6l12-3v13M9 19c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zm12-3c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zM9 10l12-3"/></svg>
-          </button>
+          </div>
         </div>
-      </header>
 
-      {/* VISTA EXPLORAR */}
-      {currentTab === "explore" && (
-        <section className="max-w-6xl mx-auto p-4">
-          <div className="flex overflow-x-auto gap-4 pb-4 mb-6 scrollbar-hide snap-x">
+        {/* ETIQUETAS ESTATICAS (Solo en Explore) */}
+        {currentTab === "explore" && (
+          <div className="flex overflow-x-auto gap-4 pb-4 px-6 scrollbar-hide snap-x">
             {selectedTags.length === 0 ? (
-              <p className="text-xs text-neutral-400 italic px-4 py-1.5">En tu perfil puedes elegir las etiquetas de inspiración que prefieras.</p>
+              <p className="text-xs text-neutral-400 italic px-2 py-1.5">En tu perfil puedes elegir las etiquetas de inspiración que prefieras.</p>
             ) : (
               selectedTags.map(cat => (
                 <button key={cat} onClick={() => setActiveCategory(cat)} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all ${activeCategory === cat ? 'border-neutral-900 text-neutral-900' : 'border-neutral-200 text-neutral-400'}`}>
@@ -259,7 +278,12 @@ export default function Home() {
               ))
             )}
           </div>
+        )}
+      </header>
 
+      {/* VISTA EXPLORAR */}
+      {currentTab === "explore" && (
+        <section className="max-w-6xl mx-auto p-4 mt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {feedPhotos.map((photo) => {
               const isLiked = likes.some(p => p.id === photo.id);
@@ -280,14 +304,10 @@ export default function Home() {
       {currentTab === "gallery" && (
         <section className="max-w-6xl mx-auto p-4">
           <div className="flex flex-col items-center mb-10 mt-4 text-center">
-             {avatarUrl ? (
-               <img src={avatarUrl} alt="Avatar" className="w-20 h-20 rounded-full object-cover shadow-sm mb-4" />
-             ) : (
-               <div className="w-20 h-20 bg-neutral-100 rounded-full flex items-center justify-center text-2xl text-neutral-300 mb-4">
-                 {profileName.charAt(0) || "M"}
-               </div>
-             )}
-             {userPhrase && <p className="text-sm italic text-neutral-500 font-light max-w-md mx-auto">"{userPhrase}"</p>}
+             <div className="w-20 h-20 bg-neutral-100 rounded-full flex items-center justify-center text-2xl text-neutral-300 mb-4 shadow-sm border border-neutral-50">
+               {profileName.charAt(0).toUpperCase() || "M"}
+             </div>
+             {userPhrase && <p className="text-sm italic text-neutral-500 font-light max-w-md mx-auto px-4">"{userPhrase}"</p>}
           </div>
 
           <div className="flex justify-between items-center mb-6 border-b border-neutral-100 pb-2">
@@ -307,7 +327,18 @@ export default function Home() {
                 <div 
                   key={photo.id} 
                   className="relative aspect-square cursor-pointer overflow-hidden" 
-                  onClick={() => { if(longPressedId !== photo.id) setGalleryView("feed"); }}
+                  onClick={() => { 
+                    if(longPressedId !== photo.id) {
+                      setGalleryView("feed");
+                      setTimeout(() => {
+                        const el = document.getElementById(`feed-photo-${photo.id}`);
+                        if(el) {
+                          const y = el.getBoundingClientRect().top + window.scrollY - 160;
+                          window.scrollTo({top: y, behavior: 'smooth'});
+                        }
+                      }, 50);
+                    }
+                  }}
                   onMouseDown={() => startPress(photo.id)}
                   onMouseUp={cancelPress}
                   onMouseLeave={cancelPress}
@@ -328,6 +359,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {likes.map((photo) => (
                 <div 
+                  id={`feed-photo-${photo.id}`}
                   key={photo.id} 
                   className="relative group bg-neutral-50 overflow-hidden rounded-md transition-transform"
                   style={{ transform: `translateX(${swipeOffset[photo.id] || 0}px)` }}
@@ -353,7 +385,7 @@ export default function Home() {
               value={profileName} 
               onChange={(e) => setProfileName(e.target.value)} 
               placeholder="Tu Nombre"
-              className="w-full text-2xl font-normal text-center bg-transparent border-b border-transparent focus:border-neutral-200 outline-none pb-2 transition-colors" 
+              className="w-full text-2xl font-normal text-center bg-transparent border-b border-transparent focus:border-neutral-200 outline-none pb-2 transition-colors text-[16px] sm:text-2xl" 
             />
             <p className="text-xs text-neutral-400 mt-2">{user.email}</p>
           </div>
@@ -379,12 +411,7 @@ export default function Home() {
             {/* Datos y Personalización */}
             <div>
               <label className="text-xs tracking-widest uppercase text-neutral-400 mb-2 block">{t.phrase}</label>
-              <textarea value={userPhrase} onChange={(e) => setUserPhrase(e.target.value)} placeholder="Ej. Aceptar que se va a escurrir... soltar" className="w-full p-4 border border-neutral-200 rounded-md text-sm outline-none focus:border-neutral-900 resize-none h-24" />
-            </div>
-
-            <div>
-              <label className="text-xs tracking-widest uppercase text-neutral-400 mb-2 block">{t.avatar}</label>
-              <input type="url" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)} placeholder="https://..." className="w-full p-4 border border-neutral-200 rounded-md text-sm outline-none focus:border-neutral-900" />
+              <textarea value={userPhrase} onChange={(e) => setUserPhrase(e.target.value)} placeholder="Ej. Aceptar que se va a escurrir... soltar" className="w-full p-4 border border-neutral-200 rounded-md text-[16px] outline-none focus:border-neutral-900 resize-none h-24" />
             </div>
 
             <div>
@@ -396,7 +423,7 @@ export default function Home() {
                   onChange={(e) => setNewPassword(e.target.value)} 
                   placeholder="Escribe para cambiar tu contraseña" 
                   minLength="6" 
-                  className="w-full p-4 pr-12 border border-neutral-200 rounded-md text-sm outline-none focus:border-neutral-900" 
+                  className="w-full p-4 pr-12 border border-neutral-200 rounded-md text-[16px] outline-none focus:border-neutral-900" 
                 />
                 <button 
                   type="button"
@@ -437,12 +464,25 @@ export default function Home() {
       {/* DIÁLOGO CONFIRMAR BORRADO */}
       {photoToDelete && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center">
-            <h3 className="text-sm tracking-widest uppercase mb-6">{t.deleteConfirm}</h3>
+          <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-xl">
+            <h3 className="text-sm tracking-widest uppercase mb-6 text-neutral-900">{t.deleteConfirm}</h3>
             <div className="flex gap-4">
-              <button onClick={() => { setPhotoToDelete(null); setSwipeOffset({}); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest">{t.no}</button>
+              <button onClick={() => { setPhotoToDelete(null); setSwipeOffset({}); setLongPressedId(null); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600">{t.no}</button>
               <button onClick={() => confirmDelete(photoToDelete)} className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest">{t.yes}</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODALES HERMOSOS DE AVISOS */}
+      {appMessage && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative">
+            <h3 className="text-sm tracking-widest uppercase mb-4 text-neutral-900">{appMessage.title}</h3>
+            <p className="text-sm text-neutral-500 mb-8 font-light leading-relaxed">{appMessage.text}</p>
+            <button onClick={() => setAppMessage(null)} className="w-full bg-neutral-900 text-white py-4 rounded-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors">
+              Entendido
+            </button>
           </div>
         </div>
       )}
@@ -450,20 +490,20 @@ export default function Home() {
       {/* MODAL AUTH */}
       {showAuthModal && !user && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white p-8 rounded-lg max-w-sm w-full relative">
+          <div className="bg-white p-8 rounded-lg max-w-sm w-full relative shadow-2xl">
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
             
-            <h3 className="text-sm text-center tracking-widest uppercase mb-6">
+            <h3 className="text-sm text-center tracking-widest uppercase mb-6 text-neutral-900">
               {isForgotPassword ? t.recover : (isLogin ? t.login : t.register)}
             </h3>
             
             <form onSubmit={handleAuth} className="space-y-4">
               
               {!isLogin && !isForgotPassword && (
-                <input type="text" placeholder="Tu nombre" required onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border-b border-neutral-200 text-sm outline-none" />
+                <input type="text" placeholder="Tu nombre" required onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border-b border-neutral-200 text-[16px] outline-none" />
               )}
               
-              <input type="email" placeholder={t.email} required onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 border-b border-neutral-200 text-sm outline-none" />
+              <input type="email" placeholder={t.email} required onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 border-b border-neutral-200 text-[16px] outline-none" />
               
               {!isForgotPassword && (
                 <div className="relative">
@@ -473,7 +513,7 @@ export default function Home() {
                     required 
                     minLength="6" 
                     onChange={(e) => setPassword(e.target.value)} 
-                    className="w-full px-4 py-3 pr-10 border-b border-neutral-200 text-sm outline-none" 
+                    className="w-full px-4 py-3 pr-10 border-b border-neutral-200 text-[16px] outline-none" 
                   />
                   <button 
                     type="button"
@@ -496,25 +536,25 @@ export default function Home() {
                 </label>
               )}
 
-              <button type="submit" className="w-full bg-neutral-900 text-white py-4 mt-6 text-xs uppercase tracking-widest rounded-md">
+              <button type="submit" className="w-full bg-neutral-900 text-white py-4 mt-6 text-xs uppercase tracking-widest rounded-md hover:bg-neutral-800 transition-colors">
                 {isForgotPassword ? t.recover : (isLogin ? t.login : t.register)}
               </button>
             </form>
 
             {!isForgotPassword && isLogin && (
-              <button onClick={() => setIsForgotPassword(true)} className="w-full text-center mt-4 text-xs text-neutral-400 hover:text-neutral-700">
+              <button onClick={() => setIsForgotPassword(true)} className="w-full text-center mt-4 text-xs text-neutral-400 hover:text-neutral-700 transition-colors">
                 {t.forgot}
               </button>
             )}
 
             {!isForgotPassword && (
-              <button onClick={() => setIsLogin(!isLogin)} className="w-full text-center mt-6 text-xs text-neutral-400 underline">
+              <button onClick={() => setIsLogin(!isLogin)} className="w-full text-center mt-6 text-xs text-neutral-400 underline transition-colors hover:text-neutral-700">
                 {isLogin ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}
               </button>
             )}
 
             {isForgotPassword && (
-              <button onClick={() => setIsForgotPassword(false)} className="w-full text-center mt-6 text-xs text-neutral-400 underline">
+              <button onClick={() => setIsForgotPassword(false)} className="w-full text-center mt-6 text-xs text-neutral-400 underline transition-colors hover:text-neutral-700">
                 Volver a Iniciar Sesión
               </button>
             )}
