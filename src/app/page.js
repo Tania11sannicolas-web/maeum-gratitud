@@ -19,7 +19,7 @@ export default function Home() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [appMessage, setAppMessage] = useState(null); // Modales hermosos { title: '', text: '' }
+  const [appMessage, setAppMessage] = useState(null);
   
   // Perfil
   const [likes, setLikes] = useState([]);
@@ -42,11 +42,9 @@ export default function Home() {
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
 
-  // Gestos
+  // Gestos (Long Press para Grid)
   const [longPressedId, setLongPressedId] = useState(null);
   const pressTimer = useRef(null);
-  const [swipeStartX, setSwipeStartX] = useState(null);
-  const [swipeOffset, setSwipeOffset] = useState({});
 
   useEffect(() => {
     const userLang = navigator.language.slice(0, 2);
@@ -153,7 +151,6 @@ export default function Home() {
     if (authResult.error) {
       setAppMessage({ title: "Error", text: authResult.error.message });
     } else {
-      // Verificamos si necesita confirmar correo
       if (!isLogin && authResult.data?.user && !authResult.data?.session) {
         setAppMessage({ 
           title: "Confirma tu correo", 
@@ -182,7 +179,6 @@ export default function Home() {
     await supabase.auth.updateUser({ data: { likes: newLikes } });
     setPhotoToDelete(null);
     setLongPressedId(null);
-    setSwipeOffset({});
   };
 
   const saveProfile = async () => {
@@ -218,27 +214,12 @@ export default function Home() {
     setIsPlaying(!isPlaying);
   };
 
-  // Gestos
+  // Gestos (Grid)
   const startPress = (id) => {
     pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
   };
   const cancelPress = () => {
     clearTimeout(pressTimer.current);
-  };
-
-  const onTouchStart = (e, id) => setSwipeStartX({ x: e.touches[0].clientX, id });
-  const onTouchMove = (e, id) => {
-    if (swipeStartX?.id === id) {
-      const diff = e.touches[0].clientX - swipeStartX.x;
-      setSwipeOffset({ [id]: diff });
-    }
-  };
-  const onTouchEnd = (id) => {
-    if (swipeOffset[id] && Math.abs(swipeOffset[id]) > 100) {
-      setPhotoToDelete(id);
-    }
-    setSwipeStartX(null);
-    setTimeout(() => setSwipeOffset({}), 300);
   };
 
   const t = dict[lang] || dict.es;
@@ -303,20 +284,14 @@ export default function Home() {
       {/* VISTA GALERÍA */}
       {currentTab === "gallery" && (
         <section className="max-w-6xl mx-auto p-4">
+          
           <div className="flex flex-col items-center mb-10 mt-4 text-center">
-             <div className="w-20 h-20 bg-neutral-100 rounded-full flex items-center justify-center text-2xl text-neutral-300 mb-4 shadow-sm border border-neutral-50">
-               {profileName.charAt(0).toUpperCase() || "M"}
-             </div>
+             <h2 className="text-xl font-normal text-neutral-900 mb-2">{profileName || "Explorador"}</h2>
              {userPhrase && <p className="text-sm italic text-neutral-500 font-light max-w-md mx-auto px-4">"{userPhrase}"</p>}
           </div>
 
-          <div className="flex justify-between items-center mb-6 border-b border-neutral-100 pb-2">
+          <div className="flex justify-center items-center mb-6 border-b border-neutral-100 pb-2">
              <h2 className="text-xs tracking-widest uppercase text-neutral-400">{t.gallery} ({likes.length})</h2>
-             {galleryView === "feed" && (
-               <button onClick={() => setGalleryView("grid")} className="text-xs uppercase text-neutral-900 border px-3 py-1 rounded-full">
-                 Ver Mosaico
-               </button>
-             )}
           </div>
 
           {likes.length === 0 ? (
@@ -326,7 +301,7 @@ export default function Home() {
               {likes.map((photo) => (
                 <div 
                   key={photo.id} 
-                  className="relative aspect-square cursor-pointer overflow-hidden" 
+                  className="relative aspect-square cursor-pointer overflow-hidden group" 
                   onClick={() => { 
                     if(longPressedId !== photo.id) {
                       setGalleryView("feed");
@@ -356,22 +331,39 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-12">
               {likes.map((photo) => (
                 <div 
                   id={`feed-photo-${photo.id}`}
                   key={photo.id} 
                   className="relative group bg-neutral-50 overflow-hidden rounded-md transition-transform"
-                  style={{ transform: `translateX(${swipeOffset[photo.id] || 0}px)` }}
-                  onTouchStart={(e) => onTouchStart(e, photo.id)}
-                  onTouchMove={(e) => onTouchMove(e, photo.id)}
-                  onTouchEnd={() => onTouchEnd(photo.id)}
                 >
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover" />
+                  
+                  {/* Botón de tres puntitos (Borrar) en vista feed */}
+                  <button 
+                    onClick={() => setPhotoToDelete(photo.id)} 
+                    className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-md text-neutral-600 hover:text-red-500 transition-all"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                    </svg>
+                  </button>
                 </div>
               ))}
-              <p className="text-center text-xs text-neutral-400 col-span-full mt-4">Desliza una imagen para borrarla</p>
             </div>
+          )}
+
+          {/* Botón flotante para regresar a Mosaico */}
+          {galleryView === "feed" && (
+             <div className="fixed bottom-28 left-1/2 -translate-x-1/2 z-40">
+               <button 
+                 onClick={() => setGalleryView("grid")} 
+                 className="bg-neutral-900/90 backdrop-blur-lg text-white px-6 py-3 rounded-full shadow-2xl text-xs tracking-widest uppercase hover:bg-neutral-800 transition-all"
+               >
+                 Ver Mosaico
+               </button>
+             </div>
           )}
         </section>
       )}
@@ -467,7 +459,7 @@ export default function Home() {
           <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-xl">
             <h3 className="text-sm tracking-widest uppercase mb-6 text-neutral-900">{t.deleteConfirm}</h3>
             <div className="flex gap-4">
-              <button onClick={() => { setPhotoToDelete(null); setSwipeOffset({}); setLongPressedId(null); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600">{t.no}</button>
+              <button onClick={() => { setPhotoToDelete(null); setLongPressedId(null); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600">{t.no}</button>
               <button onClick={() => confirmDelete(photoToDelete)} className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest">{t.yes}</button>
             </div>
           </div>
