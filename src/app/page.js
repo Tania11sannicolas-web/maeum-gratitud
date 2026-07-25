@@ -50,7 +50,7 @@ export default function Home() {
     const userLang = navigator.language.slice(0, 2);
     if (dict[userLang]) setLang(userLang);
 
-    audioRef.current = new Audio("/bg-music.mp3");
+    audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
     audioRef.current.loop = true;
 
     supabase.auth.getUser().then(({ data: { user } }) => {
