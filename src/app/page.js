@@ -21,6 +21,10 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [appMessage, setAppMessage] = useState(null);
   
+  // PWA Instalación
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
   // Perfil
   const [likes, setLikes] = useState([]);
   const [userPhrase, setUserPhrase] = useState("");
@@ -42,7 +46,7 @@ export default function Home() {
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
 
-  // Gestos (Long Press para Grid)
+  // Gestos
   const [longPressedId, setLongPressedId] = useState(null);
   const pressTimer = useRef(null);
 
@@ -62,8 +66,35 @@ export default function Home() {
       else { setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); }
     });
 
-    return () => subscription.unsubscribe();
+    // Registrar Service Worker y escuchar evento de instalación PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(console.error);
+    }
+
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setShowInstallBtn(false);
+      }
+      setDeferredPrompt(null);
+    }
+  };
 
   const loadUserData = (u) => {
     setUser(u);
@@ -214,7 +245,6 @@ export default function Home() {
     setIsPlaying(!isPlaying);
   };
 
-  // Gestos (Grid)
   const startPress = (id) => {
     pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
   };
@@ -231,7 +261,17 @@ export default function Home() {
       <header className="sticky top-0 bg-white/90 backdrop-blur-md z-40 border-b border-neutral-100 flex flex-col transition-all">
         <div className="py-6 px-6 flex justify-between items-center">
           <h1 className="text-xl tracking-widest uppercase font-normal">Maeum</h1>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
+            
+            {showInstallBtn && (
+              <button 
+                onClick={handleInstallClick} 
+                className="text-[10px] sm:text-xs tracking-widest uppercase border border-neutral-900 text-neutral-900 px-3 py-1.5 rounded-full hover:bg-neutral-900 hover:text-white transition-colors"
+              >
+                Instalar App
+              </button>
+            )}
+
             {!user && (
               <button 
                 onClick={() => { setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
@@ -240,13 +280,14 @@ export default function Home() {
                 Iniciar sesión / Regístrate
               </button>
             )}
+            
             <button onClick={toggleAudio} className={`p-2 rounded-full transition-all ${isPlaying ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-400'}`}>
                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 19V6l12-3v13M9 19c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zm12-3c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zM9 10l12-3"/></svg>
             </button>
           </div>
         </div>
 
-        {/* ETIQUETAS ESTATICAS (Solo en Explore) */}
+        {/* ETIQUETAS ESTATICAS */}
         {currentTab === "explore" && (
           <div className="flex overflow-x-auto gap-4 pb-4 px-6 scrollbar-hide snap-x">
             {selectedTags.length === 0 ? (
@@ -340,7 +381,6 @@ export default function Home() {
                 >
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover" />
                   
-                  {/* Botón de tres puntitos (Borrar) en vista feed */}
                   <button 
                     onClick={() => setPhotoToDelete(photo.id)} 
                     className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-md text-neutral-600 hover:text-red-500 transition-all"
@@ -354,7 +394,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Botón flotante para regresar a Mosaico */}
           {galleryView === "feed" && (
              <div className="fixed bottom-28 left-1/2 -translate-x-1/2 z-40">
                <button 
@@ -384,7 +423,6 @@ export default function Home() {
 
           <div className="space-y-8">
             
-            {/* Opciones de Etiquetas */}
             <div>
               <label className="text-xs tracking-widest uppercase text-neutral-900 mb-4 block">Tus etiquetas (Máx. 5)</label>
               <div className="flex flex-wrap gap-2">
@@ -400,7 +438,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Datos y Personalización */}
             <div>
               <label className="text-xs tracking-widest uppercase text-neutral-400 mb-2 block">{t.phrase}</label>
               <textarea value={userPhrase} onChange={(e) => setUserPhrase(e.target.value)} placeholder="Ej. Aceptar que se va a escurrir... soltar" className="w-full p-4 border border-neutral-200 rounded-md text-[16px] outline-none focus:border-neutral-900 resize-none h-24" />

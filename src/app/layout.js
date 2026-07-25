@@ -2,9 +2,8 @@ import "./globals.css";
 
 export const metadata = {
   title: "Maeum Gratitud",
-  description: "Espacio de contemplación y pausa visual.",
+  description: "Tu espacio de pausa visual",
   manifest: "/manifest.json",
-  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }) {

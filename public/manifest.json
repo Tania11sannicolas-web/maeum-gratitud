@@ -1,16 +1,17 @@
 {
   "name": "Maeum Gratitud",
   "short_name": "Maeum",
-  "description": "Espacio de contemplación y pausa visual.",
+  "description": "Tu espacio de pausa visual",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon"
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
