@@ -21,9 +21,11 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [appMessage, setAppMessage] = useState(null);
   
-  // PWA Instalación
+  // PWA Instalación y Detección
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showInstallBtn, setShowInstallBtn] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(true); // Asumimos true para que no parpadee, luego verificamos
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   // Perfil
   const [likes, setLikes] = useState([]);
@@ -49,6 +51,8 @@ export default function Home() {
   // Gestos
   const [longPressedId, setLongPressedId] = useState(null);
   const pressTimer = useRef(null);
+  const [swipeStartX, setSwipeStartX] = useState(null);
+  const [swipeOffset, setSwipeOffset] = useState({});
 
   useEffect(() => {
     const userLang = navigator.language.slice(0, 2);
@@ -66,15 +70,22 @@ export default function Home() {
       else { setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); }
     });
 
-    // Registrar Service Worker y escuchar evento de instalación PWA
+    // PWA Service Worker y Eventos
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch(console.error);
     }
 
+    // Verificar si ya está instalada o es Safari
+    const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    setIsStandalone(checkStandalone);
+    
+    // Detectar si es dispositivo iOS
+    const iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    setIsIOS(iosDevice);
+
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      setShowInstallBtn(true);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -87,12 +98,15 @@ export default function Home() {
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
+      // Android / Chrome: Lanzar aviso nativo
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
-        setShowInstallBtn(false);
+        setDeferredPrompt(null);
       }
-      setDeferredPrompt(null);
+    } else {
+      // iOS / Safari o si ya se descartó el automático: Mostrar guía hermosa
+      setShowInstallGuide(true);
     }
   };
 
@@ -248,9 +262,7 @@ export default function Home() {
   const startPress = (id) => {
     pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
   };
-  const cancelPress = () => {
-    clearTimeout(pressTimer.current);
-  };
+  const cancelPress = () => clearTimeout(pressTimer.current);
 
   const t = dict[lang] || dict.es;
 
@@ -263,7 +275,8 @@ export default function Home() {
           <h1 className="text-xl tracking-widest uppercase font-normal">Maeum</h1>
           <div className="flex items-center gap-4 sm:gap-6">
             
-            {showInstallBtn && (
+            {/* Mostrar botón Instalar App solo si NO estamos ya dentro de la App */}
+            {!isStandalone && (
               <button 
                 onClick={handleInstallClick} 
                 className="text-[10px] sm:text-xs tracking-widest uppercase border border-neutral-900 text-neutral-900 px-3 py-1.5 rounded-full hover:bg-neutral-900 hover:text-white transition-colors"
@@ -277,7 +290,7 @@ export default function Home() {
                 onClick={() => { setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
                 className="text-[10px] sm:text-xs tracking-widest uppercase text-neutral-400 hover:text-neutral-900 transition-colors"
               >
-                Iniciar sesión / Regístrate
+                Iniciar sesión
               </button>
             )}
             
@@ -489,6 +502,53 @@ export default function Home() {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </button>
       </nav>
+
+      {/* MODAL GUÍA DE INSTALACIÓN PWA (iPhone / Fallback) */}
+      {showInstallGuide && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 pb-12 sm:pb-4">
+          <div className="bg-white p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl relative">
+            <button onClick={() => setShowInstallGuide(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
+            <h3 className="text-lg font-normal mb-2 text-neutral-900">Instala Maeum</h3>
+            <p className="text-sm text-neutral-500 mb-6 font-light">Lleva tu espacio de pausa visual directo en tu pantalla de inicio.</p>
+            
+            {isIOS ? (
+              <div className="bg-neutral-50 p-4 rounded-lg text-left space-y-4">
+                <div className="flex gap-3 items-center">
+                  <span className="bg-white p-2 rounded shadow-sm text-blue-500">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  </span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">1. Toca el botón de <strong>Compartir</strong> en la barra inferior de Safari.</p>
+                </div>
+                <div className="flex gap-3 items-center">
+                  <span className="bg-white p-2 rounded shadow-sm text-neutral-700">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4v16m8-8H4"/></svg>
+                  </span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">2. Desliza hacia abajo y selecciona <strong>Agregar a inicio</strong>.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-neutral-50 p-4 rounded-lg text-left space-y-4">
+                <div className="flex gap-3 items-center">
+                  <span className="bg-white p-2 rounded shadow-sm text-neutral-700">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                  </span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">1. Toca el menú de <strong>tres puntos</strong> de tu navegador.</p>
+                </div>
+                <div className="flex gap-3 items-center">
+                  <span className="bg-white p-2 rounded shadow-sm text-neutral-700">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4v16m8-8H4"/></svg>
+                  </span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">2. Selecciona <strong>Instalar aplicación</strong> o Agregar a inicio.</p>
+                </div>
+              </div>
+            )}
+            
+            <button onClick={() => setShowInstallGuide(false)} className="w-full bg-neutral-900 text-white py-3 mt-6 rounded-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors">
+              Entendido
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* DIÁLOGO CONFIRMAR BORRADO */}
       {photoToDelete && (
