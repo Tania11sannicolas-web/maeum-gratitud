@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
 const dict = {
-  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña" },
+  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar هذا recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña" },
   en: { explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", terms: "I accept Terms and Privacy Policy", register: "Sign Up", empty: "No flashes saved yet.", delete: "Delete", deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", audio: "Audio", newPass: "New password", forgot: "Forgot your password?", recover: "Recover password" }
 };
 
@@ -39,6 +39,7 @@ export default function Home() {
   const [currentTab, setCurrentTab] = useState("explore"); 
   const [galleryView, setGalleryView] = useState("grid");
   const [photoToDelete, setPhotoToDelete] = useState(null);
+  const [activeMenuPhotoId, setActiveMenuPhotoId] = useState(null); // Controla el menú de tres puntos en galería
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -51,8 +52,6 @@ export default function Home() {
   // Gestos
   const [longPressedId, setLongPressedId] = useState(null);
   const pressTimer = useRef(null);
-  const [swipeStartX, setSwipeStartX] = useState(null);
-  const [swipeOffset, setSwipeOffset] = useState({});
 
   useEffect(() => {
     const userLang = navigator.language.slice(0, 2);
@@ -70,7 +69,6 @@ export default function Home() {
       else { setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); }
     });
 
-    // PWA Service Worker y Eventos
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch(console.error);
     }
@@ -114,8 +112,6 @@ export default function Home() {
     
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
       setSelectedTags(u.user_metadata.tags);
-      // CORRECCIÓN DEL BRINCO: Solo establece la categoría si aún no hay ninguna activa. 
-      // Usamos el 'prev' para leer la memoria actual exacta y no reiniciar el feed.
       setActiveCategory((prev) => prev ? prev : u.user_metadata.tags[0]);
     } else {
       setSelectedTags([]);
@@ -133,7 +129,14 @@ export default function Home() {
       if (Array.isArray(data)) {
         const newPhotos = data.filter(img => !seenIds.current.has(img.id)).map(img => {
           seenIds.current.add(img.id);
-          return { id: img.id, url: img.urls.regular, title: img.alt_description || "Pausa" };
+          return { 
+            id: img.id, 
+            url: img.urls.regular, 
+            title: img.alt_description || "Pausa",
+            authorName: img.user?.name || "Fotógrafo en Unsplash",
+            authorUsername: img.user?.username || "unsplash",
+            downloadLocation: img.links?.download_location
+          };
         });
         setFeedPhotos(prev => [...prev, ...newPhotos]);
       }
@@ -205,7 +208,7 @@ export default function Home() {
   };
 
   const toggleLike = async (photo, e) => {
-    if (e) e.preventDefault(); // Previene cualquier salto nativo del navegador
+    if (e) e.preventDefault();
     if (!user) return setShowAuthModal(true);
     let newLikes = [...likes];
     const exists = newLikes.find(p => p.id === photo.id);
@@ -216,12 +219,23 @@ export default function Home() {
     await supabase.auth.updateUser({ data: { likes: newLikes } });
   };
 
+  // Disparador invisible del punto final de descarga de Unsplash (requisito oficial de API)
+  const triggerUnsplashDownload = async (downloadLocation) => {
+    if (!downloadLocation) return;
+    try {
+      await fetch(`${downloadLocation}?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`);
+    } catch (err) {
+      console.log("Download event registered");
+    }
+  };
+
   const confirmDelete = async (id) => {
     const newLikes = likes.filter(p => p.id !== id);
     setLikes(newLikes);
     await supabase.auth.updateUser({ data: { likes: newLikes } });
     setPhotoToDelete(null);
     setLongPressedId(null);
+    setActiveMenuPhotoId(null);
   };
 
   const saveProfile = async () => {
@@ -260,9 +274,7 @@ export default function Home() {
   const startPress = (id) => {
     pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
   };
-  const cancelPress = () => {
-    clearTimeout(pressTimer.current);
-  };
+  const cancelPress = () => clearTimeout(pressTimer.current);
 
   const t = dict[lang] || dict.es;
 
@@ -275,7 +287,6 @@ export default function Home() {
           <h1 className="text-xl tracking-widest uppercase font-normal">Maeum</h1>
           <div className="flex items-center gap-4 sm:gap-6">
             
-            {/* Mostrar botón Instalar App solo si NO estamos ya dentro de la App */}
             {!isStandalone && (
               <button 
                 onClick={handleInstallClick} 
@@ -300,7 +311,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ETIQUETAS ESTATICAS */}
         {currentTab === "explore" && (
           <div className="flex overflow-x-auto gap-4 pb-4 px-6 scrollbar-hide snap-x">
             {selectedTags.length === 0 ? (
@@ -394,14 +404,36 @@ export default function Home() {
                 >
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover" />
                   
+                  {/* Botón de tres puntitos */}
                   <button 
-                    onClick={() => setPhotoToDelete(photo.id)} 
-                    className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-md text-neutral-600 hover:text-red-500 transition-all"
+                    onClick={() => setActiveMenuPhotoId(activeMenuPhotoId === photo.id ? null : photo.id)} 
+                    className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md text-neutral-800 hover:bg-white transition-all z-20"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
                     </svg>
                   </button>
+
+                  {/* Menú Desplegable con Créditos y Borrado */}
+                  {activeMenuPhotoId === photo.id && (
+                    <div className="absolute top-16 right-4 bg-white/95 backdrop-blur-md rounded-lg shadow-xl border border-neutral-100 p-2 z-30 min-w-[200px] text-left">
+                      <a 
+                        href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        onClick={() => triggerUnsplashDownload(photo.downloadLocation)}
+                        className="block px-3 py-2 text-[11px] uppercase tracking-wider text-neutral-600 hover:text-neutral-900 border-b border-neutral-100"
+                      >
+                        Foto por {photo.authorName || "Autor"} en Unsplash
+                      </a>
+                      <button 
+                        onClick={() => { setActiveMenuPhotoId(null); setPhotoToDelete(photo.id); }} 
+                        className="w-full text-left px-3 py-2 text-[11px] uppercase tracking-wider text-red-500 hover:bg-red-50 rounded mt-1"
+                      >
+                        Borrar de mi galería
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -503,7 +535,7 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* MODAL GUÍA DE INSTALACIÓN PWA (iPhone / Fallback) */}
+      {/* MODAL GUÍA DE INSTALACIÓN PWA */}
       {showInstallGuide && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 pb-12 sm:pb-4">
           <div className="bg-white p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl relative">
@@ -556,7 +588,7 @@ export default function Home() {
           <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-xl">
             <h3 className="text-sm tracking-widest uppercase mb-6 text-neutral-900">{t.deleteConfirm}</h3>
             <div className="flex gap-4">
-              <button onClick={() => { setPhotoToDelete(null); setLongPressedId(null); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600">{t.no}</button>
+              <button onClick={() => { setPhotoToDelete(null); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600">{t.no}</button>
               <button onClick={() => confirmDelete(photoToDelete)} className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest">{t.yes}</button>
             </div>
           </div>
