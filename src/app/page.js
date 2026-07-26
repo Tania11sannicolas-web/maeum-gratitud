@@ -343,7 +343,19 @@ export default function Home() {
               return (
                 <div key={photo.id} className="relative group bg-neutral-50 overflow-hidden rounded-md">
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <button onClick={(e) => toggleLike(photo, e)} className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
+                  
+                  {/* CRÉDITO A UNSPLASH (NUEVO) */}
+                  <a 
+                    href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+                    style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
+                  >
+                    Foto por {photo.authorName || "Unsplash"}
+                  </a>
+
+                  <button onClick={(e) => toggleLike(photo, e)} className="absolute bottom-4 right-4 z-10 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
                     <svg className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-neutral-400 fill-none'}`} stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                   </button>
                 </div>
