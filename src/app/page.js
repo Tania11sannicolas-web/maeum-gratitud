@@ -449,7 +449,11 @@ export default function Home() {
                <button 
                  onClick={() => {
                    setGalleryView("grid");
-                   window.scrollTo({ top: 0, behavior: 'smooth' });
+                   // Agregamos un setTimeout para darle tiempo a la pantalla
+                   // de encogerse antes de subir al inicio de forma precisa.
+                   setTimeout(() => {
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                   }, 50);
                  }} 
                  className="bg-neutral-900/90 backdrop-blur-lg text-white px-6 py-3 rounded-full shadow-2xl text-xs tracking-widest uppercase hover:bg-neutral-800 transition-all"
                >
