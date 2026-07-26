@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, Fragment } from "react";
 import { supabase } from "@/lib/supabase";
 
 const dict = {
@@ -399,26 +399,66 @@ export default function Home() {
       {currentTab === "explore" && (
         <section className="max-w-6xl mx-auto p-4 mt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {feedPhotos.map((photo) => {
+            {feedPhotos.map((photo, index) => {
               const isLiked = likes.some(p => p.id === photo.id);
               return (
-                <div key={photo.id} className="relative group bg-neutral-50 overflow-hidden rounded-md">
-                  <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" />
-                  
-                  <a 
-                    href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
-                    style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
-                  >
-                    Foto por {photo.authorName || "Autor"} en Unsplash
-                  </a>
+                <Fragment key={photo.id}>
+                  <div className="relative group bg-neutral-50 overflow-hidden rounded-md">
+                    <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" />
+                    
+                    <a 
+                      href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+                      style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
+                    >
+                      Foto por {photo.authorName || "Autor"} en Unsplash
+                    </a>
 
-                  <button onClick={(e) => toggleLike(photo, e)} className="absolute bottom-4 right-4 z-10 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
-                    <svg className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-neutral-400 fill-none'}`} stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
-                  </button>
-                </div>
+                    <button onClick={(e) => toggleLike(photo, e)} className="absolute bottom-4 right-4 z-10 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
+                      <svg className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-neutral-400 fill-none'}`} stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+                    </button>
+                  </div>
+
+                  {/* MANIFIESTO: Solo visible para usuarios NO logueados, después de las primeras 2 fotos */}
+                  {!user && index === 1 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 flex flex-col items-center justify-center text-center py-16 px-6 sm:px-12 bg-neutral-50/60 rounded-xl my-4 shadow-sm border border-neutral-100">
+                      <h2 className="text-xl sm:text-2xl font-normal text-neutral-900 tracking-wide mb-6">Maeum (마음) : El Refugio de la Mirada</h2>
+                      
+                      <div className="max-w-3xl space-y-6 text-sm text-neutral-600 font-light leading-relaxed">
+                        <p>
+                          Vivimos en una época hiperconectada pero profundamente fragmentada. El mundo exterior nos exige velocidad y atención constante. En medio de esa marea invisible, <strong className="font-medium text-neutral-800">Maeum nace como un acto de resistencia íntima</strong>: una pausa sagrada para regresar al cuerpo y al asombro.
+                        </p>
+                        <p>
+                          Creemos que la belleza no es un lujo superficial, sino <strong className="font-medium text-neutral-800">medicina para el alma</strong>. Existimos para ofrecerte un territorio libre de algoritmos invasivos y exigencias sociales. Un lugar digital donde la única regla es detenerse, respirar y dejar que la quietud te habite de nuevo.
+                        </p>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-neutral-200/60 text-left mt-6">
+                          <div>
+                            <h4 className="text-xs tracking-widest uppercase text-neutral-900 mb-3 font-medium">El arte de soltar</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed">Cada imagen, frase y sonido están pensados como un espejo blando donde puedes soltar el peso del día. Es el equivalente digital a mirar por la ventana un día de lluvia.</p>
+                          </div>
+                          <div>
+                            <h4 className="text-xs tracking-widest uppercase text-neutral-900 mb-3 font-medium">Colección de destellos</h4>
+                            <p className="text-xs text-neutral-500 leading-relaxed">Guardar una foto es anclar un momento en el que tu espíritu sintió paz. Es recordarle a tu sistema nervioso que la calma es un lugar al que siempre puedes regresar.</p>
+                          </div>
+                        </div>
+                        
+                        <p className="pt-8 font-normal text-neutral-900 text-[10px] sm:text-xs tracking-widest uppercase">
+                          Tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.
+                        </p>
+                      </div>
+
+                      <button 
+                        onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
+                        className="mt-10 px-8 py-4 bg-neutral-900 text-white text-xs uppercase tracking-widest rounded-full hover:bg-neutral-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
+                      >
+                        Crear mi refugio visual
+                      </button>
+                    </div>
+                  )}
+                </Fragment>
               );
             })}
           </div>
