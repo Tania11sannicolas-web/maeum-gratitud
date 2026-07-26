@@ -22,6 +22,10 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [appMessage, setAppMessage] = useState(null);
   
+  // Nuevos estados para requerimientos
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  
   // PWA Instalación y Detección
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isStandalone, setIsStandalone] = useState(true);
@@ -73,6 +77,7 @@ export default function Home() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         loadUserData(session.user);
+        setIsEmailSent(false); // Por si regresan mágicamente ya logueados
       } else { 
         setUser(null); 
         setLikes([]); 
@@ -135,6 +140,19 @@ export default function Home() {
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
       const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=12&query=${querySearch}`);
+      
+      // Manejo del límite de API (403 Rate Limit Exceeded)
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 429) {
+          setAppMessage({
+            title: "Tómate un respiro",
+            text: "Has contemplado mucha belleza por ahora. Es momento de estar presente en el mundo real, descansar tus ojos y reconectar contigo. Vuelve en una hora aproximadamente, cuando este espacio vuelva a florecer (se renuevan los accesos a la galería)."
+          });
+        }
+        loadingRef.current = false;
+        return;
+      }
+
       const data = await res.json();
       
       if (Array.isArray(data)) {
@@ -208,13 +226,12 @@ export default function Home() {
       setAppMessage({ title: "Error", text: authResult.error.message });
     } else {
       if (!isLogin && authResult.data?.user && !authResult.data?.session) {
-        setAppMessage({ 
-          title: "Confirma tu correo", 
-          text: "Hemos enviado un enlace de confirmación a tu correo. Por favor, confírmalo para poder iniciar sesión y guardar tu galería." 
-        });
-        setIsLogin(true);
+        // En lugar de un mensaje normal, mostramos la pantalla de bloqueo
+        setIsEmailSent(true);
+        setShowAuthModal(false);
+      } else {
+        setShowAuthModal(false);
       }
-      setShowAuthModal(false);
     }
   };
 
@@ -236,6 +253,28 @@ export default function Home() {
       await fetch(`${downloadLocation}?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`);
     } catch (err) {
       console.log("Download event registered");
+    }
+  };
+
+  // Función para forzar la descarga de la imagen en el dispositivo
+  const downloadImage = async (url, id, downloadLocation) => {
+    try {
+      if (downloadLocation) {
+        triggerUnsplashDownload(downloadLocation);
+      }
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `maeum-${id}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      // Fallback por si hay algún bloqueo CORS
+      window.open(url, '_blank');
     }
   };
 
@@ -344,7 +383,6 @@ export default function Home() {
                 <div key={photo.id} className="relative group bg-neutral-50 overflow-hidden rounded-md">
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" />
                   
-                  {/* CRÉDITO A UNSPLASH (NUEVO) */}
                   <a 
                     href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
                     target="_blank" 
@@ -444,6 +482,16 @@ export default function Home() {
                         Foto por {photo.authorName || "Autor"} en Unsplash
                       </a>
                       <button 
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          downloadImage(photo.url, photo.id, photo.downloadLocation); 
+                          setActiveMenuPhotoId(null); 
+                        }} 
+                        className="w-full text-left px-3 py-2 text-[11px] uppercase tracking-wider text-neutral-600 hover:bg-neutral-50 mt-1"
+                      >
+                        Descargar imagen
+                      </button>
+                      <button 
                         onClick={() => { setActiveMenuPhotoId(null); setPhotoToDelete(photo.id); }} 
                         className="w-full text-left px-3 py-2 text-[11px] uppercase tracking-wider text-red-500 hover:bg-red-50 rounded mt-1"
                       >
@@ -461,8 +509,6 @@ export default function Home() {
                <button 
                  onClick={() => {
                    setGalleryView("grid");
-                   // Agregamos un setTimeout para darle tiempo a la pantalla
-                   // de encogerse antes de subir al inicio de forma precisa.
                    setTimeout(() => {
                      window.scrollTo({ top: 0, behavior: 'smooth' });
                    }, 50);
@@ -570,13 +616,135 @@ export default function Home() {
           className={currentTab === "explore" ? "opacity-100" : "opacity-40"}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </button>
-        <button onClick={() => { if(!user) { setIsForgotPassword(false); setShowAuthModal(true); } else setCurrentTab("gallery"); }} className={currentTab === "gallery" ? "opacity-100" : "opacity-40"}>
+        <button onClick={() => { 
+            if(!user) { 
+              setIsForgotPassword(false); 
+              setShowAuthModal(true); 
+            } else {
+              setCurrentTab("gallery"); 
+              window.scrollTo({top: 0, behavior: 'smooth'}); // Obliga a subir en galería
+            }
+          }} 
+          className={currentTab === "gallery" ? "opacity-100" : "opacity-40"}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </button>
         <button onClick={() => { if(!user) { setIsForgotPassword(false); setShowAuthModal(true); } else setCurrentTab("profile"); }} className={currentTab === "profile" ? "opacity-100" : "opacity-40"}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </button>
       </nav>
+
+      {/* PANTALLA BLOQUEANTE DE CORREO ENVIADO (OBLIGA A VERIFICAR) */}
+      {isEmailSent && (
+        <div className="fixed inset-0 bg-neutral-900/90 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-6 text-center">
+          <div className="bg-white p-8 rounded-2xl max-w-sm w-full shadow-2xl">
+            <div className="mx-auto w-12 h-12 bg-neutral-100 rounded-full flex items-center justify-center mb-6">
+              <svg className="w-6 h-6 text-neutral-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+            </div>
+            <h3 className="text-sm tracking-widest uppercase mb-4 text-neutral-900 font-semibold">Revisa tu bandeja</h3>
+            <p className="text-sm text-neutral-500 mb-2 font-light leading-relaxed">
+              Hemos enviado un enlace mágico para confirmar tu espacio.
+            </p>
+            <p className="text-[11px] text-neutral-400 mb-8 italic">
+              *Si no lo ves, por favor revisa tu carpeta de Spam o Correo no deseado.
+            </p>
+            <button 
+              onClick={() => { 
+                setIsEmailSent(false); 
+                setIsLogin(true); 
+                setShowAuthModal(true); 
+              }} 
+              className="w-full bg-neutral-900 text-white py-4 rounded-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors"
+            >
+              Ya lo verifiqué → Entrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE TÉRMINOS Y CONDICIONES Y PRIVACIDAD */}
+      {showTerms && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+          <div className="bg-white p-6 sm:p-8 rounded-lg max-w-lg w-full relative shadow-2xl max-h-[80vh] overflow-y-auto">
+            <button onClick={() => setShowTerms(false)} className="absolute top-4 right-4 text-neutral-400 bg-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-neutral-100">✕</button>
+            <h3 className="text-lg font-normal mb-6 text-neutral-900 text-center">Términos y Política de Privacidad</h3>
+            <div className="text-xs text-neutral-600 space-y-4 font-light leading-relaxed text-justify">
+              
+              <h4 className="font-semibold uppercase tracking-widest text-[10px] text-neutral-900 mt-6">1. Términos y Condiciones de Uso</h4>
+              <p className="italic">Última actualización: Julio de 2026</p>
+              <p>Bienvenido a Maeum. Al acceder, registrarte o utilizar nuestra aplicación web y PWA (en adelante, "la App"), aceptas cumplir y estar sujeto a los siguientes Términos y Condiciones de Uso. Por favor, léelos detenidamente.</p>
+              
+              <p className="font-semibold text-neutral-800">1. Descripción del Servicio</p>
+              <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Unsplash), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
+              
+              <p className="font-semibold text-neutral-800">2. Cuentas de Usuario y Registro</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Para acceder a ciertas funciones, como guardar tu galería o personalizar tu perfil, es necesario crear una cuenta con un correo electrónico válido.</li>
+                <li>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</li>
+              </ul>
+              
+              <p className="font-semibold text-neutral-800">3. Planes de Suscripción (Free y Premium)</p>
+              <p>Maeum ofrece dos modalidades de uso:</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Plan Gratuito (Free): Permite seleccionar un máximo de 2 etiquetas de inspiración, almacenar hasta 21 fotos en la galería personal y disfrutar de un límite de 3 minutos de reproducción continua de audio ambiental por sesión.</li>
+                <li>Plan Premium: Mediante una suscripción de pago ($5 USD al mes o $35 USD al año), el usuario desbloquea hasta 5 etiquetas simultáneas, galería ilimitada de fotos guardadas y reproducción de audio ambiental ilimitada.</li>
+              </ul>
+              
+              <p className="font-semibold text-neutral-800">4. Pagos y Procesamiento a través de Stripe</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propias políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
+                <li>Maeum no almacena directamente los números completos de tus tarjetas de crédito o débito en sus servidores. Las suscripciones se renuevan de manera automática según el periodo elegido (mensual o anual), pudiendo cancelarse en cualquier momento desde la configuración de tu cuenta.</li>
+              </ul>
+
+              <p className="font-semibold text-neutral-800">5. Propiedad Intelectual y Contenido</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>El diseño, código fuente, logotipos y la marca Maeum son propiedad exclusiva de sus creadores.</li>
+                <li>Las imágenes mostradas son proporcionadas a través de la API de Unsplash y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
+              </ul>
+
+              <p className="font-semibold text-neutral-800">6. Limitación de Responsabilidad</p>
+              <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Unsplash.</p>
+
+              <p className="font-semibold text-neutral-800">7. Modificaciones</p>
+              <p>Podemos actualizar estos Términos ocasionalmente. Notificaremos cambios significativos a través de la App. El uso continuado tras dichos cambios implica su aceptación.</p>
+
+              <hr className="my-6 border-neutral-100" />
+
+              <h4 className="font-semibold uppercase tracking-widest text-[10px] text-neutral-900">2. Política de Privacidad</h4>
+              <p className="italic">Última actualización: Julio de 2026</p>
+              <p>En Maeum, valoramos profundamente tu privacidad y tu tranquilidad digital. Esta Política de Privacidad explica qué datos recopilamos, cómo los utilizamos y cómo los protegemos.</p>
+
+              <p className="font-semibold text-neutral-800">1. Información que Recopilamos</p>
+              <p>Cuando creas una cuenta o utilizas Maeum, recopilamos únicamente la información esencial para el funcionamiento de la App:</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Datos de Registro: Tu dirección de correo electrónico y tu nombre (opcional), gestionados a través de nuestro proveedor de autenticación (Supabase).</li>
+                <li>Preferencias de Perfil: Las etiquetas de inspiración seleccionadas, tu frase inspiradora personal y las fotografías guardadas en tu galería.</li>
+                <li>Datos de Pago (Stripe): Si decides adquirir el plan Premium, los datos financieros y de cobro (como tarjetas de crédito o débito) son recopilados, procesados y almacenados de manera directa y segura por Stripe, nuestro procesador de pagos certificado. Maeum solo recibe confirmaciones de estado de pago (activo/inactivo) para habilitar tus beneficios.</li>
+              </ul>
+
+              <p className="font-semibold text-neutral-800">2. Cómo Utilizamos tu Información</p>
+              <p>Utilizamos tus datos exclusivamente para:</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Autenticar tu acceso, gestionar tu cuenta y permitirte recuperar tu contraseña.</li>
+                <li>Sincronizar tu galería personal, preferencias estéticas y nivel de suscripción (Free o Premium) en tus dispositivos.</li>
+                <li>Nunca vendemos, rentamos ni compartimos tus datos personales con terceros con fines publicitarios o comerciales.</li>
+              </ul>
+
+              <p className="font-semibold text-neutral-800">3. Seguridad de los Datos</p>
+              <p>Utilizamos servicios de infraestructura en la nube seguros y estándares de la industria (Supabase y pasarelas de pago cifradas como Stripe con protocolo HTTPS) para garantizar que tu información y credenciales estén protegidas contra accesos no autorizados.</p>
+
+              <p className="font-semibold text-neutral-800">4. Tus Derechos</p>
+              <p>Tienes el derecho absoluto de acceder a tu información, modificarla desde tu perfil o solicitar la eliminación de tu cuenta y todos los datos asociados en cualquier momento.</p>
+
+              <p className="font-semibold text-neutral-800">5. Contacto</p>
+              <p>Si tienes dudas o solicitudes sobre esta política o tus datos personales, puedes escribirnos a través de nuestras redes oficiales (como nuestro Instagram @maeum_gratitud).</p>
+            </div>
+            
+            <button onClick={() => setShowTerms(false)} className="w-full bg-neutral-900 text-white py-4 mt-8 rounded-md text-xs uppercase tracking-widest hover:bg-neutral-800 transition-colors sticky bottom-0">
+              He leído y acepto
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* MODAL GUÍA DE INSTALACIÓN PWA */}
       {showInstallGuide && (
@@ -712,7 +880,7 @@ export default function Home() {
               {!isLogin && !isForgotPassword && (
                 <label className="flex items-start gap-2 mt-4 text-xs text-neutral-500 cursor-pointer">
                   <input type="checkbox" required onChange={(e) => setAcceptedTerms(e.target.checked)} className="mt-0.5" />
-                  <span>{t.terms} <a href="#" className="underline">Ver aquí</a></span>
+                  <span>{t.terms} <a href="#" onClick={(e) => { e.preventDefault(); setShowTerms(true); }} className="underline">Ver aquí</a></span>
                 </label>
               )}
 
