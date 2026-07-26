@@ -50,6 +50,7 @@ export default function Home() {
   const [feedPhotos, setFeedPhotos] = useState([]);
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
+  const categoryInitialized = useRef(false); // Seguro de memoria para evitar el brinco del scroll
 
   // Gestos
   const [longPressedId, setLongPressedId] = useState(null);
@@ -75,8 +76,15 @@ export default function Home() {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) loadUserData(session.user);
-      else { setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); }
+      if (session?.user) {
+        loadUserData(session.user);
+      } else { 
+        setUser(null); 
+        setLikes([]); 
+        setSelectedTags([]); 
+        setProfileName(""); 
+        categoryInitialized.current = false; // Reset al cerrar sesión
+      }
     });
 
     if ('serviceWorker' in navigator) {
@@ -122,9 +130,13 @@ export default function Home() {
     
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
       setSelectedTags(u.user_metadata.tags);
-      setActiveCategory((prev) => prev ? prev : u.user_metadata.tags[0]);
+      if (!categoryInitialized.current) {
+        setActiveCategory(u.user_metadata.tags[0]);
+        categoryInitialized.current = true;
+      }
     } else {
       setSelectedTags([]);
+      categoryInitialized.current = true;
     }
   };
 
@@ -132,7 +144,6 @@ export default function Home() {
     if (loadingRef.current) return;
     loadingRef.current = true;
     try {
-      // Si no hay categoría activa, busca una combinación de todas las seleccionadas, o unas bonitas por defecto
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "minimal,aesthetic,calm");
       const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=12&query=${querySearch}`);
       const data = await res.json();
@@ -546,7 +557,7 @@ export default function Home() {
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-900/90 backdrop-blur-lg px-8 py-4 rounded-full shadow-2xl z-40 flex items-center gap-12 text-white">
         <button onClick={() => { 
             setCurrentTab("explore"); 
-            setActiveCategory(""); // Esto borra el filtro para cargar la mezcla aleatoria combinada
+            setActiveCategory(""); 
             window.scrollTo({top: 0, behavior: 'smooth'}); 
           }} 
           className={currentTab === "explore" ? "opacity-100" : "opacity-40"}>
