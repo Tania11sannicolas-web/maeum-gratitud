@@ -352,7 +352,7 @@ export default function Home() {
                     className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
                     style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
                   >
-                    Foto por {photo.authorName || "Unsplash"}
+                    Foto por {photo.authorName || "Autor"} en Unsplash
                   </a>
 
                   <button onClick={(e) => toggleLike(photo, e)} className="absolute bottom-4 right-4 z-10 bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all">
