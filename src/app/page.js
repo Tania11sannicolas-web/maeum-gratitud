@@ -26,6 +26,11 @@ export default function Home() {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   
+  // Estados de carga (UX)
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  
   // PWA Instalación y Detección
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isStandalone, setIsStandalone] = useState(true);
@@ -193,6 +198,7 @@ export default function Home() {
 
   const handleAuth = async (e) => {
     e.preventDefault();
+    setIsAuthenticating(true);
     
     if (isForgotPassword) {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -204,11 +210,13 @@ export default function Home() {
         setAppMessage({ title: "Enlace enviado", text: "Te enviamos un correo con las instrucciones para recuperar tu contraseña." });
         setShowAuthModal(false);
       }
+      setIsAuthenticating(false);
       return;
     }
 
     if (!isLogin && !acceptedTerms) {
       setAppMessage({ title: "Aviso", text: dict[lang].terms });
+      setIsAuthenticating(false);
       return;
     }
 
@@ -233,6 +241,14 @@ export default function Home() {
         setShowAuthModal(false);
       }
     }
+    setIsAuthenticating(false);
+  };
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    await supabase.auth.signOut();
+    setCurrentTab("explore");
+    setIsSigningOut(false);
   };
 
   const toggleLike = async (photo, e) => {
@@ -291,17 +307,23 @@ export default function Home() {
   };
 
   const saveProfile = async () => {
-    const updates = { data: { full_name: profileName, phrase: userPhrase } };
-    await supabase.auth.updateUser(updates);
-    if (newPassword) {
-      const { error } = await supabase.auth.updateUser({ password: newPassword });
-      if (error) {
-        setAppMessage({ title: "Error", text: error.message });
-        return;
+    setIsSavingProfile(true);
+    try {
+      const updates = { data: { full_name: profileName, phrase: userPhrase } };
+      await supabase.auth.updateUser(updates);
+      if (newPassword) {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) {
+          setAppMessage({ title: "Error", text: error.message });
+          setIsSavingProfile(false);
+          return;
+        }
+        else setNewPassword("");
       }
-      else setNewPassword("");
+      setAppMessage({ title: "Actualizado", text: dict[lang].save + " con éxito." });
+    } finally {
+      setIsSavingProfile(false);
     }
-    setAppMessage({ title: "Actualizado", text: dict[lang].save + " con éxito." });
   };
 
   const toggleTag = async (tag) => {
@@ -583,10 +605,36 @@ export default function Home() {
               </div>
             </div>
 
-            <button onClick={saveProfile} className="w-full bg-neutral-900 text-white py-4 text-xs tracking-widest uppercase rounded-md">{t.save}</button>
+            <button 
+              onClick={saveProfile} 
+              disabled={isSavingProfile}
+              className="w-full bg-neutral-900 text-white py-4 text-xs tracking-widest uppercase rounded-md flex items-center justify-center gap-2 hover:bg-neutral-800 disabled:opacity-60 disabled:cursor-wait transition-all"
+            >
+              {isSavingProfile ? (
+                <>
+                  <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Guardando...
+                </>
+              ) : t.save}
+            </button>
             
-            <button onClick={async () => { await supabase.auth.signOut(); setCurrentTab("explore"); }} className="w-full border border-neutral-200 text-neutral-600 py-4 text-xs tracking-widest uppercase rounded-md mt-4 transition-colors hover:bg-neutral-50">
-              Salir de la cuenta
+            <button 
+              onClick={handleSignOut} 
+              disabled={isSigningOut}
+              className="w-full border border-neutral-200 text-neutral-600 py-4 text-xs tracking-widest uppercase rounded-md mt-4 transition-colors hover:bg-neutral-50 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait"
+            >
+              {isSigningOut ? (
+                <>
+                  <svg className="animate-spin h-4 w-4 text-neutral-600" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Saliendo...
+                </>
+              ) : "Salir de la cuenta"}
             </button>
 
             {/* ENLACE INSTAGRAM ESTÉTICO */}
@@ -884,8 +932,20 @@ export default function Home() {
                 </label>
               )}
 
-              <button type="submit" className="w-full bg-neutral-900 text-white py-4 mt-6 text-xs uppercase tracking-widest rounded-md hover:bg-neutral-800 transition-colors">
-                {isForgotPassword ? t.recover : (isLogin ? t.login : t.register)}
+              <button 
+                type="submit" 
+                disabled={isAuthenticating}
+                className="w-full bg-neutral-900 text-white py-4 mt-6 text-xs uppercase tracking-widest rounded-md hover:bg-neutral-800 disabled:opacity-60 disabled:cursor-wait transition-colors flex items-center justify-center gap-2"
+              >
+                {isAuthenticating ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Procesando...
+                  </>
+                ) : (isForgotPassword ? t.recover : (isLogin ? t.login : t.register))}
               </button>
             </form>
 
