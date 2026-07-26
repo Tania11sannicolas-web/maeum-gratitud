@@ -421,41 +421,34 @@ export default function Home() {
                     </button>
                   </div>
 
-                  {/* MANIFIESTO: Solo visible para usuarios NO logueados, después de las primeras 2 fotos */}
+                  {/* MANIFIESTO MINIMALISTA Y PERSUASIVO */}
                   {!user && index === 1 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 flex flex-col items-center justify-center text-center py-16 px-6 sm:px-12 bg-neutral-50/60 rounded-xl my-4 shadow-sm border border-neutral-100">
-                      <h2 className="text-xl sm:text-2xl font-normal text-neutral-900 tracking-wide mb-6">Maeum (마음) : El Refugio de la Mirada</h2>
-                      
-                      <div className="max-w-3xl space-y-6 text-sm text-neutral-600 font-light leading-relaxed">
-                        <p>
-                          Vivimos en una época hiperconectada pero profundamente fragmentada. El mundo exterior nos exige velocidad y atención constante. En medio de esa marea invisible, <strong className="font-medium text-neutral-800">Maeum nace como un acto de resistencia íntima</strong>: una pausa sagrada para regresar al cuerpo y al asombro.
-                        </p>
-                        <p>
-                          Creemos que la belleza no es un lujo superficial, sino <strong className="font-medium text-neutral-800">medicina para el alma</strong>. Existimos para ofrecerte un territorio libre de algoritmos invasivos y exigencias sociales. Un lugar digital donde la única regla es detenerse, respirar y dejar que la quietud te habite de nuevo.
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-24 px-6 my-4 flex justify-center">
+                      <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-16 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
+                        
+                        <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">
+                          Pausa y Contemplación
+                        </span>
+                        
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight tracking-tight">
+                          El mundo hace <br className="sm:hidden" /> demasiado ruido.
+                        </h2>
+                        
+                        <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg mb-10">
+                          Maeum es tu refugio íntimo. Un espacio libre de algoritmos y exigencias diseñado como medicina para tu sistema nervioso. Colecciona destellos de belleza, detente y vuelve a respirar.
                         </p>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 border-t border-neutral-200/60 text-left mt-6">
-                          <div>
-                            <h4 className="text-xs tracking-widest uppercase text-neutral-900 mb-3 font-medium">El arte de soltar</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed">Cada imagen, frase y sonido están pensados como un espejo blando donde puedes soltar el peso del día. Es el equivalente digital a mirar por la ventana un día de lluvia.</p>
-                          </div>
-                          <div>
-                            <h4 className="text-xs tracking-widest uppercase text-neutral-900 mb-3 font-medium">Colección de destellos</h4>
-                            <p className="text-xs text-neutral-500 leading-relaxed">Guardar una foto es anclar un momento en el que tu espíritu sintió paz. Es recordarle a tu sistema nervioso que la calma es un lugar al que siempre puedes regresar.</p>
-                          </div>
-                        </div>
+                        <button 
+                          onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
+                          className="group relative px-8 py-4 bg-neutral-900 text-white text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all hover:bg-neutral-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                        >
+                          <span className="relative z-10 flex items-center gap-3">
+                            Crear mi refugio
+                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                          </span>
+                        </button>
                         
-                        <p className="pt-8 font-normal text-neutral-900 text-[10px] sm:text-xs tracking-widest uppercase">
-                          Tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.
-                        </p>
                       </div>
-
-                      <button 
-                        onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
-                        className="mt-10 px-8 py-4 bg-neutral-900 text-white text-xs uppercase tracking-widest rounded-full hover:bg-neutral-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
-                      >
-                        Crear mi refugio visual
-                      </button>
                     </div>
                   )}
                 </Fragment>
