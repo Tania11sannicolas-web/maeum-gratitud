@@ -50,7 +50,6 @@ export default function Home() {
   const [feedPhotos, setFeedPhotos] = useState([]);
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
-  const categoryInitialized = useRef(false); // Seguro de memoria para evitar el brinco del scroll
 
   // Gestos
   const [longPressedId, setLongPressedId] = useState(null);
@@ -83,7 +82,6 @@ export default function Home() {
         setLikes([]); 
         setSelectedTags([]); 
         setProfileName(""); 
-        categoryInitialized.current = false; // Reset al cerrar sesión
       }
     });
 
@@ -128,15 +126,12 @@ export default function Home() {
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
+    // Eliminamos la regla que forzaba la primera categoría. 
+    // Ahora por defecto es la mezcla de todas.
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
       setSelectedTags(u.user_metadata.tags);
-      if (!categoryInitialized.current) {
-        setActiveCategory(u.user_metadata.tags[0]);
-        categoryInitialized.current = true;
-      }
     } else {
       setSelectedTags([]);
-      categoryInitialized.current = true;
     }
   };
 
