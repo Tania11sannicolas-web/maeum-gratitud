@@ -1,13 +1,14 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 
 const dict = {
-  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar هذا recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña" },
-  en: { explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", terms: "I accept Terms and Privacy Policy", register: "Sign Up", empty: "No flashes saved yet.", delete: "Delete", deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", audio: "Audio", newPass: "New password", forgot: "Forgot your password?", recover: "Recover password" }
+  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña", newest: "Más recientes", oldest: "Más antiguas", random: "Aleatorio" },
+  en: { explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", terms: "I accept Terms and Privacy Policy", register: "Sign Up", empty: "No flashes saved yet.", delete: "Delete", deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", audio: "Audio", newPass: "New password", forgot: "Forgot your password?", recover: "Recover password", newest: "Newest first", oldest: "Oldest first", random: "Random" }
 };
 
-const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities", "flowers", "colors", "ocean", "botanical", "warm", "desert", "abstract", "vintage", "neon", "geometry", "texture", "landscape", "portrait", "macro"];
+// Se eliminó 'portrait' y se agregó 'clouds' para evitar personas
+const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities", "flowers", "colors", "ocean", "botanical", "warm", "desert", "abstract", "vintage", "neon", "geometry", "texture", "landscape", "clouds", "macro"];
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -27,8 +28,9 @@ export default function Home() {
   const [showInstallGuide, setShowInstallGuide] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
-  // Perfil
+  // Perfil y Galería
   const [likes, setLikes] = useState([]);
+  const [sortOrder, setSortOrder] = useState("newest"); // Control del orden de galería
   const [userPhrase, setUserPhrase] = useState("");
   const [profileName, setProfileName] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -39,7 +41,7 @@ export default function Home() {
   const [currentTab, setCurrentTab] = useState("explore"); 
   const [galleryView, setGalleryView] = useState("grid");
   const [photoToDelete, setPhotoToDelete] = useState(null);
-  const [activeMenuPhotoId, setActiveMenuPhotoId] = useState(null); // Controla el menú de tres puntos en galería
+  const [activeMenuPhotoId, setActiveMenuPhotoId] = useState(null); 
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -52,6 +54,14 @@ export default function Home() {
   // Gestos
   const [longPressedId, setLongPressedId] = useState(null);
   const pressTimer = useRef(null);
+
+  // Filtrado y Orden de Galería en tiempo real
+  const sortedLikes = useMemo(() => {
+    let arr = [...likes];
+    if (sortOrder === "newest") return arr.reverse();
+    if (sortOrder === "random") return arr.sort(() => Math.random() - 0.5);
+    return arr; // "oldest" se queda como está
+  }, [likes, sortOrder]);
 
   useEffect(() => {
     const userLang = navigator.language.slice(0, 2);
@@ -122,7 +132,8 @@ export default function Home() {
     if (loadingRef.current) return;
     loadingRef.current = true;
     try {
-      const querySearch = activeCategory || "minimal,aesthetic";
+      // Si no hay categoría activa, busca una combinación de todas las seleccionadas, o unas bonitas por defecto
+      const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "minimal,aesthetic,calm");
       const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=12&query=${querySearch}`);
       const data = await res.json();
       
@@ -219,7 +230,6 @@ export default function Home() {
     await supabase.auth.updateUser({ data: { likes: newLikes } });
   };
 
-  // Disparador invisible del punto final de descarga de Unsplash (requisito oficial de API)
   const triggerUnsplashDownload = async (downloadLocation) => {
     if (!downloadLocation) return;
     try {
@@ -354,15 +364,27 @@ export default function Home() {
              {userPhrase && <p className="text-sm italic text-neutral-500 font-light max-w-md mx-auto px-4">"{userPhrase}"</p>}
           </div>
 
-          <div className="flex justify-center items-center mb-6 border-b border-neutral-100 pb-2">
+          <div className="flex justify-between items-center mb-6 border-b border-neutral-100 pb-2 px-2">
              <h2 className="text-xs tracking-widest uppercase text-neutral-400">{t.gallery} ({likes.length})</h2>
+             
+             {likes.length > 0 && (
+               <select 
+                 value={sortOrder} 
+                 onChange={(e) => setSortOrder(e.target.value)}
+                 className="text-[10px] tracking-widest uppercase text-neutral-500 bg-transparent outline-none cursor-pointer text-right border-none"
+               >
+                 <option value="newest">{t.newest}</option>
+                 <option value="oldest">{t.oldest}</option>
+                 <option value="random">{t.random}</option>
+               </select>
+             )}
           </div>
 
           {likes.length === 0 ? (
             <p className="text-center text-neutral-400 text-sm mt-20">{t.empty}</p>
           ) : galleryView === "grid" ? (
             <div className="grid grid-cols-3 gap-1 md:gap-4">
-              {likes.map((photo) => (
+              {sortedLikes.map((photo) => (
                 <div 
                   key={photo.id} 
                   className="relative aspect-square cursor-pointer overflow-hidden group" 
@@ -396,7 +418,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-12">
-              {likes.map((photo) => (
+              {sortedLikes.map((photo) => (
                 <div 
                   id={`feed-photo-${photo.id}`}
                   key={photo.id} 
@@ -404,7 +426,6 @@ export default function Home() {
                 >
                   <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover" />
                   
-                  {/* Botón de tres puntitos */}
                   <button 
                     onClick={() => setActiveMenuPhotoId(activeMenuPhotoId === photo.id ? null : photo.id)} 
                     className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md text-neutral-800 hover:bg-white transition-all z-20"
@@ -414,7 +435,6 @@ export default function Home() {
                     </svg>
                   </button>
 
-                  {/* Menú Desplegable con Créditos y Borrado */}
                   {activeMenuPhotoId === photo.id && (
                     <div className="absolute top-16 right-4 bg-white/95 backdrop-blur-md rounded-lg shadow-xl border border-neutral-100 p-2 z-30 min-w-[200px] text-left">
                       <a 
@@ -524,7 +544,12 @@ export default function Home() {
 
       {/* MENÚ FLOTANTE INFERIOR */}
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-900/90 backdrop-blur-lg px-8 py-4 rounded-full shadow-2xl z-40 flex items-center gap-12 text-white">
-        <button onClick={() => setCurrentTab("explore")} className={currentTab === "explore" ? "opacity-100" : "opacity-40"}>
+        <button onClick={() => { 
+            setCurrentTab("explore"); 
+            setActiveCategory(""); // Esto borra el filtro para cargar la mezcla aleatoria combinada
+            window.scrollTo({top: 0, behavior: 'smooth'}); 
+          }} 
+          className={currentTab === "explore" ? "opacity-100" : "opacity-40"}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </button>
         <button onClick={() => { if(!user) { setIsForgotPassword(false); setShowAuthModal(true); } else setCurrentTab("gallery"); }} className={currentTab === "gallery" ? "opacity-100" : "opacity-40"}>
@@ -588,8 +613,18 @@ export default function Home() {
           <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-xl">
             <h3 className="text-sm tracking-widest uppercase mb-6 text-neutral-900">{t.deleteConfirm}</h3>
             <div className="flex gap-4">
-              <button onClick={() => { setPhotoToDelete(null); }} className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600">{t.no}</button>
-              <button onClick={() => confirmDelete(photoToDelete)} className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest">{t.yes}</button>
+              <button 
+                onClick={() => { setPhotoToDelete(null); setLongPressedId(null); setActiveMenuPhotoId(null); }} 
+                className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600"
+              >
+                {t.no}
+              </button>
+              <button 
+                onClick={() => confirmDelete(photoToDelete)} 
+                className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest"
+              >
+                {t.yes}
+              </button>
             </div>
           </div>
         </div>
