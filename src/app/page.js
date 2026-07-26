@@ -46,14 +46,10 @@ export default function Home() {
   const audioRef = useRef(null);
 
   // Motor Unsplash
-  const [activeCategory, setActiveCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState("blanco");
   const [feedPhotos, setFeedPhotos] = useState([]);
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
-
-  // Gestos
-  const [longPressedId, setLongPressedId] = useState(null);
-  const pressTimer = useRef(null);
 
   // Filtrado y Orden de Galería en tiempo real
   const sortedLikes = useMemo(() => {
@@ -126,8 +122,6 @@ export default function Home() {
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    // Eliminamos la regla que forzaba la primera categoría. 
-    // Ahora por defecto es la mezcla de todas.
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
       setSelectedTags(u.user_metadata.tags);
     } else {
@@ -139,7 +133,7 @@ export default function Home() {
     if (loadingRef.current) return;
     loadingRef.current = true;
     try {
-      const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "minimal,aesthetic,calm");
+      const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
       const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=12&query=${querySearch}`);
       const data = await res.json();
       
@@ -246,12 +240,15 @@ export default function Home() {
   };
 
   const confirmDelete = async (id) => {
+    // Actualización optimista para evitar trabas
     const newLikes = likes.filter(p => p.id !== id);
     setLikes(newLikes);
-    await supabase.auth.updateUser({ data: { likes: newLikes } });
     setPhotoToDelete(null);
-    setLongPressedId(null);
     setActiveMenuPhotoId(null);
+    
+    if (user) {
+      await supabase.auth.updateUser({ data: { likes: newLikes } });
+    }
   };
 
   const saveProfile = async () => {
@@ -286,11 +283,6 @@ export default function Home() {
     else audioRef.current.play();
     setIsPlaying(!isPlaying);
   };
-
-  const startPress = (id) => {
-    pressTimer.current = setTimeout(() => setLongPressedId(id), 600);
-  };
-  const cancelPress = () => clearTimeout(pressTimer.current);
 
   const t = dict[lang] || dict.es;
 
@@ -395,30 +387,17 @@ export default function Home() {
                   key={photo.id} 
                   className="relative aspect-square cursor-pointer overflow-hidden group" 
                   onClick={() => { 
-                    if(longPressedId !== photo.id) {
-                      setGalleryView("feed");
-                      setTimeout(() => {
-                        const el = document.getElementById(`feed-photo-${photo.id}`);
-                        if(el) {
-                          const y = el.getBoundingClientRect().top + window.scrollY - 160;
-                          window.scrollTo({top: y, behavior: 'smooth'});
-                        }
-                      }, 50);
-                    }
+                    setGalleryView("feed");
+                    setTimeout(() => {
+                      const el = document.getElementById(`feed-photo-${photo.id}`);
+                      if(el) {
+                        const y = el.getBoundingClientRect().top + window.scrollY - 160;
+                        window.scrollTo({top: y, behavior: 'smooth'});
+                      }
+                    }, 50);
                   }}
-                  onMouseDown={() => startPress(photo.id)}
-                  onMouseUp={cancelPress}
-                  onMouseLeave={cancelPress}
-                  onTouchStart={() => startPress(photo.id)}
-                  onTouchEnd={cancelPress}
                 >
                   <img src={photo.url} className="w-full h-full object-cover rounded-sm" />
-                  
-                  {longPressedId === photo.id && (
-                    <div onClick={(e) => { e.stopPropagation(); setPhotoToDelete(photo.id); }} className="absolute inset-0 bg-black/60 flex items-center justify-center z-10 transition-opacity">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -468,7 +447,10 @@ export default function Home() {
           {galleryView === "feed" && (
              <div className="fixed bottom-28 left-1/2 -translate-x-1/2 z-40">
                <button 
-                 onClick={() => setGalleryView("grid")} 
+                 onClick={() => {
+                   setGalleryView("grid");
+                   window.scrollTo({ top: 0, behavior: 'smooth' });
+                 }} 
                  className="bg-neutral-900/90 backdrop-blur-lg text-white px-6 py-3 rounded-full shadow-2xl text-xs tracking-widest uppercase hover:bg-neutral-800 transition-all"
                >
                  Ver Mosaico
@@ -544,6 +526,20 @@ export default function Home() {
             <button onClick={async () => { await supabase.auth.signOut(); setCurrentTab("explore"); }} className="w-full border border-neutral-200 text-neutral-600 py-4 text-xs tracking-widest uppercase rounded-md mt-4 transition-colors hover:bg-neutral-50">
               Salir de la cuenta
             </button>
+
+            {/* ENLACE INSTAGRAM ESTÉTICO */}
+            <a 
+              href="https://www.instagram.com/maeum_gratitud/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-full flex items-center justify-center gap-2 text-neutral-400 py-6 mt-4 text-[11px] tracking-widest uppercase hover:text-neutral-900 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg>
+              Síguenos en Instagram
+            </a>
+
           </div>
         </section>
       )}
@@ -552,7 +548,7 @@ export default function Home() {
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-900/90 backdrop-blur-lg px-8 py-4 rounded-full shadow-2xl z-40 flex items-center gap-12 text-white">
         <button onClick={() => { 
             setCurrentTab("explore"); 
-            setActiveCategory(""); 
+            setActiveCategory("blanco"); 
             window.scrollTo({top: 0, behavior: 'smooth'}); 
           }} 
           className={currentTab === "explore" ? "opacity-100" : "opacity-40"}>
@@ -615,12 +611,18 @@ export default function Home() {
 
       {/* DIÁLOGO CONFIRMAR BORRADO */}
       {photoToDelete && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-xl">
+        <div 
+          className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setPhotoToDelete(null)}
+        >
+          <div 
+            className="bg-white p-8 rounded-lg max-w-sm w-full text-center shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 className="text-sm tracking-widest uppercase mb-6 text-neutral-900">{t.deleteConfirm}</h3>
             <div className="flex gap-4">
               <button 
-                onClick={() => { setPhotoToDelete(null); setLongPressedId(null); setActiveMenuPhotoId(null); }} 
+                onClick={() => { setPhotoToDelete(null); setActiveMenuPhotoId(null); }} 
                 className="flex-1 py-3 border rounded-md text-xs uppercase tracking-widest text-neutral-600"
               >
                 {t.no}
