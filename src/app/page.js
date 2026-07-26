@@ -421,35 +421,79 @@ export default function Home() {
                     </button>
                   </div>
 
-                  {/* MANIFIESTO MINIMALISTA Y PERSUASIVO */}
+                  {/* MANIFIESTO MINIMALISTA Y PERSUASIVO INTERCALADO */}
                   {!user && index === 1 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-24 px-6 my-4 flex justify-center">
-                      <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-16 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
-                        
-                        <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">
-                          Pausa y Contemplación
-                        </span>
-                        
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight tracking-tight">
-                          El mundo hace <br className="sm:hidden" /> demasiado ruido.
-                        </h2>
-                        
-                        <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg mb-10">
-                          Maeum es tu refugio íntimo. Un espacio libre de algoritmos y exigencias diseñado como medicina para tu sistema nervioso. Colecciona destellos de belleza, detente y vuelve a respirar.
-                        </p>
-                        
-                        <button 
-                          onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
-                          className="group relative px-8 py-4 bg-neutral-900 text-white text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all hover:bg-neutral-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                        >
-                          <span className="relative z-10 flex items-center gap-3">
-                            Crear mi refugio
-                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                          </span>
-                        </button>
-                        
+                    <>
+                      {/* Bloque 1: El mundo hace demasiado ruido */}
+                      <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                        <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
+                          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Pausa y Contemplación</span>
+                          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight tracking-tight">
+                            El mundo hace <br className="sm:hidden" /> demasiado ruido.
+                          </h2>
+                          <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg mb-10">
+                            Maeum es tu refugio íntimo. Un espacio libre de algoritmos y exigencias diseñado como medicina para tu sistema nervioso.
+                          </p>
+                          <button 
+                            onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
+                            className="group relative px-8 py-4 bg-neutral-900 text-white text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all hover:bg-neutral-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                          >
+                            <span className="relative z-10 flex items-center gap-3">
+                              Crear mi refugio
+                              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </span>
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </>
+                  )}
+
+                  {!user && index === 3 && (
+                    <>
+                      {/* Bloque 2: El arte de soltar */}
+                      <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                        <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
+                          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Soltar</span>
+                          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight tracking-tight">
+                            El arte de soltar.
+                          </h2>
+                          <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg">
+                            Aceptar que las cosas fluyen, liberar el control innecesario y permitir que cada destello encuentre su propio camino hacia la calma.
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {!user && index === 5 && (
+                    <>
+                      {/* Bloque 3: La colección de destellos */}
+                      <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                        <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
+                          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Colección</span>
+                          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight tracking-tight">
+                            La colección de destellos.
+                          </h2>
+                          <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg">
+                            Guarda pequeños fragmentos de belleza visual que resuenen con tu interior, creando un archivo único para tus momentos de pausa.
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {!user && index === 7 && (
+                    <>
+                      {/* Bloque 4: Frase final Maeum */}
+                      <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                        <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
+                          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Esencia</span>
+                          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-neutral-900 mb-6 leading-relaxed tracking-tight">
+                            Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.
+                          </h2>
+                        </div>
+                      </div>
+                    </>
                   )}
                 </Fragment>
               );
