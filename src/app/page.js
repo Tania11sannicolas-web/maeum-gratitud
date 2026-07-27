@@ -56,15 +56,15 @@ export default function Home() {
 
   const isDark = theme === "dark";
 
-  // Descomprime los datos hiper-comprimidos para que la UI funcione sin romperse
+  // Mapeo directo desde la tabla user_likes
   const normalizedLikes = useMemo(() => {
     let arr = likes.map(p => ({
-      id: p.id || p.i,
-      url: p.url || `https://images.unsplash.com/${p.u}?w=800&q=80`,
+      id: p.id,
+      url: p.url,
       title: p.title || "Destello",
-      authorName: p.authorName || p.a || "Autor",
+      authorName: p.authorName || "Autor",
       authorUsername: p.authorUsername || "unsplash",
-      downloadLocation: p.downloadLocation || `https://api.unsplash.com/photos/${p.i || p.id}/download`
+      downloadLocation: p.downloadLocation || `https://api.unsplash.com/photos/${p.id}/download`
     }));
 
     if (sortOrder === "newest") return arr.reverse();
@@ -76,7 +76,6 @@ export default function Home() {
     const userLang = navigator.language.slice(0, 2);
     if (dict[userLang]) setLang(userLang);
 
-    // Carga de tema local instantánea antes de esperar a la base de datos
     const savedTheme = localStorage.getItem('maeum-theme');
     if (savedTheme) setTheme(savedTheme);
 
@@ -96,7 +95,6 @@ export default function Home() {
         setLikes([]); 
         setSelectedTags([]); 
         setProfileName(""); 
-        // No reseteamos el tema al salir para que recuerde su preferencia
       }
     });
 
@@ -135,9 +133,8 @@ export default function Home() {
     }
   };
 
-  const loadUserData = (u) => {
+  const loadUserData = async (u) => {
     setUser(u);
-    if (u.user_metadata?.likes) setLikes(u.user_metadata.likes);
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
@@ -146,19 +143,33 @@ export default function Home() {
       localStorage.setItem('maeum-theme', u.user_metadata.theme);
     }
     
-    if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
+    if (u.user_metadata?.tags) {
       setSelectedTags(u.user_metadata.tags);
     } else {
       setSelectedTags([]);
     }
+
+    // Cargar los likes desde la tabla independiente user_likes
+    const { data, error } = await supabase
+      .from('user_likes')
+      .select('*')
+      .eq('user_id', u.id);
+
+    if (!error && data) {
+      setLikes(data.map(item => ({
+        id: item.photo_id,
+        url: item.photo_url,
+        authorName: item.author_name,
+        authorUsername: item.author_username,
+        downloadLocation: item.download_location
+      })));
+    }
   };
 
-  // Función para guardar el tema de manera persistente instantánea
   const changeTheme = async (newTheme) => {
     setTheme(newTheme);
     localStorage.setItem('maeum-theme', newTheme);
     if (user) {
-      // Guarda silenciosamente en Supabase
       supabase.auth.updateUser({ data: { theme: newTheme } }).catch(console.error);
     }
   };
@@ -251,7 +262,7 @@ export default function Home() {
     } else {
       authResult = await supabase.auth.signUp({ 
         email, password, 
-        options: { data: { full_name: name, likes: [], phrase: "", tags: [], theme: currentTheme } }
+        options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme } }
       });
     }
 
@@ -274,8 +285,6 @@ export default function Home() {
       await supabase.auth.signOut();
     } catch(e) { console.warn("Supabase bloqueó la salida segura, forzando limpieza local.", e); }
     
-    // LIMPIEZA FORZADA DE SESIÓN LOCAL
-    // Rescata a los usuarios que se queden atrapados por un token gigante
     for (let key in localStorage) {
       if (key.startsWith('sb-')) {
         localStorage.removeItem(key);
@@ -294,41 +303,40 @@ export default function Home() {
     if (e) e.preventDefault();
     if (!user) return setShowAuthModal(true);
     
-    let newLikes = [...likes];
-    const exists = newLikes.find(p => (p.id || p.i) === photo.id);
+    const exists = likes.find(p => p.id === photo.id);
     
     if (exists) {
-      newLikes = newLikes.filter(p => (p.id || p.i) !== photo.id);
+      const newLikes = likes.filter(p => p.id !== photo.id);
+      setLikes(newLikes);
+      await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', photo.id);
     } else {
-      // Límite sano temporal para evitar colapsar la base de datos de Auth
-      if (newLikes.length >= 60) {
-        setAppMessage({ 
-          title: "Colección llena", 
-          text: "Has alcanzado el límite de memoria para tu cuenta actual. Suelta algunos recuerdos para poder guardar más belleza." 
-        });
-        return;
-      }
-      
-      // Hiper-Compresión para engañar al límite de JWT de Supabase
-      const minPhoto = {
-        i: photo.id, 
-        u: photo.url.replace('https://images.unsplash.com/', '').split('?')[0],
-        a: photo.authorName ? photo.authorName.substring(0, 15) : "Autor"
+      const newPhotoRecord = {
+        user_id: user.id,
+        photo_id: photo.id,
+        photo_url: photo.url,
+        author_name: photo.authorName,
+        author_username: photo.authorUsername,
+        download_location: photo.downloadLocation
       };
-      newLikes.push(minPhoto);
+      
+      setLikes(prev => [...prev, photo]);
+      
+      const { error } = await supabase.from('user_likes').insert([newPhotoRecord]);
+      if (error) {
+        setAppMessage({ title: "Error", text: "No se pudo guardar el destello en la base de datos." });
+        setLikes(likes);
+      }
     }
-    
-    // Actualización optimista local
+  };
+
+  const confirmDelete = async (id) => {
+    const newLikes = likes.filter(p => p.id !== id);
     setLikes(newLikes);
+    setPhotoToDelete(null);
+    setActiveMenuPhotoId(null);
     
-    const { error } = await supabase.auth.updateUser({ data: { likes: newLikes } });
-    if (error) {
-      setAppMessage({ 
-        title: "Límite de Galería", 
-        text: "Tu galería es muy extensa y ha saturado la memoria. Intenta borrar algunas fotos para seguir guardando." 
-      });
-      // Revertir estado si falla
-      setLikes(likes);
+    if (user) {
+      await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', id);
     }
   };
 
@@ -359,24 +367,13 @@ export default function Home() {
     }
   };
 
-  const confirmDelete = async (id) => {
-    const newLikes = likes.filter(p => (p.id || p.i) !== id);
-    setLikes(newLikes);
-    setPhotoToDelete(null);
-    setActiveMenuPhotoId(null);
-    
-    if (user) {
-      await supabase.auth.updateUser({ data: { likes: newLikes } }).catch(console.error);
-    }
-  };
-
   const saveProfile = async () => {
     setIsSavingProfile(true);
     try {
-      const updates = { data: { full_name: profileName, phrase: userPhrase } }; // El tema ya se guarda al vuelo
+      const updates = { data: { full_name: profileName, phrase: userPhrase } };
       const { error } = await supabase.auth.updateUser(updates);
       
-      if (error) throw error; // Captura correcta de fallos para liberar el botón
+      if (error) throw error;
 
       if (newPassword) {
         const { error: passError } = await supabase.auth.updateUser({ password: newPassword });
@@ -385,7 +382,7 @@ export default function Home() {
       }
       setAppMessage({ title: "Actualizado", text: dict[lang].save + " con éxito." });
     } catch (error) {
-      setAppMessage({ title: "Error al guardar", text: error.message || "Tu perfil está muy saturado. Intenta vaciar un poco la galería." });
+      setAppMessage({ title: "Error al guardar", text: error.message || "No se pudo actualizar el perfil." });
     } finally {
       setIsSavingProfile(false);
     }
@@ -415,7 +412,6 @@ export default function Home() {
   return (
     <main className={`min-h-screen pb-24 font-light transition-colors duration-500 ${isDark ? 'bg-neutral-950 text-neutral-300' : 'bg-white text-neutral-800'}`}>
       
-      {/* HEADER */}
       <header className={`sticky top-0 z-40 border-b flex flex-col transition-all duration-500 backdrop-blur-md ${isDark ? 'bg-neutral-950/90 border-neutral-900' : 'bg-white/90 border-neutral-100'}`}>
         <div className="py-6 px-6 flex justify-between items-center">
           <h1 className={`text-xl tracking-widest uppercase font-normal ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Maeum</h1>
@@ -460,12 +456,11 @@ export default function Home() {
         )}
       </header>
 
-      {/* VISTA EXPLORAR */}
       {currentTab === "explore" && (
         <section className="max-w-6xl mx-auto p-4 mt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {feedPhotos.map((photo, index) => {
-              const isLiked = likes.some(p => (p.id || p.i) === photo.id);
+              const isLiked = likes.some(p => p.id === photo.id);
               return (
                 <Fragment key={photo.id}>
                   <div 
@@ -490,7 +485,6 @@ export default function Home() {
                     </button>
                   </div>
 
-                  {/* MANIFIESTOS */}
                   {!user && index === 1 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
@@ -513,45 +507,6 @@ export default function Home() {
                       </div>
                     </div>
                   )}
-
-                  {!user && index === 3 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Contemplación y Calma</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          Scroll infinito y presencia.
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          Aquí puedes hacer scroll infinito —con música ambiental de fondo o en completo silencio—. Desde la psicología, la exposición dosificada a la belleza visual reduce de forma notable los niveles de cortisol y la sobrecarga cognitiva. Desplazarte con intención te permite desacelerar el pensamiento, induciendo un estado de atención plena o trance suave similar a una meditación activa, donde el sistema nervioso parasimpático toma el control y descansa.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 5 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Colección</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          La colección de destellos.
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          Guardar fragmentos visuales que resuenan con tu interior tiene profundas ventajas psicológicas y espirituales. Psicológicamente, funciona como un ancla de gratitud y regulación emocional, permitiéndote evocar estados de seguridad con solo mirar tu archivo. Espiritualmente, es un acto de reconocimiento de lo sagrado cotidiano, creando un altar personal de imágenes que reflejan la belleza esencial de tu alma.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 7 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Esencia</span>
-                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.
-                        </h2>
-                      </div>
-                    </div>
-                  )}
                 </Fragment>
               );
             })}
@@ -559,7 +514,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* VISTA GALERÍA */}
       {currentTab === "gallery" && (
         <section className="max-w-6xl mx-auto p-4">
           
@@ -571,7 +525,7 @@ export default function Home() {
           <div className={`mb-6 border-b pb-4 ${isDark ? 'border-neutral-900' : 'border-neutral-100'}`}>
             <div className="flex justify-between items-center px-2">
                <h2 className={`text-xs tracking-widest uppercase ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>
-                 {t.gallery} ({normalizedLikes.length}/60)
+                 {t.gallery} ({normalizedLikes.length})
                </h2>
                
                {normalizedLikes.length > 0 && (
@@ -586,13 +540,6 @@ export default function Home() {
                  </select>
                )}
             </div>
-
-            {/* AVISO VISUAL DE LÍMITE DE GALERÍA */}
-            {normalizedLikes.length >= 60 && (
-              <div className={`mt-4 mx-2 p-3 rounded-md text-[10px] tracking-[0.15em] uppercase text-center transition-colors ${isDark ? 'bg-neutral-900/50 text-neutral-400' : 'bg-neutral-50 text-neutral-500'}`}>
-                Has alcanzado tu límite de memoria. Suelta algunos recuerdos para guardar nuevos.
-              </div>
-            )}
           </div>
 
           {normalizedLikes.length === 0 ? (
@@ -689,7 +636,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* VISTA PERFIL */}
       {currentTab === "profile" && user && (
         <section className="max-w-md mx-auto p-6 mt-6">
           <div className="text-center mb-8">
@@ -821,7 +767,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* MENÚ FLOTANTE INFERIOR */}
       <nav className={`fixed bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-lg px-8 py-4 rounded-full shadow-2xl z-40 flex items-center gap-12 text-white ${isDark ? 'bg-neutral-800/90 border border-neutral-700/50' : 'bg-neutral-900/90'}`}>
         <button onClick={() => { 
             setCurrentTab("explore"); 
@@ -857,7 +802,6 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* PANTALLA BLOQUEANTE DE CORREO ENVIADO */}
       {isEmailSent && (
         <div className="fixed inset-0 bg-neutral-900/90 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-6 text-center">
           <div className={`p-8 rounded-2xl max-w-sm w-full shadow-2xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
@@ -885,7 +829,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* MODAL DE TÉRMINOS Y CONDICIONES Y PRIVACIDAD */}
       {showTerms && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
           <div className={`p-6 sm:p-8 rounded-lg max-w-lg w-full relative shadow-2xl max-h-[80vh] overflow-y-auto ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
@@ -899,68 +842,6 @@ export default function Home() {
               
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Descripción del Servicio</p>
               <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Unsplash), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
-              
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cuentas de Usuario y Registro</p>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>Para acceder a ciertas funciones, como guardar tu galería o personalizar tu perfil, es necesario crear una cuenta con un correo electrónico válido.</li>
-                <li>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</li>
-              </ul>
-              
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Planes de Suscripción (Free y Premium)</p>
-              <p>Maeum ofrece dos modalidades de uso:</p>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>Plan Gratuito (Free): Permite seleccionar un máximo de 2 etiquetas de inspiración, almacenar hasta 21 fotos en la galería personal y disfrutar de un límite de 3 minutos de reproducción continua de audio ambiental por sesión.</li>
-                <li>Plan Premium: Mediante una suscripción de pago ($5 USD al mes o $35 USD al año), el usuario desbloquea hasta 5 etiquetas simultáneas, galería ilimitada de fotos guardadas y reproducción de audio ambiental ilimitada.</li>
-              </ul>
-              
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Pagos y Procesamiento a través de Stripe</p>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propias políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
-                <li>Maeum no almacena directamente los números completos de tus tarjetas de crédito o débito en sus servidores. Las suscripciones se renuevan de manera automática según el periodo elegido (mensual o anual), pudiendo cancelarse en cualquier momento desde la configuración de tu cuenta.</li>
-              </ul>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Propiedad Intelectual y Contenido</p>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>El diseño, código fuente, logotipos y la marca Maeum son propiedad exclusiva de sus creadores.</li>
-                <li>Las imágenes mostradas son proporcionadas a través de la API de Unsplash y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
-              </ul>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>6. Limitación de Responsabilidad</p>
-              <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Unsplash.</p>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>7. Modificaciones</p>
-              <p>Podemos actualizar estos Términos ocasionalmente. Notificaremos cambios significativos a través de la App. El uso continuado tras dichos cambios implica su aceptación.</p>
-
-              <hr className={`my-6 ${isDark ? 'border-neutral-800' : 'border-neutral-100'}`} />
-
-              <h4 className={`font-semibold uppercase tracking-widest text-[10px] ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>2. Política de Privacidad</h4>
-              <p className="italic">Última actualización: Julio de 2026</p>
-              <p>En Maeum, valoramos profundamente tu privacidad y tu tranquilidad digital. Esta Política de Privacidad explica qué datos recopilamos, cómo los utilizamos y cómo los protegemos.</p>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Información que Recopilamos</p>
-              <p>Cuando creas una cuenta o utilizas Maeum, recopilamos únicamente la información esencial para el funcionamiento de la App:</p>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>Datos de Registro: Tu dirección de correo electrónico y tu nombre (opcional), gestionados a través de nuestro proveedor de autenticación (Supabase).</li>
-                <li>Preferencias de Perfil: Las etiquetas de inspiración seleccionadas, tu frase inspiradora personal y las fotografías guardadas en tu galería.</li>
-                <li>Datos de Pago (Stripe): Si decides adquirir el plan Premium, los datos financieros y de cobro (como tarjetas de crédito o débito) son recopilados, procesados y almacenados de manera directa y segura por Stripe, nuestro procesador de pagos certificado. Maeum solo recibe confirmaciones de estado de pago (activo/inactivo) para habilitar tus beneficios.</li>
-              </ul>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cómo Utilizamos tu Información</p>
-              <p>Utilizamos tus datos exclusivamente para:</p>
-              <ul className="list-disc pl-4 space-y-2">
-                <li>Autenticar tu acceso, gestionar tu cuenta y permitirte recuperar tu contraseña.</li>
-                <li>Sincronizar tu galería personal, preferencias estéticas y nivel de suscripción (Free o Premium) en tus dispositivos.</li>
-                <li>Nunca vendemos, rentamos ni compartimos tus datos personales con terceros con fines publicitarios o comerciales.</li>
-              </ul>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Seguridad de los Datos</p>
-              <p>Utilizamos servicios de infraestructura en la nube seguros y estándares de la industria (Supabase y pasarelas de pago cifradas como Stripe con protocolo HTTPS) para garantizar que tu información y credenciales estén protegidas contra accesos no autorizados.</p>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Tus Derechos</p>
-              <p>Tienes el derecho absoluto de acceder a tu información, modificarla desde tu perfil o solicitar la eliminación de tu cuenta y todos los datos asociados en cualquier momento.</p>
-
-              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Contacto</p>
-              <p>Si tienes dudas o solicitudes sobre esta política o tus datos personales, puedes escribirnos a través de nuestras redes oficiales (como nuestro Instagram @maeum_gratitud).</p>
             </div>
             
             <button onClick={() => setShowTerms(false)} className={`w-full py-4 mt-8 rounded-md text-xs uppercase tracking-widest transition-colors sticky bottom-0 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
@@ -970,7 +851,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* MODAL GUÍA DE INSTALACIÓN PWA */}
       {showInstallGuide && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 pb-12 sm:pb-4">
           <div className={`p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
@@ -1017,7 +897,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* DIÁLOGO CONFIRMAR BORRADO */}
       {photoToDelete && (
         <div 
           className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
@@ -1046,7 +925,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* MODALES HERMOSOS DE AVISOS */}
       {appMessage && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
@@ -1059,7 +937,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* MODAL AUTH */}
       {showAuthModal && !user && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full relative shadow-2xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
