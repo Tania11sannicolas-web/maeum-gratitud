@@ -39,7 +39,7 @@ export default function Home() {
   const [profileName, setProfileName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [theme, setTheme] = useState("light"); // Nuevo estado para Tema
+  const [theme, setTheme] = useState("light");
   const [lang, setLang] = useState("es");
   
   const [currentTab, setCurrentTab] = useState("explore"); 
@@ -56,8 +56,17 @@ export default function Home() {
 
   const isDark = theme === "dark";
 
-  const sortedLikes = useMemo(() => {
-    let arr = [...likes];
+  // Descomprime los datos hiper-comprimidos para que la UI funcione sin romperse
+  const normalizedLikes = useMemo(() => {
+    let arr = likes.map(p => ({
+      id: p.id || p.i,
+      url: p.url || `https://images.unsplash.com/${p.u}?w=800&q=80`,
+      title: p.title || "Destello",
+      authorName: p.authorName || p.a || "Autor",
+      authorUsername: p.authorUsername || "unsplash",
+      downloadLocation: p.downloadLocation || `https://api.unsplash.com/photos/${p.i || p.id}/download`
+    }));
+
     if (sortOrder === "newest") return arr.reverse();
     if (sortOrder === "random") return arr.sort(() => Math.random() - 0.5);
     return arr;
@@ -66,6 +75,10 @@ export default function Home() {
   useEffect(() => {
     const userLang = navigator.language.slice(0, 2);
     if (dict[userLang]) setLang(userLang);
+
+    // Carga de tema local instantánea antes de esperar a la base de datos
+    const savedTheme = localStorage.getItem('maeum-theme');
+    if (savedTheme) setTheme(savedTheme);
 
     audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
     audioRef.current.loop = true;
@@ -83,7 +96,7 @@ export default function Home() {
         setLikes([]); 
         setSelectedTags([]); 
         setProfileName(""); 
-        setTheme("light");
+        // No reseteamos el tema al salir para que recuerde su preferencia
       }
     });
 
@@ -127,12 +140,26 @@ export default function Home() {
     if (u.user_metadata?.likes) setLikes(u.user_metadata.likes);
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
-    if (u.user_metadata?.theme) setTheme(u.user_metadata.theme);
+    
+    if (u.user_metadata?.theme) {
+      setTheme(u.user_metadata.theme);
+      localStorage.setItem('maeum-theme', u.user_metadata.theme);
+    }
     
     if (u.user_metadata?.tags && u.user_metadata.tags.length > 0) {
       setSelectedTags(u.user_metadata.tags);
     } else {
       setSelectedTags([]);
+    }
+  };
+
+  // Función para guardar el tema de manera persistente instantánea
+  const changeTheme = async (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem('maeum-theme', newTheme);
+    if (user) {
+      // Guarda silenciosamente en Supabase
+      supabase.auth.updateUser({ data: { theme: newTheme } }).catch(console.error);
     }
   };
 
@@ -217,12 +244,14 @@ export default function Home() {
     }
 
     let authResult;
+    const currentTheme = localStorage.getItem('maeum-theme') || "light";
+
     if (isLogin) {
       authResult = await supabase.auth.signInWithPassword({ email, password });
     } else {
       authResult = await supabase.auth.signUp({ 
         email, password, 
-        options: { data: { full_name: name, likes: [], phrase: "", tags: [], theme: "light" } }
+        options: { data: { full_name: name, likes: [], phrase: "", tags: [], theme: currentTheme } }
       });
     }
 
@@ -243,14 +272,20 @@ export default function Home() {
     setIsSigningOut(true);
     try {
       await supabase.auth.signOut();
-    } catch(e) { console.error("Error al salir", e); }
+    } catch(e) { console.warn("Supabase bloqueó la salida segura, forzando limpieza local.", e); }
     
-    // Limpieza forzada local para evitar quedarse cargando
+    // LIMPIEZA FORZADA DE SESIÓN LOCAL
+    // Rescata a los usuarios que se queden atrapados por un token gigante
+    for (let key in localStorage) {
+      if (key.startsWith('sb-')) {
+        localStorage.removeItem(key);
+      }
+    }
+    
     setUser(null);
     setLikes([]);
     setSelectedTags([]);
     setProfileName("");
-    setTheme("light");
     setCurrentTab("explore");
     setIsSigningOut(false);
   };
@@ -260,19 +295,25 @@ export default function Home() {
     if (!user) return setShowAuthModal(true);
     
     let newLikes = [...likes];
-    const exists = newLikes.find(p => p.id === photo.id);
+    const exists = newLikes.find(p => (p.id || p.i) === photo.id);
     
     if (exists) {
-      newLikes = newLikes.filter(p => p.id !== photo.id);
+      newLikes = newLikes.filter(p => (p.id || p.i) !== photo.id);
     } else {
-      // Optimización de payload para evitar que Supabase rechace el guardado por límite de tamaño (JWT bloat)
+      // Límite sano temporal para evitar colapsar la base de datos de Auth
+      if (newLikes.length >= 60) {
+        setAppMessage({ 
+          title: "Colección llena", 
+          text: "Has alcanzado el límite de memoria para tu cuenta actual. Suelta algunos recuerdos para poder guardar más belleza." 
+        });
+        return;
+      }
+      
+      // Hiper-Compresión para engañar al límite de JWT de Supabase
       const minPhoto = {
-        id: photo.id,
-        url: photo.url.split('?')[0] + '?w=800&q=80', // URL más corta
-        title: photo.title ? photo.title.substring(0, 30) : "Pausa",
-        authorName: photo.authorName ? photo.authorName.substring(0, 20) : "Autor",
-        authorUsername: photo.authorUsername ? photo.authorUsername.substring(0, 20) : "unsplash",
-        downloadLocation: photo.downloadLocation
+        i: photo.id, 
+        u: photo.url.replace('https://images.unsplash.com/', '').split('?')[0],
+        a: photo.authorName ? photo.authorName.substring(0, 15) : "Autor"
       };
       newLikes.push(minPhoto);
     }
@@ -284,9 +325,9 @@ export default function Home() {
     if (error) {
       setAppMessage({ 
         title: "Límite de Galería", 
-        text: "No pudimos guardar este destello. Es posible que hayas alcanzado el límite de almacenamiento gratuito. Intenta borrar algunas fotos antiguas." 
+        text: "Tu galería es muy extensa y ha saturado la memoria. Intenta borrar algunas fotos para seguir guardando." 
       });
-      // Revertir estado si falla la BD
+      // Revertir estado si falla
       setLikes(likes);
     }
   };
@@ -319,31 +360,32 @@ export default function Home() {
   };
 
   const confirmDelete = async (id) => {
-    const newLikes = likes.filter(p => p.id !== id);
+    const newLikes = likes.filter(p => (p.id || p.i) !== id);
     setLikes(newLikes);
     setPhotoToDelete(null);
     setActiveMenuPhotoId(null);
     
     if (user) {
-      await supabase.auth.updateUser({ data: { likes: newLikes } });
+      await supabase.auth.updateUser({ data: { likes: newLikes } }).catch(console.error);
     }
   };
 
   const saveProfile = async () => {
     setIsSavingProfile(true);
     try {
-      const updates = { data: { full_name: profileName, phrase: userPhrase, theme } };
-      await supabase.auth.updateUser(updates);
+      const updates = { data: { full_name: profileName, phrase: userPhrase } }; // El tema ya se guarda al vuelo
+      const { error } = await supabase.auth.updateUser(updates);
+      
+      if (error) throw error; // Captura correcta de fallos para liberar el botón
+
       if (newPassword) {
-        const { error } = await supabase.auth.updateUser({ password: newPassword });
-        if (error) {
-          setAppMessage({ title: "Error", text: error.message });
-          setIsSavingProfile(false);
-          return;
-        }
-        else setNewPassword("");
+        const { error: passError } = await supabase.auth.updateUser({ password: newPassword });
+        if (passError) throw passError;
+        setNewPassword("");
       }
       setAppMessage({ title: "Actualizado", text: dict[lang].save + " con éxito." });
+    } catch (error) {
+      setAppMessage({ title: "Error al guardar", text: error.message || "Tu perfil está muy saturado. Intenta vaciar un poco la galería." });
     } finally {
       setIsSavingProfile(false);
     }
@@ -358,7 +400,7 @@ export default function Home() {
     }
     setSelectedTags(newTags);
     if (user) {
-      await supabase.auth.updateUser({ data: { tags: newTags } });
+      await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
     }
   };
 
@@ -423,7 +465,7 @@ export default function Home() {
         <section className="max-w-6xl mx-auto p-4 mt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {feedPhotos.map((photo, index) => {
-              const isLiked = likes.some(p => p.id === photo.id);
+              const isLiked = likes.some(p => (p.id || p.i) === photo.id);
               return (
                 <Fragment key={photo.id}>
                   <div 
@@ -526,27 +568,38 @@ export default function Home() {
              {userPhrase && <p className={`text-sm italic font-light max-w-md mx-auto px-4 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>"{userPhrase}"</p>}
           </div>
 
-          <div className={`flex justify-between items-center mb-6 border-b pb-2 px-2 ${isDark ? 'border-neutral-900' : 'border-neutral-100'}`}>
-             <h2 className={`text-xs tracking-widest uppercase ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.gallery} ({likes.length})</h2>
-             
-             {likes.length > 0 && (
-               <select 
-                 value={sortOrder} 
-                 onChange={(e) => setSortOrder(e.target.value)}
-                 className={`text-[10px] tracking-widest uppercase bg-transparent outline-none cursor-pointer text-right border-none ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}
-               >
-                 <option value="newest">{t.newest}</option>
-                 <option value="oldest">{t.oldest}</option>
-                 <option value="random">{t.random}</option>
-               </select>
-             )}
+          <div className={`mb-6 border-b pb-4 ${isDark ? 'border-neutral-900' : 'border-neutral-100'}`}>
+            <div className="flex justify-between items-center px-2">
+               <h2 className={`text-xs tracking-widest uppercase ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                 {t.gallery} ({normalizedLikes.length}/60)
+               </h2>
+               
+               {normalizedLikes.length > 0 && (
+                 <select 
+                   value={sortOrder} 
+                   onChange={(e) => setSortOrder(e.target.value)}
+                   className={`text-[10px] tracking-widest uppercase bg-transparent outline-none cursor-pointer text-right border-none ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}
+                 >
+                   <option value="newest">{t.newest}</option>
+                   <option value="oldest">{t.oldest}</option>
+                   <option value="random">{t.random}</option>
+                 </select>
+               )}
+            </div>
+
+            {/* AVISO VISUAL DE LÍMITE DE GALERÍA */}
+            {normalizedLikes.length >= 60 && (
+              <div className={`mt-4 mx-2 p-3 rounded-md text-[10px] tracking-[0.15em] uppercase text-center transition-colors ${isDark ? 'bg-neutral-900/50 text-neutral-400' : 'bg-neutral-50 text-neutral-500'}`}>
+                Has alcanzado tu límite de memoria. Suelta algunos recuerdos para guardar nuevos.
+              </div>
+            )}
           </div>
 
-          {likes.length === 0 ? (
+          {normalizedLikes.length === 0 ? (
             <p className={`text-center text-sm mt-20 ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>{t.empty}</p>
           ) : galleryView === "grid" ? (
             <div className="grid grid-cols-3 gap-1 md:gap-4">
-              {sortedLikes.map((photo) => (
+              {normalizedLikes.map((photo) => (
                 <div 
                   key={photo.id} 
                   className="relative aspect-square cursor-pointer overflow-hidden group" 
@@ -567,7 +620,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-12">
-              {sortedLikes.map((photo) => (
+              {normalizedLikes.map((photo) => (
                 <div 
                   id={`feed-photo-${photo.id}`}
                   key={photo.id} 
@@ -681,13 +734,13 @@ export default function Home() {
               <label className={`text-xs tracking-widest uppercase mb-2 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Apariencia</label>
               <div className="flex gap-4">
                 <button 
-                  onClick={() => setTheme('light')} 
+                  onClick={() => changeTheme('light')} 
                   className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border ${theme === 'light' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                 >
                   Claro
                 </button>
                 <button 
-                  onClick={() => setTheme('dark')} 
+                  onClick={() => changeTheme('dark')} 
                   className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border ${theme === 'dark' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                 >
                   Oscuro
