@@ -39,6 +39,7 @@ export default function Home() {
   const [profileName, setProfileName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
+  const [customTag, setCustomTag] = useState(""); // Nuevo estado para etiqueta personalizada
   const [theme, setTheme] = useState("light");
   const [lang, setLang] = useState("es");
   
@@ -51,8 +52,6 @@ export default function Home() {
 
   const [activeCategory, setActiveCategory] = useState("blanco");
   const [feedPhotos, setFeedPhotos] = useState([]);
-  
-  // Límite de fotos para el scroll infinito de la galería
   const [galleryLimit, setGalleryLimit] = useState(12);
   
   const seenIds = useRef(new Set()); 
@@ -75,7 +74,6 @@ export default function Home() {
     return arr;
   }, [likes, sortOrder]);
 
-  // Lista memoizada para renderizar solo el límite actual de la galería (Optimización de RAM)
   const displayedGallery = useMemo(() => {
     return normalizedLikes.slice(0, galleryLimit);
   }, [normalizedLikes, galleryLimit]);
@@ -225,12 +223,10 @@ export default function Home() {
     loadMorePhotos();
   }, [activeCategory]);
 
-  // Resetea el límite al cambiar de pestaña para limpiar memoria visual
   useEffect(() => {
     if (currentTab === "gallery") setGalleryLimit(12);
   }, [currentTab]);
 
-  // Manejador de scroll súper optimizado (RequestAnimationFrame + Passive)
   useEffect(() => {
     let isScrolling = false;
     const handleScroll = () => {
@@ -422,6 +418,27 @@ export default function Home() {
       if (newTags.length < 5) newTags.push(tag);
     }
     setSelectedTags(newTags);
+    if (user) {
+      await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
+    }
+  };
+
+  const handleAddCustomTag = async (e) => {
+    e.preventDefault();
+    const tag = customTag.trim().toLowerCase();
+    if (!tag) return;
+    if (selectedTags.includes(tag)) {
+       setCustomTag("");
+       return;
+    }
+    if (selectedTags.length >= 5) {
+       setAppMessage({ title: "Límite alcanzado", text: "Solo puedes tener 5 etiquetas al mismo tiempo." });
+       return;
+    }
+    
+    const newTags = [...selectedTags, tag];
+    setSelectedTags(newTags);
+    setCustomTag("");
     if (user) {
       await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
     }
@@ -718,14 +735,53 @@ export default function Home() {
             
             <div>
               <label className={`text-xs tracking-widest uppercase mb-4 block ${isDark ? 'text-neutral-400' : 'text-neutral-900'}`}>Tus etiquetas (Máx. 5)</label>
-              <div className="flex flex-wrap gap-2">
-                {AVAILABLE_TAGS.map(tag => (
+              
+              {/* Etiquetas seleccionadas (Personalizadas y sugeridas) */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {selectedTags.length === 0 && <span className={`text-xs italic ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>Ninguna etiqueta seleccionada.</span>}
+                {selectedTags.map(tag => (
                   <button 
                     key={tag} 
                     onClick={() => toggleTag(tag)}
-                    className={`px-3 py-1 text-xs rounded-full border transition-all active:scale-95 ${selectedTags.includes(tag) ? (isDark ? 'border-neutral-300 bg-neutral-800 text-white' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
+                    className={`flex items-center gap-1 px-3 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${isDark ? 'border-neutral-300 bg-neutral-800 text-white hover:bg-neutral-700' : 'border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-800'}`}
                   >
-                    {tag}
+                    {tag} 
+                    <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  </button>
+                ))}
+              </div>
+
+              {/* Input para agregar etiqueta personalizada */}
+              {selectedTags.length < 5 && (
+                <form onSubmit={handleAddCustomTag} className="flex gap-2 mb-6">
+                  <input 
+                    type="text"
+                    value={customTag}
+                    onChange={(e) => setCustomTag(e.target.value)}
+                    placeholder="Escribe tu propia etiqueta (ej. gatos)"
+                    maxLength="20"
+                    className={`flex-1 px-4 py-3 rounded-md text-[14px] outline-none border transition-colors ${isDark ? 'bg-neutral-900 border-neutral-800 focus:border-neutral-600 text-neutral-200 placeholder:text-neutral-600' : 'bg-transparent border-neutral-200 focus:border-neutral-900 text-neutral-900 placeholder:text-neutral-400'}`}
+                  />
+                  <button 
+                    type="submit"
+                    disabled={!customTag.trim()}
+                    className={`px-5 rounded-md text-xs tracking-widest uppercase transition-colors active:scale-95 disabled:opacity-50 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+                  >
+                    +
+                  </button>
+                </form>
+              )}
+
+              {/* Sugerencias de Unsplash predefinidas */}
+              <label className={`text-[10px] tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Sugerencias para inspirarte</label>
+              <div className="flex flex-wrap gap-2">
+                {AVAILABLE_TAGS.filter(t => !selectedTags.includes(t)).map(tag => (
+                  <button 
+                    key={tag} 
+                    onClick={() => toggleTag(tag)}
+                    className={`px-3 py-1 text-xs rounded-full border transition-all active:scale-95 ${isDark ? 'border-neutral-800 text-neutral-500 hover:text-neutral-300' : 'border-neutral-200 text-neutral-500 hover:text-neutral-800'}`}
+                  >
+                    + {tag}
                   </button>
                 ))}
               </div>
