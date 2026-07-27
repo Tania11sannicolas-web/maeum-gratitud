@@ -450,15 +450,15 @@ export default function Home() {
 
                   {!user && index === 3 && (
                     <>
-                      {/* Bloque 2: El arte de soltar */}
+                      {/* Bloque 2: Scroll infinito, música y bienestar psicológico */}
                       <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                         <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
-                          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Soltar</span>
+                          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Contemplación y Calma</span>
                           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight tracking-tight">
-                            El arte de soltar.
+                            Scroll infinito y presencia.
                           </h2>
                           <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg">
-                            Aceptar que las cosas fluyen, liberar el control innecesario y permitir que cada destello encuentre su propio camino hacia la calma.
+                            Aquí puedes hacer scroll infinito —con música ambiental de fondo o en completo silencio—. Desde la psicología, la exposición dosificada a la belleza visual reduce de forma notable los niveles de cortisol y la sobrecarga cognitiva. Desplazarte con intención te permite desacelerar el pensamiento, induciendo un estado de atención plena o trance suave similar a una meditación activa, donde el sistema nervioso parasimpático toma el control y descansa.
                           </p>
                         </div>
                       </div>
@@ -467,7 +467,7 @@ export default function Home() {
 
                   {!user && index === 5 && (
                     <>
-                      {/* Bloque 3: La colección de destellos */}
+                      {/* Bloque 3: La colección de destellos (ventajas psicológicas y espirituales) */}
                       <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                         <div className="max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent via-neutral-50/50 to-transparent border-y border-neutral-100">
                           <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 mb-6 font-medium">Colección</span>
@@ -475,7 +475,7 @@ export default function Home() {
                             La colección de destellos.
                           </h2>
                           <p className="text-neutral-500 font-light text-[15px] sm:text-base leading-relaxed max-w-lg">
-                            Guarda pequeños fragmentos de belleza visual que resuenen con tu interior, creando un archivo único para tus momentos de pausa.
+                            Guardar fragmentos visuales que resuenan con tu interior tiene profundas ventajas psicológicas y espirituales. Psicológicamente, funciona como un ancla de gratitud y regulación emocional, permitiéndote evocar estados de seguridad con solo mirar tu archivo. Espiritualmente, es un acto de reconocimiento de lo sagrado cotidiano, creando un altar personal de imágenes que reflejan la belleza esencial de tu alma.
                           </p>
                         </div>
                       </div>
