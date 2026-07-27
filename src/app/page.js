@@ -51,12 +51,15 @@ export default function Home() {
 
   const [activeCategory, setActiveCategory] = useState("blanco");
   const [feedPhotos, setFeedPhotos] = useState([]);
+  
+  // Límite de fotos para el scroll infinito de la galería
+  const [galleryLimit, setGalleryLimit] = useState(12);
+  
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
 
   const isDark = theme === "dark";
 
-  // Mapeo directo desde la tabla user_likes
   const normalizedLikes = useMemo(() => {
     let arr = likes.map(p => ({
       id: p.id,
@@ -71,6 +74,11 @@ export default function Home() {
     if (sortOrder === "random") return arr.sort(() => Math.random() - 0.5);
     return arr;
   }, [likes, sortOrder]);
+
+  // Lista memoizada para renderizar solo el límite actual de la galería (Optimización de RAM)
+  const displayedGallery = useMemo(() => {
+    return normalizedLikes.slice(0, galleryLimit);
+  }, [normalizedLikes, galleryLimit]);
 
   useEffect(() => {
     const userLang = navigator.language.slice(0, 2);
@@ -149,7 +157,6 @@ export default function Home() {
       setSelectedTags([]);
     }
 
-    // Cargar los likes desde la tabla independiente user_likes
     const { data, error } = await supabase
       .from('user_likes')
       .select('*')
@@ -218,17 +225,36 @@ export default function Home() {
     loadMorePhotos();
   }, [activeCategory]);
 
+  // Resetea el límite al cambiar de pestaña para limpiar memoria visual
   useEffect(() => {
+    if (currentTab === "gallery") setGalleryLimit(12);
+  }, [currentTab]);
+
+  // Manejador de scroll súper optimizado (RequestAnimationFrame + Passive)
+  useEffect(() => {
+    let isScrolling = false;
     const handleScroll = () => {
-      if (currentTab !== "explore") return;
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 600) {
-        if (!user) setShowAuthModal(true);
-        else loadMorePhotos();
+      if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
+            if (currentTab === "explore") {
+              if (!user) {
+                 if (feedPhotos.length > 0) setShowAuthModal(true);
+              } else {
+                 loadMorePhotos();
+              }
+            } else if (currentTab === "gallery") {
+               setGalleryLimit(prev => prev + 12);
+            }
+          }
+          isScrolling = false;
+        });
+        isScrolling = true;
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [user, currentTab, activeCategory]);
+  }, [user, currentTab, feedPhotos.length]);
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -420,7 +446,7 @@ export default function Home() {
             {!isStandalone && (
               <button 
                 onClick={handleInstallClick} 
-                className={`text-[10px] sm:text-xs tracking-widest uppercase border px-3 py-1.5 rounded-full transition-colors ${isDark ? 'border-neutral-700 text-neutral-300 hover:bg-neutral-800 hover:text-white' : 'border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white'}`}
+                className={`text-[10px] sm:text-xs tracking-widest uppercase border px-3 py-1.5 rounded-full transition-colors active:scale-95 ${isDark ? 'border-neutral-700 text-neutral-300 hover:bg-neutral-800 hover:text-white' : 'border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white'}`}
               >
                 Instalar App
               </button>
@@ -429,25 +455,25 @@ export default function Home() {
             {!user && (
               <button 
                 onClick={() => { setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
-                className={`text-[10px] sm:text-xs tracking-widest uppercase transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-900'}`}
+                className={`text-[10px] sm:text-xs tracking-widest uppercase transition-colors active:scale-95 ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-900'}`}
               >
                 Iniciar sesión
               </button>
             )}
             
-            <button onClick={toggleAudio} className={`p-2 rounded-full transition-all ${isPlaying ? (isDark ? 'bg-neutral-800 text-white' : 'bg-neutral-900 text-white') : (isDark ? 'bg-neutral-900 text-neutral-600' : 'bg-neutral-100 text-neutral-400')}`}>
+            <button onClick={toggleAudio} className={`p-2 rounded-full transition-all active:scale-95 ${isPlaying ? (isDark ? 'bg-neutral-800 text-white' : 'bg-neutral-900 text-white') : (isDark ? 'bg-neutral-900 text-neutral-600' : 'bg-neutral-100 text-neutral-400')}`}>
                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 19V6l12-3v13M9 19c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zm12-3c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3zM9 10l12-3"/></svg>
             </button>
           </div>
         </div>
 
         {currentTab === "explore" && (
-          <div className="flex overflow-x-auto gap-4 pb-4 px-6 scrollbar-hide snap-x">
+          <div className="flex overflow-x-auto gap-4 pb-4 px-6 scrollbar-hide snap-x" style={{ willChange: "transform" }}>
             {selectedTags.length === 0 ? (
               <p className={`text-xs italic px-2 py-1.5 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>En tu perfil puedes elegir las etiquetas de inspiración que prefieras.</p>
             ) : (
               selectedTags.map(cat => (
-                <button key={cat} onClick={() => setActiveCategory(cat)} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all ${activeCategory === cat ? (isDark ? 'border-neutral-300 text-neutral-100 bg-neutral-900' : 'border-neutral-900 text-neutral-900') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-400')}`}>
+                <button key={cat} onClick={() => setActiveCategory(cat)} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${activeCategory === cat ? (isDark ? 'border-neutral-300 text-neutral-100 bg-neutral-900' : 'border-neutral-900 text-neutral-900') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-400')}`}>
                   {cat.toUpperCase()}
                 </button>
               ))
@@ -468,7 +494,7 @@ export default function Home() {
                     onDoubleClick={(e) => toggleLike(photo, e)} 
                     style={{ touchAction: 'manipulation' }}
                   >
-                    <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" style={{ willChange: "transform" }} />
                     
                     <a 
                       href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
@@ -477,10 +503,10 @@ export default function Home() {
                       className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
                       style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
                     >
-                      Foto por {photo.authorName || "Autor"}
+                      Foto por {photo.authorName || "Autor"} en Unsplash
                     </a>
 
-                    <button onClick={(e) => toggleLike(photo, e)} className={`absolute bottom-4 right-4 z-10 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-95 transition-all ${isDark ? 'bg-neutral-900/80' : 'bg-white/90'}`}>
+                    <button onClick={(e) => toggleLike(photo, e)} className={`absolute bottom-4 right-4 z-10 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-90 transition-all ${isDark ? 'bg-neutral-900/80' : 'bg-white/90'}`}>
                       <svg className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : (isDark ? 'text-neutral-500 fill-none' : 'text-neutral-400 fill-none')}`} stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                     </button>
                   </div>
@@ -497,13 +523,52 @@ export default function Home() {
                         </p>
                         <button 
                           onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
-                          className={`group relative px-8 py-4 text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+                          className={`group relative px-8 py-4 text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
                         >
                           <span className="relative z-10 flex items-center gap-3">
                             Crear mi refugio
                             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                           </span>
                         </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 3 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Contemplación y Calma</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          Scroll infinito y presencia.
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          Aquí puedes hacer scroll infinito —con música ambiental de fondo o en completo silencio—. Desde la psicología, la exposición dosificada a la belleza visual reduce de forma notable los niveles de cortisol y la sobrecarga cognitiva. Desplazarte con intención te permite desacelerar el pensamiento, induciendo un estado de atención plena o trance suave similar a una meditación activa, donde el sistema nervioso parasimpático toma el control y descansa.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 5 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Colección</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          La colección de destellos.
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          Guardar fragmentos visuales que resuenan con tu interior tiene profundas ventajas psicológicas y espirituales. Psicológicamente, funciona como un ancla de gratitud y regulación emocional, permitiéndote evocar estados de seguridad con solo mirar tu archivo. Espiritualmente, es un acto de reconocimiento de lo sagrado cotidiano, creando un altar personal de imágenes que reflejan la belleza esencial de tu alma.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 7 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Esencia</span>
+                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.
+                        </h2>
                       </div>
                     </div>
                   )}
@@ -546,7 +611,7 @@ export default function Home() {
             <p className={`text-center text-sm mt-20 ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>{t.empty}</p>
           ) : galleryView === "grid" ? (
             <div className="grid grid-cols-3 gap-1 md:gap-4">
-              {normalizedLikes.map((photo) => (
+              {displayedGallery.map((photo) => (
                 <div 
                   key={photo.id} 
                   className="relative aspect-square cursor-pointer overflow-hidden group" 
@@ -561,23 +626,23 @@ export default function Home() {
                     }, 50);
                   }}
                 >
-                  <img src={photo.url} className="w-full h-full object-cover rounded-sm" />
+                  <img src={photo.url} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-sm" />
                 </div>
               ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-12">
-              {normalizedLikes.map((photo) => (
+              {displayedGallery.map((photo) => (
                 <div 
                   id={`feed-photo-${photo.id}`}
                   key={photo.id} 
                   className={`relative group overflow-hidden rounded-md transition-transform ${isDark ? 'bg-neutral-900' : 'bg-neutral-50'}`}
                 >
-                  <img src={photo.url} alt={photo.title} loading="lazy" className="w-full h-[28rem] object-cover" />
+                  <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover" />
                   
                   <button 
                     onClick={() => setActiveMenuPhotoId(activeMenuPhotoId === photo.id ? null : photo.id)} 
-                    className={`absolute top-4 right-4 backdrop-blur-sm p-2 rounded-full shadow-md transition-all z-20 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
+                    className={`absolute top-4 right-4 backdrop-blur-sm p-2 rounded-full shadow-md transition-all z-20 active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
@@ -593,7 +658,7 @@ export default function Home() {
                         onClick={() => triggerUnsplashDownload(photo.downloadLocation)}
                         className={`block px-3 py-2 text-[11px] uppercase tracking-wider border-b ${isDark ? 'text-neutral-400 hover:text-neutral-200 border-neutral-800' : 'text-neutral-600 hover:text-neutral-900 border-neutral-100'}`}
                       >
-                        Foto por {photo.authorName || "Autor"}
+                        Foto por {photo.authorName || "Autor"} en Unsplash
                       </a>
                       <button 
                         onClick={(e) => { 
@@ -627,7 +692,7 @@ export default function Home() {
                      window.scrollTo({ top: 0, behavior: 'smooth' });
                    }, 50);
                  }} 
-                 className={`backdrop-blur-lg px-6 py-3 rounded-full shadow-2xl text-xs tracking-widest uppercase transition-all ${isDark ? 'bg-neutral-800/90 text-white hover:bg-neutral-700' : 'bg-neutral-900/90 text-white hover:bg-neutral-800'}`}
+                 className={`backdrop-blur-lg px-6 py-3 rounded-full shadow-2xl text-xs tracking-widest uppercase transition-all active:scale-95 ${isDark ? 'bg-neutral-800/90 text-white hover:bg-neutral-700' : 'bg-neutral-900/90 text-white hover:bg-neutral-800'}`}
                >
                  Ver Mosaico
                </button>
@@ -658,7 +723,7 @@ export default function Home() {
                   <button 
                     key={tag} 
                     onClick={() => toggleTag(tag)}
-                    className={`px-3 py-1 text-xs rounded-full border transition-all ${selectedTags.includes(tag) ? (isDark ? 'border-neutral-300 bg-neutral-800 text-white' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
+                    className={`px-3 py-1 text-xs rounded-full border transition-all active:scale-95 ${selectedTags.includes(tag) ? (isDark ? 'border-neutral-300 bg-neutral-800 text-white' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                   >
                     {tag}
                   </button>
@@ -681,13 +746,13 @@ export default function Home() {
               <div className="flex gap-4">
                 <button 
                   onClick={() => changeTheme('light')} 
-                  className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border ${theme === 'light' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
+                  className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border active:scale-95 ${theme === 'light' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                 >
                   Claro
                 </button>
                 <button 
                   onClick={() => changeTheme('dark')} 
-                  className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border ${theme === 'dark' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
+                  className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border active:scale-95 ${theme === 'dark' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                 >
                   Oscuro
                 </button>
@@ -722,7 +787,7 @@ export default function Home() {
             <button 
               onClick={saveProfile} 
               disabled={isSavingProfile}
-              className={`w-full py-4 text-xs tracking-widest uppercase rounded-md flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait transition-all ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+              className={`w-full py-4 text-xs tracking-widest uppercase rounded-md flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait active:scale-95 transition-all ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
             >
               {isSavingProfile ? (
                 <>
@@ -738,7 +803,7 @@ export default function Home() {
             <button 
               onClick={handleSignOut} 
               disabled={isSigningOut}
-              className={`w-full border py-4 text-xs tracking-widest uppercase rounded-md mt-4 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait ${isDark ? 'border-neutral-800 text-neutral-400 hover:bg-neutral-900' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}
+              className={`w-full border py-4 text-xs tracking-widest uppercase rounded-md mt-4 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait active:scale-95 ${isDark ? 'border-neutral-800 text-neutral-400 hover:bg-neutral-900' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}
             >
               {isSigningOut ? (
                 <>
@@ -773,7 +838,7 @@ export default function Home() {
             setActiveCategory("blanco"); 
             setTimeout(() => { window.scrollTo({top: 0, behavior: 'smooth'}); }, 100); 
           }} 
-          className={currentTab === "explore" ? "opacity-100" : "opacity-40"}>
+          className={`active:scale-90 transition-transform ${currentTab === "explore" ? "opacity-100" : "opacity-40"}`}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </button>
         <button onClick={() => { 
@@ -785,7 +850,7 @@ export default function Home() {
               setTimeout(() => { window.scrollTo({top: 0, behavior: 'smooth'}); }, 100);
             }
           }} 
-          className={currentTab === "gallery" ? "opacity-100" : "opacity-40"}>
+          className={`active:scale-90 transition-transform ${currentTab === "gallery" ? "opacity-100" : "opacity-40"}`}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         </button>
         <button onClick={() => { 
@@ -797,7 +862,7 @@ export default function Home() {
               setTimeout(() => { window.scrollTo({top: 0, behavior: 'smooth'}); }, 100);
             }
           }} 
-          className={currentTab === "profile" ? "opacity-100" : "opacity-40"}>
+          className={`active:scale-90 transition-transform ${currentTab === "profile" ? "opacity-100" : "opacity-40"}`}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </button>
       </nav>
@@ -842,6 +907,68 @@ export default function Home() {
               
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Descripción del Servicio</p>
               <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Unsplash), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
+              
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cuentas de Usuario y Registro</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Para acceder a ciertas funciones, como guardar tu galería o personalizar tu perfil, es necesario crear una cuenta con un correo electrónico válido.</li>
+                <li>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</li>
+              </ul>
+              
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Planes de Suscripción (Free y Premium)</p>
+              <p>Maeum ofrece dos modalidades de uso:</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Plan Gratuito (Free): Permite seleccionar un máximo de 2 etiquetas de inspiración, almacenar hasta 21 fotos en la galería personal y disfrutar de un límite de 3 minutos de reproducción continua de audio ambiental por sesión.</li>
+                <li>Plan Premium: Mediante una suscripción de pago ($5 USD al mes o $35 USD al año), el usuario desbloquea hasta 5 etiquetas simultáneas, galería ilimitada de fotos guardadas y reproducción de audio ambiental ilimitada.</li>
+              </ul>
+              
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Pagos y Procesamiento a través de Stripe</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propias políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
+                <li>Maeum no almacena directamente los números completos de tus tarjetas de crédito o débito en sus servidores. Las suscripciones se renuevan de manera automática según el periodo elegido (mensual o anual), pudiendo cancelarse en cualquier momento desde la configuración de tu cuenta.</li>
+              </ul>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Propiedad Intelectual y Contenido</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>El diseño, código fuente, logotipos y la marca Maeum son propiedad exclusiva de sus creadores.</li>
+                <li>Las imágenes mostradas son proporcionadas a través de la API de Unsplash y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
+              </ul>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>6. Limitación de Responsabilidad</p>
+              <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Unsplash.</p>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>7. Modificaciones</p>
+              <p>Podemos actualizar estos Términos ocasionalmente. Notificaremos cambios significativos a través de la App. El uso continuado tras dichos cambios implica su aceptación.</p>
+
+              <hr className={`my-6 ${isDark ? 'border-neutral-800' : 'border-neutral-100'}`} />
+
+              <h4 className={`font-semibold uppercase tracking-widest text-[10px] ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>2. Política de Privacidad</h4>
+              <p className="italic">Última actualización: Julio de 2026</p>
+              <p>En Maeum, valoramos profundamente tu privacidad y tu tranquilidad digital. Esta Política de Privacidad explica qué datos recopilamos, cómo los utilizamos y cómo los protegemos.</p>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Información que Recopilamos</p>
+              <p>Cuando creas una cuenta o utilizas Maeum, recopilamos únicamente la información esencial para el funcionamiento de la App:</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Datos de Registro: Tu dirección de correo electrónico y tu nombre (opcional), gestionados a través de nuestro proveedor de autenticación (Supabase).</li>
+                <li>Preferencias de Perfil: Las etiquetas de inspiración seleccionadas, tu frase inspiradora personal y las fotografías guardadas en tu galería.</li>
+                <li>Datos de Pago (Stripe): Si decides adquirir el plan Premium, los datos financieros y de cobro (como tarjetas de crédito o débito) son recopilados, procesados y almacenados de manera directa y segura por Stripe, nuestro procesador de pagos certificado. Maeum solo recibe confirmaciones de estado de pago (activo/inactivo) para habilitar tus beneficios.</li>
+              </ul>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cómo Utilizamos tu Información</p>
+              <p>Utilizamos tus datos exclusivamente para:</p>
+              <ul className="list-disc pl-4 space-y-2">
+                <li>Autenticar tu acceso, gestionar tu cuenta y permitirte recuperar tu contraseña.</li>
+                <li>Sincronizar tu galería personal, preferencias estéticas y nivel de suscripción (Free o Premium) en tus dispositivos.</li>
+                <li>Nunca vendemos, rentamos ni compartimos tus datos personales con terceros con fines publicitarios o comerciales.</li>
+              </ul>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Seguridad de los Datos</p>
+              <p>Utilizamos servicios de infraestructura en la nube seguros y estándares de la industria (Supabase y pasarelas de pago cifradas como Stripe con protocolo HTTPS) para garantizar que tu información y credenciales estén protegidas contra accesos no autorizados.</p>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Tus Derechos</p>
+              <p>Tienes el derecho absoluto de acceder a tu información, modificarla desde tu perfil o solicitar la eliminación de tu cuenta y todos los datos asociados en cualquier momento.</p>
+
+              <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Contacto</p>
+              <p>Si tienes dudas o solicitudes sobre esta política o tus datos personales, puedes escribirnos a través de nuestras redes oficiales (como nuestro Instagram @maeum_gratitud).</p>
             </div>
             
             <button onClick={() => setShowTerms(false)} className={`w-full py-4 mt-8 rounded-md text-xs uppercase tracking-widest transition-colors sticky bottom-0 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
