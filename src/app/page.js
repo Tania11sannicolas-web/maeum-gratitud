@@ -3,8 +3,110 @@ import { useState, useEffect, useRef, useMemo, Fragment } from "react";
 import { supabase } from "@/lib/supabase";
 
 const dict = {
-  es: { explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", terms: "Acepto los Términos y Política de Privacidad", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", delete: "Borrar", deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", audio: "Audio", newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña", newest: "Más recientes", oldest: "Más antiguas", random: "Aleatorio" },
-  en: { explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", terms: "I accept Terms and Privacy Policy", register: "Sign Up", empty: "No flashes saved yet.", delete: "Delete", deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", audio: "Audio", newPass: "New password", forgot: "Forgot your password?", recover: "Recover password", newest: "Newest first", oldest: "Oldest first", random: "Random" }
+  es: { 
+    explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", 
+    termsCheck: "Acepto los Términos y Política de Privacidad", viewHere: "Ver aquí", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", 
+    deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", 
+    newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña", newest: "Más recientes", 
+    oldest: "Más antiguas", random: "Aleatorio", installApp: "Instalar App", loginBtn: "Iniciar sesión", 
+    profileTagsHint: "En tu perfil puedes elegir las etiquetas de inspiración que prefieras.",
+    photoBy: "Foto por", onUnsplash: "en Unsplash", download: "Descargar imagen", deleteFromGallery: "Borrar de mi galería",
+    pauseTitle1: "Pausa y Contemplación", pauseDesc1: "El mundo hace demasiado ruido.", 
+    pauseText1: "Maeum es tu refugio íntimo. Un espacio libre de algoritmos y exigencias diseñado como medicina para tu sistema nervioso.",
+    createRefuge: "Crear mi refugio", pauseTitle2: "Contemplación y Calma", pauseDesc2: "Scroll infinito y presencia.",
+    pauseText2: "Aquí puedes hacer scroll infinito —con música ambiental de fondo o en silencio—. La exposición dosificada a la belleza visual reduce los niveles de cortisol. Desplazarte con intención te permite desacelerar el pensamiento.",
+    pauseTitle3: "Colección", pauseDesc3: "La colección de destellos.",
+    pauseText3: "Guardar fragmentos visuales que resuenan con tu interior funciona como un ancla de gratitud y regulación emocional, permitiéndote evocar estados de seguridad con solo mirar tu archivo.",
+    pauseTitle4: "Esencia", pauseDesc4: "Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.",
+    viewGrid: "Ver Mosaico", yourName: "Tu Nombre", yourTags: "Tus etiquetas (Máx. 5)", noTags: "Ninguna etiqueta seleccionada.",
+    writeTag: "Escribe tu propia etiqueta (ej. gatos)", tagSuggestions: "Sugerencias para inspirarte", phrasePlaceholder: "Ej. Aceptar que se va a escurrir... soltar",
+    appearance: "Apariencia", light: "Claro", dark: "Oscuro", language: "Idioma", newPassPlaceholder: "Escribe para cambiar tu contraseña",
+    saving: "Guardando...", signOut: "Salir de la cuenta", signingOut: "Saliendo...", followInstagram: "Síguenos en Instagram",
+    checkInbox: "Revisa tu bandeja", magicLinkText: "Hemos enviado un enlace mágico para confirmar tu espacio.",
+    spamNotice: "*Si no lo ves, por favor revisa tu carpeta de Spam o Correo no deseado.", verifiedEnter: "Ya lo verifiqué → Entrar",
+    installTitle: "Instala Maeum", installDesc: "Lleva tu espacio de pausa visual directo en tu pantalla de inicio.",
+    understood: "Entendido", noAccount: "¿No tienes cuenta?", haveAccount: "¿Ya tienes cuenta?", backToLogin: "Volver a Iniciar Sesión",
+    takeBreakTitle: "Tómate un respiro", takeBreakDesc: "Has contemplado mucha belleza por ahora. Es momento de estar presente en el mundo real, descansar tus ojos y reconectar contigo. Vuelve en una hora.",
+    processing: "Procesando..."
+  },
+  en: { 
+    explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", 
+    termsCheck: "I accept Terms and Privacy Policy", viewHere: "View here", register: "Sign Up", empty: "No flashes saved yet.", 
+    deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", 
+    newPass: "New password", forgot: "Forgot your password?", recover: "Recover password", newest: "Newest first", 
+    oldest: "Oldest first", random: "Random", installApp: "Install App", loginBtn: "Log In", 
+    profileTagsHint: "You can choose your preferred inspiration tags in your profile.",
+    photoBy: "Photo by", onUnsplash: "on Unsplash", download: "Download image", deleteFromGallery: "Delete from gallery",
+    pauseTitle1: "Pause & Contemplation", pauseDesc1: "The world is too loud.", 
+    pauseText1: "Maeum is your intimate refuge. A space free of algorithms designed as medicine for your nervous system.",
+    createRefuge: "Create my refuge", pauseTitle2: "Contemplation & Calm", pauseDesc2: "Infinite scroll & presence.",
+    pauseText2: "Scroll endlessly with ambient music or in silence. Dosed exposure to visual beauty reduces cortisol levels. Scrolling with intention allows you to slow down your thoughts.",
+    pauseTitle3: "Collection", pauseDesc3: "The collection of flashes.",
+    pauseText3: "Saving visual fragments that resonate with your soul works as an anchor of gratitude, allowing you to evoke safety states just by looking at your archive.",
+    pauseTitle4: "Essence", pauseDesc4: "Maeum reminds you that your attention is sacred, and your inner peace is a territory worth protecting.",
+    viewGrid: "View Grid", yourName: "Your Name", yourTags: "Your tags (Max 5)", noTags: "No tags selected.",
+    writeTag: "Write your own tag (e.g. cats)", tagSuggestions: "Suggestions for inspiration", phrasePlaceholder: "e.g. Accept that it will slip away... let go",
+    appearance: "Appearance", light: "Light", dark: "Dark", language: "Language", newPassPlaceholder: "Type to change your password",
+    saving: "Saving...", signOut: "Sign Out", signingOut: "Signing out...", followInstagram: "Follow us on Instagram",
+    checkInbox: "Check your inbox", magicLinkText: "We've sent a magic link to confirm your space.",
+    spamNotice: "*If you don't see it, please check your Spam folder.", verifiedEnter: "I verified it → Enter",
+    installTitle: "Install Maeum", installDesc: "Take your visual pause space directly to your home screen.",
+    understood: "Understood", noAccount: "Don't have an account?", haveAccount: "Already have an account?", backToLogin: "Back to Log In",
+    takeBreakTitle: "Take a breath", takeBreakDesc: "You've contemplated enough beauty for now. Time to be present in the real world. Come back in about an hour.",
+    processing: "Processing..."
+  },
+  fr: { 
+    explore: "Explorer", gallery: "Galerie", profile: "Profil", login: "Connexion", email: "E-mail", password: "Mot de passe", 
+    termsCheck: "J'accepte les conditions", viewHere: "Voir ici", register: "S'inscrire", empty: "Aucun souvenir enregistré.", 
+    deleteConfirm: "Lâcher ce souvenir?", yes: "Oui", no: "Non", phrase: "Votre citation", save: "Enregistrer", 
+    newPass: "Nouveau mot de passe", forgot: "Mot de passe oublié?", recover: "Récupérer", newest: "Plus récents", 
+    oldest: "Plus anciens", random: "Aléatoire", installApp: "Installer l'App", loginBtn: "Connexion", 
+    profileTagsHint: "Choisissez vos tags d'inspiration dans votre profil.",
+    photoBy: "Photo de", onUnsplash: "sur Unsplash", download: "Télécharger", deleteFromGallery: "Supprimer de la galerie",
+    pauseTitle1: "Pause et Contemplation", pauseDesc1: "Le monde fait trop de bruit.", 
+    pauseText1: "Maeum est votre refuge intime. Un espace sans algorithmes conçu comme un remède pour votre système nerveux.",
+    createRefuge: "Créer mon refuge", pauseTitle2: "Contemplation et Calme", pauseDesc2: "Défilement infini.",
+    pauseText2: "Faites défiler à l'infini avec de la musique d'ambiance. L'exposition à la beauté visuelle réduit le cortisol.",
+    pauseTitle3: "Collection", pauseDesc3: "La collection d'éclats.",
+    pauseText3: "Sauvegarder des fragments visuels fonctionne comme une ancre de gratitude et de régulation émotionnelle.",
+    pauseTitle4: "Essence", pauseDesc4: "Maeum vous rappelle que votre attention est sacrée.",
+    viewGrid: "Voir la mosaïque", yourName: "Votre Nom", yourTags: "Vos tags (Max 5)", noTags: "Aucun tag sélectionné.",
+    writeTag: "Écrivez votre propre tag", tagSuggestions: "Suggestions", phrasePlaceholder: "Ex. Lâcher prise...",
+    appearance: "Apparence", light: "Clair", dark: "Sombre", language: "Langue", newPassPlaceholder: "Nouveau mot de passe",
+    saving: "Enregistrement...", signOut: "Se déconnecter", signingOut: "Déconnexion...", followInstagram: "Suivez-nous sur Instagram",
+    checkInbox: "Vérifiez votre boîte", magicLinkText: "Nous avons envoyé un lien magique.",
+    spamNotice: "*Vérifiez vos spams si besoin.", verifiedEnter: "Vérifié → Entrer",
+    installTitle: "Installer Maeum", installDesc: "Ajoutez Maeum à votre écran d'accueil.",
+    understood: "Compris", noAccount: "Pas de compte?", haveAccount: "Déjà un compte?", backToLogin: "Retour",
+    takeBreakTitle: "Prenez une pause", takeBreakDesc: "Vous avez contemplé assez de beauté. Revenez dans une heure.",
+    processing: "Traitement..."
+  },
+  ko: { 
+    explore: "탐색", gallery: "갤러리", profile: "프로필", login: "로그인", email: "이메일", password: "비밀번호", 
+    termsCheck: "이용약관 및 개인정보 보호정책에 동의합니다", viewHere: "여기서 보기", register: "가입하기", empty: "저장된 추억이 없습니다.", 
+    deleteConfirm: "이 기억을 놓아주시겠습니까?", yes: "네", no: "아니요", phrase: "영감을 주는 문구", save: "저장", 
+    newPass: "새 비밀번호", forgot: "비밀번호를 잊으셨나요?", recover: "비밀번호 찾기", newest: "최신순", 
+    oldest: "오래된순", random: "무작위", installApp: "앱 설치", loginBtn: "로그인", 
+    profileTagsHint: "프로필에서 원하는 영감 태그를 선택할 수 있습니다.",
+    photoBy: "사진 작가:", onUnsplash: "on Unsplash", download: "이미지 다운로드", deleteFromGallery: "갤러리에서 삭제",
+    pauseTitle1: "휴식과 명상", pauseDesc1: "세상은 너무 시끄럽습니다.", 
+    pauseText1: "Maeum은 당신의 은밀한 피난처입니다. 신경계를 위한 약으로 설계된 알고리즘 없는 공간입니다.",
+    createRefuge: "나만의 피난처 만들기", pauseTitle2: "명상과 평온", pauseDesc2: "무한 스크롤과 존재감.",
+    pauseText2: "주변 음악과 함께 무한 스크롤을 즐겨보세요. 시각적 아름다움에 노출되면 코르티솔 수치가 감소합니다.",
+    pauseTitle3: "컬렉션", pauseDesc3: "빛의 컬렉션.",
+    pauseText3: "내면과 공명하는 시각적 조각을 저장하는 것은 감정 조절과 감사의 닻 역할을 합니다.",
+    pauseTitle4: "본질", pauseDesc4: "Maeum은 당신의 평화가 지킬 가치가 있는 영토임을 상기시켜줍니다.",
+    viewGrid: "그리드 보기", yourName: "이름", yourTags: "태그 (최대 5개)", noTags: "선택된 태그 없음.",
+    writeTag: "직접 태그 입력 (예: 고양이)", tagSuggestions: "추천 태그", phrasePlaceholder: "예: 흘러가게 두기... 놓아주기",
+    appearance: "테마", light: "라이트", dark: "다크", language: "언어", newPassPlaceholder: "비밀번호 변경을 위해 입력하세요",
+    saving: "저장 중...", signOut: "로그아웃", signingOut: "로그아웃 중...", followInstagram: "Instagram 팔로우",
+    checkInbox: "이메일을 확인하세요", magicLinkText: "확인을 위한 매직 링크를 보냈습니다.",
+    spamNotice: "*보이지 않는다면 스팸함을 확인해 주세요.", verifiedEnter: "확인 완료 → 입장",
+    installTitle: "Maeum 설치", installDesc: "홈 화면에 시각적 휴식 공간을 추가하세요.",
+    understood: "이해했습니다", noAccount: "계정이 없으신가요?", haveAccount: "이미 계정이 있으신가요?", backToLogin: "로그인으로 돌아가기",
+    takeBreakTitle: "잠시 휴식", takeBreakDesc: "충분한 아름다움을 감상하셨습니다. 현실 세계에 머무를 시간입니다. 한 시간 후에 다시 오세요.",
+    processing: "처리 중..."
+  }
 };
 
 const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities", "flowers", "colors", "ocean", "botanical", "warm", "desert", "abstract", "vintage", "neon", "geometry", "texture", "landscape", "clouds", "macro"];
@@ -39,9 +141,9 @@ export default function Home() {
   const [profileName, setProfileName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [customTag, setCustomTag] = useState(""); // Nuevo estado para etiqueta personalizada
+  const [customTag, setCustomTag] = useState("");
   const [theme, setTheme] = useState("light");
-  const [lang, setLang] = useState("es");
+  const [lang, setLang] = useState("es"); // Por defecto español
   
   const [currentTab, setCurrentTab] = useState("explore"); 
   const [galleryView, setGalleryView] = useState("grid");
@@ -79,8 +181,16 @@ export default function Home() {
   }, [normalizedLikes, galleryLimit]);
 
   useEffect(() => {
-    const userLang = navigator.language.slice(0, 2);
-    if (dict[userLang]) setLang(userLang);
+    // Detección de idioma
+    const savedLang = localStorage.getItem('maeum-lang');
+    if (savedLang && dict[savedLang]) {
+      setLang(savedLang);
+    } else {
+      const userLang = navigator.language.slice(0, 2);
+      if (dict[userLang]) {
+        setLang(userLang);
+      }
+    }
 
     const savedTheme = localStorage.getItem('maeum-theme');
     if (savedTheme) setTheme(savedTheme);
@@ -149,6 +259,11 @@ export default function Home() {
       localStorage.setItem('maeum-theme', u.user_metadata.theme);
     }
     
+    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) {
+      setLang(u.user_metadata.lang);
+      localStorage.setItem('maeum-lang', u.user_metadata.lang);
+    }
+    
     if (u.user_metadata?.tags) {
       setSelectedTags(u.user_metadata.tags);
     } else {
@@ -179,6 +294,14 @@ export default function Home() {
     }
   };
 
+  const changeLang = async (newLang) => {
+    setLang(newLang);
+    localStorage.setItem('maeum-lang', newLang);
+    if (user) {
+      supabase.auth.updateUser({ data: { lang: newLang } }).catch(console.error);
+    }
+  };
+
   const loadMorePhotos = async () => {
     if (loadingRef.current) return;
     loadingRef.current = true;
@@ -189,8 +312,8 @@ export default function Home() {
       if (!res.ok) {
         if (res.status === 403 || res.status === 429) {
           setAppMessage({
-            title: "Tómate un respiro",
-            text: "Has contemplado mucha belleza por ahora. Es momento de estar presente en el mundo real, descansar tus ojos y reconectar contigo. Vuelve en una hora aproximadamente, cuando este espacio vuelva a florecer."
+            title: dict[lang].takeBreakTitle,
+            text: dict[lang].takeBreakDesc
           });
         }
         loadingRef.current = false;
@@ -206,7 +329,7 @@ export default function Home() {
             id: img.id, 
             url: img.urls.regular, 
             title: img.alt_description || "Pausa",
-            authorName: img.user?.name || "Fotógrafo",
+            authorName: img.user?.name || "Unsplash",
             authorUsername: img.user?.username || "unsplash",
             downloadLocation: img.links?.download_location
           };
@@ -263,7 +386,7 @@ export default function Home() {
       if (error) {
         setAppMessage({ title: "Error", text: error.message });
       } else {
-        setAppMessage({ title: "Enlace enviado", text: "Te enviamos un correo con las instrucciones para recuperar tu contraseña." });
+        setAppMessage({ title: "Email", text: dict[lang].magicLinkText });
         setShowAuthModal(false);
       }
       setIsAuthenticating(false);
@@ -271,20 +394,21 @@ export default function Home() {
     }
 
     if (!isLogin && !acceptedTerms) {
-      setAppMessage({ title: "Aviso", text: dict[lang].terms });
+      setAppMessage({ title: "Aviso", text: dict[lang].termsCheck });
       setIsAuthenticating(false);
       return;
     }
 
     let authResult;
     const currentTheme = localStorage.getItem('maeum-theme') || "light";
+    const currentLang = localStorage.getItem('maeum-lang') || "es";
 
     if (isLogin) {
       authResult = await supabase.auth.signInWithPassword({ email, password });
     } else {
       authResult = await supabase.auth.signUp({ 
         email, password, 
-        options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme } }
+        options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme, lang: currentLang } }
       });
     }
 
@@ -305,7 +429,7 @@ export default function Home() {
     setIsSigningOut(true);
     try {
       await supabase.auth.signOut();
-    } catch(e) { console.warn("Supabase bloqueó la salida segura, forzando limpieza local.", e); }
+    } catch(e) { console.warn("Forzando limpieza local.", e); }
     
     for (let key in localStorage) {
       if (key.startsWith('sb-')) {
@@ -345,7 +469,7 @@ export default function Home() {
       
       const { error } = await supabase.from('user_likes').insert([newPhotoRecord]);
       if (error) {
-        setAppMessage({ title: "Error", text: "No se pudo guardar el destello en la base de datos." });
+        setAppMessage({ title: "Error", text: "Error base de datos." });
         setLikes(likes);
       }
     }
@@ -366,9 +490,7 @@ export default function Home() {
     if (!downloadLocation) return;
     try {
       await fetch(`${downloadLocation}?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`);
-    } catch (err) {
-      console.log("Download event registered");
-    }
+    } catch (err) {}
   };
 
   const downloadImage = async (url, id, downloadLocation) => {
@@ -402,9 +524,9 @@ export default function Home() {
         if (passError) throw passError;
         setNewPassword("");
       }
-      setAppMessage({ title: "Actualizado", text: dict[lang].save + " con éxito." });
+      setAppMessage({ title: "Info", text: dict[lang].save + " ✓" });
     } catch (error) {
-      setAppMessage({ title: "Error al guardar", text: error.message || "No se pudo actualizar el perfil." });
+      setAppMessage({ title: "Error", text: error.message });
     } finally {
       setIsSavingProfile(false);
     }
@@ -432,7 +554,7 @@ export default function Home() {
        return;
     }
     if (selectedTags.length >= 5) {
-       setAppMessage({ title: "Límite alcanzado", text: "Solo puedes tener 5 etiquetas al mismo tiempo." });
+       setAppMessage({ title: "Info", text: "Max 5 tags." });
        return;
     }
     
@@ -465,7 +587,7 @@ export default function Home() {
                 onClick={handleInstallClick} 
                 className={`text-[10px] sm:text-xs tracking-widest uppercase border px-3 py-1.5 rounded-full transition-colors active:scale-95 ${isDark ? 'border-neutral-700 text-neutral-300 hover:bg-neutral-800 hover:text-white' : 'border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white'}`}
               >
-                Instalar App
+                {t.installApp}
               </button>
             )}
 
@@ -474,7 +596,7 @@ export default function Home() {
                 onClick={() => { setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
                 className={`text-[10px] sm:text-xs tracking-widest uppercase transition-colors active:scale-95 ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-900'}`}
               >
-                Iniciar sesión
+                {t.loginBtn}
               </button>
             )}
             
@@ -487,7 +609,7 @@ export default function Home() {
         {currentTab === "explore" && (
           <div className="flex overflow-x-auto gap-4 pb-4 px-6 scrollbar-hide snap-x" style={{ willChange: "transform" }}>
             {selectedTags.length === 0 ? (
-              <p className={`text-xs italic px-2 py-1.5 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>En tu perfil puedes elegir las etiquetas de inspiración que prefieras.</p>
+              <p className={`text-xs italic px-2 py-1.5 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.profileTagsHint}</p>
             ) : (
               selectedTags.map(cat => (
                 <button key={cat} onClick={() => setActiveCategory(cat)} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${activeCategory === cat ? (isDark ? 'border-neutral-300 text-neutral-100 bg-neutral-900' : 'border-neutral-900 text-neutral-900') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-400')}`}>
@@ -520,7 +642,7 @@ export default function Home() {
                       className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
                       style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
                     >
-                      Foto por {photo.authorName || "Autor"} en Unsplash
+                      {t.photoBy} {photo.authorName} {t.onUnsplash}
                     </a>
 
                     <button onClick={(e) => toggleLike(photo, e)} className={`absolute bottom-4 right-4 z-10 backdrop-blur-sm p-3 rounded-full shadow-lg active:scale-90 transition-all ${isDark ? 'bg-neutral-900/80' : 'bg-white/90'}`}>
@@ -531,19 +653,19 @@ export default function Home() {
                   {!user && index === 1 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Pausa y Contemplación</span>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle1}</span>
                         <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          El mundo hace <br className="sm:hidden" /> demasiado ruido.
+                          {t.pauseDesc1}
                         </h2>
                         <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg mb-10 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          Maeum es tu refugio íntimo. Un espacio libre de algoritmos y exigencias diseñado como medicina para tu sistema nervioso.
+                          {t.pauseText1}
                         </p>
                         <button 
                           onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
                           className={`group relative px-8 py-4 text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
                         >
                           <span className="relative z-10 flex items-center gap-3">
-                            Crear mi refugio
+                            {t.createRefuge}
                             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                           </span>
                         </button>
@@ -554,12 +676,12 @@ export default function Home() {
                   {!user && index === 3 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Contemplación y Calma</span>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle2}</span>
                         <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          Scroll infinito y presencia.
+                          {t.pauseDesc2}
                         </h2>
                         <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          Aquí puedes hacer scroll infinito —con música ambiental de fondo o en completo silencio—. Desde la psicología, la exposición dosificada a la belleza visual reduce de forma notable los niveles de cortisol y la sobrecarga cognitiva. Desplazarte con intención te permite desacelerar el pensamiento, induciendo un estado de atención plena o trance suave similar a una meditación activa, donde el sistema nervioso parasimpático toma el control y descansa.
+                          {t.pauseText2}
                         </p>
                       </div>
                     </div>
@@ -568,12 +690,12 @@ export default function Home() {
                   {!user && index === 5 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Colección</span>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle3}</span>
                         <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          La colección de destellos.
+                          {t.pauseDesc3}
                         </h2>
                         <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          Guardar fragmentos visuales que resuenan con tu interior tiene profundas ventajas psicológicas y espirituales. Psicológicamente, funciona como un ancla de gratitud y regulación emocional, permitiéndote evocar estados de seguridad con solo mirar tu archivo. Espiritualmente, es un acto de reconocimiento de lo sagrado cotidiano, creando un altar personal de imágenes que reflejan la belleza esencial de tu alma.
+                          {t.pauseText3}
                         </p>
                       </div>
                     </div>
@@ -582,9 +704,9 @@ export default function Home() {
                   {!user && index === 7 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Esencia</span>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle4}</span>
                         <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.
+                          {t.pauseDesc4}
                         </h2>
                       </div>
                     </div>
@@ -675,7 +797,7 @@ export default function Home() {
                         onClick={() => triggerUnsplashDownload(photo.downloadLocation)}
                         className={`block px-3 py-2 text-[11px] uppercase tracking-wider border-b ${isDark ? 'text-neutral-400 hover:text-neutral-200 border-neutral-800' : 'text-neutral-600 hover:text-neutral-900 border-neutral-100'}`}
                       >
-                        Foto por {photo.authorName || "Autor"} en Unsplash
+                        {t.photoBy} {photo.authorName} {t.onUnsplash}
                       </a>
                       <button 
                         onClick={(e) => { 
@@ -685,13 +807,13 @@ export default function Home() {
                         }} 
                         className={`w-full text-left px-3 py-2 text-[11px] uppercase tracking-wider mt-1 rounded ${isDark ? 'text-neutral-400 hover:bg-neutral-800' : 'text-neutral-600 hover:bg-neutral-50'}`}
                       >
-                        Descargar imagen
+                        {t.download}
                       </button>
                       <button 
                         onClick={() => { setActiveMenuPhotoId(null); setPhotoToDelete(photo.id); }} 
                         className={`w-full text-left px-3 py-2 text-[11px] uppercase tracking-wider rounded mt-1 ${isDark ? 'text-red-400 hover:bg-red-900/30' : 'text-red-500 hover:bg-red-50'}`}
                       >
-                        Borrar de mi galería
+                        {t.deleteFromGallery}
                       </button>
                     </div>
                   )}
@@ -711,7 +833,7 @@ export default function Home() {
                  }} 
                  className={`backdrop-blur-lg px-6 py-3 rounded-full shadow-2xl text-xs tracking-widest uppercase transition-all active:scale-95 ${isDark ? 'bg-neutral-800/90 text-white hover:bg-neutral-700' : 'bg-neutral-900/90 text-white hover:bg-neutral-800'}`}
                >
-                 Ver Mosaico
+                 {t.viewGrid}
                </button>
              </div>
           )}
@@ -725,7 +847,7 @@ export default function Home() {
               type="text" 
               value={profileName} 
               onChange={(e) => setProfileName(e.target.value)} 
-              placeholder="Tu Nombre"
+              placeholder={t.yourName}
               className={`w-full text-2xl font-normal text-center bg-transparent border-b outline-none pb-2 transition-colors text-[16px] sm:text-2xl ${isDark ? 'border-transparent focus:border-neutral-700 text-neutral-100' : 'border-transparent focus:border-neutral-200 text-neutral-900'}`} 
             />
             <p className={`text-xs mt-2 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{user.email}</p>
@@ -734,11 +856,10 @@ export default function Home() {
           <div className="space-y-8">
             
             <div>
-              <label className={`text-xs tracking-widest uppercase mb-4 block ${isDark ? 'text-neutral-400' : 'text-neutral-900'}`}>Tus etiquetas (Máx. 5)</label>
+              <label className={`text-xs tracking-widest uppercase mb-4 block ${isDark ? 'text-neutral-400' : 'text-neutral-900'}`}>{t.yourTags}</label>
               
-              {/* Etiquetas seleccionadas (Personalizadas y sugeridas) */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {selectedTags.length === 0 && <span className={`text-xs italic ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>Ninguna etiqueta seleccionada.</span>}
+                {selectedTags.length === 0 && <span className={`text-xs italic ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>{t.noTags}</span>}
                 {selectedTags.map(tag => (
                   <button 
                     key={tag} 
@@ -751,14 +872,13 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Input para agregar etiqueta personalizada */}
               {selectedTags.length < 5 && (
                 <form onSubmit={handleAddCustomTag} className="flex gap-2 mb-6">
                   <input 
                     type="text"
                     value={customTag}
                     onChange={(e) => setCustomTag(e.target.value)}
-                    placeholder="Escribe tu propia etiqueta (ej. gatos)"
+                    placeholder={t.writeTag}
                     maxLength="20"
                     className={`flex-1 px-4 py-3 rounded-md text-[14px] outline-none border transition-colors ${isDark ? 'bg-neutral-900 border-neutral-800 focus:border-neutral-600 text-neutral-200 placeholder:text-neutral-600' : 'bg-transparent border-neutral-200 focus:border-neutral-900 text-neutral-900 placeholder:text-neutral-400'}`}
                   />
@@ -772,10 +892,9 @@ export default function Home() {
                 </form>
               )}
 
-              {/* Sugerencias de Unsplash predefinidas */}
-              <label className={`text-[10px] tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Sugerencias para inspirarte</label>
+              <label className={`text-[10px] tracking-widest uppercase mb-3 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.tagSuggestions}</label>
               <div className="flex flex-wrap gap-2">
-                {AVAILABLE_TAGS.filter(t => !selectedTags.includes(t)).map(tag => (
+                {AVAILABLE_TAGS.filter(tag => !selectedTags.includes(tag)).map(tag => (
                   <button 
                     key={tag} 
                     onClick={() => toggleTag(tag)}
@@ -792,26 +911,42 @@ export default function Home() {
               <textarea 
                 value={userPhrase} 
                 onChange={(e) => setUserPhrase(e.target.value)} 
-                placeholder="Ej. Aceptar que se va a escurrir... soltar" 
+                placeholder={t.phrasePlaceholder}
                 className={`w-full p-4 border rounded-md text-[16px] outline-none resize-none h-24 transition-colors ${isDark ? 'bg-neutral-900 border-neutral-800 focus:border-neutral-600 text-neutral-200' : 'bg-transparent border-neutral-200 focus:border-neutral-900 text-neutral-900'}`} 
               />
             </div>
 
             <div>
-              <label className={`text-xs tracking-widest uppercase mb-2 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>Apariencia</label>
+              <label className={`text-xs tracking-widest uppercase mb-2 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.appearance}</label>
               <div className="flex gap-4">
                 <button 
                   onClick={() => changeTheme('light')} 
                   className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border active:scale-95 ${theme === 'light' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                 >
-                  Claro
+                  {t.light}
                 </button>
                 <button 
                   onClick={() => changeTheme('dark')} 
                   className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border active:scale-95 ${theme === 'dark' ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
                 >
-                  Oscuro
+                  {t.dark}
                 </button>
+              </div>
+            </div>
+            
+            {/* Selector de idiomas agregado al perfil */}
+            <div>
+              <label className={`text-xs tracking-widest uppercase mb-2 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.language}</label>
+              <div className="flex gap-2">
+                {['es', 'en', 'fr', 'ko'].map(l => (
+                  <button 
+                    key={l}
+                    onClick={() => changeLang(l)} 
+                    className={`flex-1 py-3 text-xs uppercase tracking-widest rounded-md transition-colors border active:scale-95 ${lang === l ? (isDark ? 'border-neutral-500 text-white bg-neutral-800' : 'border-neutral-900 bg-neutral-900 text-white') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-500')}`}
+                  >
+                    {l}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -822,7 +957,7 @@ export default function Home() {
                   type={showPassword ? "text" : "password"} 
                   value={newPassword} 
                   onChange={(e) => setNewPassword(e.target.value)} 
-                  placeholder="Escribe para cambiar tu contraseña" 
+                  placeholder={t.newPassPlaceholder}
                   minLength="6" 
                   className={`w-full p-4 pr-12 border rounded-md text-[16px] outline-none transition-colors ${isDark ? 'bg-neutral-900 border-neutral-800 focus:border-neutral-600 text-neutral-200' : 'bg-transparent border-neutral-200 focus:border-neutral-900 text-neutral-900'}`} 
                 />
@@ -851,7 +986,7 @@ export default function Home() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Guardando...
+                  {t.saving}
                 </>
               ) : t.save}
             </button>
@@ -867,9 +1002,9 @@ export default function Home() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Saliendo...
+                  {t.signingOut}
                 </>
-              ) : "Salir de la cuenta"}
+              ) : t.signOut}
             </button>
 
             <a 
@@ -881,7 +1016,7 @@ export default function Home() {
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
               </svg>
-              Síguenos en Instagram
+              {t.followInstagram}
             </a>
 
           </div>
@@ -929,12 +1064,12 @@ export default function Home() {
             <div className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-6 ${isDark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
               <svg className={`w-6 h-6 ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
             </div>
-            <h3 className={`text-sm tracking-widest uppercase mb-4 font-semibold ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Revisa tu bandeja</h3>
+            <h3 className={`text-sm tracking-widest uppercase mb-4 font-semibold ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.checkInbox}</h3>
             <p className={`text-sm mb-2 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-              Hemos enviado un enlace mágico para confirmar tu espacio.
+              {t.magicLinkText}
             </p>
             <p className={`text-[11px] mb-8 italic ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>
-              *Si no lo ves, por favor revisa tu carpeta de Spam o Correo no deseado.
+              {t.spamNotice}
             </p>
             <button 
               onClick={() => { 
@@ -944,7 +1079,7 @@ export default function Home() {
               }} 
               className={`w-full py-4 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
             >
-              Ya lo verifiqué → Entrar
+              {t.verifiedEnter}
             </button>
           </div>
         </div>
@@ -955,52 +1090,43 @@ export default function Home() {
           <div className={`p-6 sm:p-8 rounded-lg max-w-lg w-full relative shadow-2xl max-h-[80vh] overflow-y-auto ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <button onClick={() => setShowTerms(false)} className={`absolute top-4 right-4 rounded-full w-8 h-8 flex items-center justify-center transition-colors ${isDark ? 'text-neutral-400 bg-neutral-800 hover:bg-neutral-700' : 'text-neutral-400 bg-white hover:bg-neutral-100'}`}>✕</button>
             <h3 className={`text-lg font-normal mb-6 text-center ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Términos y Política de Privacidad</h3>
+            
+            {/* TEXTOS LEGALES (Siempre en idioma base por estándares de App) */}
             <div className={`text-xs space-y-4 font-light leading-relaxed text-justify ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
-              
               <h4 className={`font-semibold uppercase tracking-widest text-[10px] mt-6 ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>1. Términos y Condiciones de Uso</h4>
               <p className="italic">Última actualización: Julio de 2026</p>
               <p>Bienvenido a Maeum. Al acceder, registrarte o utilizar nuestra aplicación web y PWA (en adelante, "la App"), aceptas cumplir y estar sujeto a los siguientes Términos y Condiciones de Uso. Por favor, léelos detenidamente.</p>
-              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Descripción del Servicio</p>
               <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Unsplash), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
-              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cuentas de Usuario y Registro</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>Para acceder a ciertas funciones, como guardar tu galería o personalizar tu perfil, es necesario crear una cuenta con un correo electrónico válido.</li>
                 <li>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</li>
               </ul>
-              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Planes de Suscripción (Free y Premium)</p>
               <p>Maeum ofrece dos modalidades de uso:</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>Plan Gratuito (Free): Permite seleccionar un máximo de 2 etiquetas de inspiración, almacenar hasta 21 fotos en la galería personal y disfrutar de un límite de 3 minutos de reproducción continua de audio ambiental por sesión.</li>
                 <li>Plan Premium: Mediante una suscripción de pago ($5 USD al mes o $35 USD al año), el usuario desbloquea hasta 5 etiquetas simultáneas, galería ilimitada de fotos guardadas y reproducción de audio ambiental ilimitada.</li>
               </ul>
-              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Pagos y Procesamiento a través de Stripe</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propias políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
                 <li>Maeum no almacena directamente los números completos de tus tarjetas de crédito o débito en sus servidores. Las suscripciones se renuevan de manera automática según el periodo elegido (mensual o anual), pudiendo cancelarse en cualquier momento desde la configuración de tu cuenta.</li>
               </ul>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Propiedad Intelectual y Contenido</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>El diseño, código fuente, logotipos y la marca Maeum son propiedad exclusiva de sus creadores.</li>
                 <li>Las imágenes mostradas son proporcionadas a través de la API de Unsplash y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
               </ul>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>6. Limitación de Responsabilidad</p>
               <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Unsplash.</p>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>7. Modificaciones</p>
               <p>Podemos actualizar estos Términos ocasionalmente. Notificaremos cambios significativos a través de la App. El uso continuado tras dichos cambios implica su aceptación.</p>
-
               <hr className={`my-6 ${isDark ? 'border-neutral-800' : 'border-neutral-100'}`} />
-
               <h4 className={`font-semibold uppercase tracking-widest text-[10px] ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>2. Política de Privacidad</h4>
               <p className="italic">Última actualización: Julio de 2026</p>
               <p>En Maeum, valoramos profundamente tu privacidad y tu tranquilidad digital. Esta Política de Privacidad explica qué datos recopilamos, cómo los utilizamos y cómo los protegemos.</p>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Información que Recopilamos</p>
               <p>Cuando creas una cuenta o utilizas Maeum, recopilamos únicamente la información esencial para el funcionamiento de la App:</p>
               <ul className="list-disc pl-4 space-y-2">
@@ -1008,7 +1134,6 @@ export default function Home() {
                 <li>Preferencias de Perfil: Las etiquetas de inspiración seleccionadas, tu frase inspiradora personal y las fotografías guardadas en tu galería.</li>
                 <li>Datos de Pago (Stripe): Si decides adquirir el plan Premium, los datos financieros y de cobro (como tarjetas de crédito o débito) son recopilados, procesados y almacenados de manera directa y segura por Stripe, nuestro procesador de pagos certificado. Maeum solo recibe confirmaciones de estado de pago (activo/inactivo) para habilitar tus beneficios.</li>
               </ul>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cómo Utilizamos tu Información</p>
               <p>Utilizamos tus datos exclusivamente para:</p>
               <ul className="list-disc pl-4 space-y-2">
@@ -1016,19 +1141,16 @@ export default function Home() {
                 <li>Sincronizar tu galería personal, preferencias estéticas y nivel de suscripción (Free o Premium) en tus dispositivos.</li>
                 <li>Nunca vendemos, rentamos ni compartimos tus datos personales con terceros con fines publicitarios o comerciales.</li>
               </ul>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Seguridad de los Datos</p>
               <p>Utilizamos servicios de infraestructura en la nube seguros y estándares de la industria (Supabase y pasarelas de pago cifradas como Stripe con protocolo HTTPS) para garantizar que tu información y credenciales estén protegidas contra accesos no autorizados.</p>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Tus Derechos</p>
               <p>Tienes el derecho absoluto de acceder a tu información, modificarla desde tu perfil o solicitar la eliminación de tu cuenta y todos los datos asociados en cualquier momento.</p>
-
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Contacto</p>
               <p>Si tienes dudas o solicitudes sobre esta política o tus datos personales, puedes escribirnos a través de nuestras redes oficiales (como nuestro Instagram @maeum_gratitud).</p>
             </div>
             
             <button onClick={() => setShowTerms(false)} className={`w-full py-4 mt-8 rounded-md text-xs uppercase tracking-widest transition-colors sticky bottom-0 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
-              He leído y acepto
+              {t.termsCheck}
             </button>
           </div>
         </div>
@@ -1038,8 +1160,8 @@ export default function Home() {
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 pb-12 sm:pb-4">
           <div className={`p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <button onClick={() => setShowInstallGuide(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
-            <h3 className={`text-lg font-normal mb-2 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Instala Maeum</h3>
-            <p className={`text-sm mb-6 font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>Lleva tu espacio de pausa visual directo en tu pantalla de inicio.</p>
+            <h3 className={`text-lg font-normal mb-2 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.installTitle}</h3>
+            <p className={`text-sm mb-6 font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.installDesc}</p>
             
             {isIOS ? (
               <div className={`p-4 rounded-lg text-left space-y-4 ${isDark ? 'bg-neutral-800' : 'bg-neutral-50'}`}>
@@ -1074,7 +1196,7 @@ export default function Home() {
             )}
             
             <button onClick={() => setShowInstallGuide(false)} className={`w-full py-3 mt-6 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
-              Entendido
+              {t.understood}
             </button>
           </div>
         </div>
@@ -1114,7 +1236,7 @@ export default function Home() {
             <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{appMessage.title}</h3>
             <p className={`text-sm mb-8 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{appMessage.text}</p>
             <button onClick={() => setAppMessage(null)} className={`w-full py-4 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
-              Entendido
+              {t.understood}
             </button>
           </div>
         </div>
@@ -1132,7 +1254,7 @@ export default function Home() {
             <form onSubmit={handleAuth} className="space-y-4">
               
               {!isLogin && !isForgotPassword && (
-                <input type="text" placeholder="Tu nombre" required onChange={(e) => setName(e.target.value)} className={`w-full px-4 py-3 border-b outline-none transition-colors text-[16px] ${isDark ? 'bg-transparent border-neutral-800 text-neutral-200 focus:border-neutral-600' : 'border-neutral-200 text-neutral-900 focus:border-neutral-900'}`} />
+                <input type="text" placeholder={t.yourName} required onChange={(e) => setName(e.target.value)} className={`w-full px-4 py-3 border-b outline-none transition-colors text-[16px] ${isDark ? 'bg-transparent border-neutral-800 text-neutral-200 focus:border-neutral-600' : 'border-neutral-200 text-neutral-900 focus:border-neutral-900'}`} />
               )}
               
               <input type="email" placeholder={t.email} required onChange={(e) => setEmail(e.target.value)} className={`w-full px-4 py-3 border-b outline-none transition-colors text-[16px] ${isDark ? 'bg-transparent border-neutral-800 text-neutral-200 focus:border-neutral-600' : 'border-neutral-200 text-neutral-900 focus:border-neutral-900'}`} />
@@ -1164,7 +1286,7 @@ export default function Home() {
               {!isLogin && !isForgotPassword && (
                 <label className="flex items-start gap-2 mt-4 text-xs cursor-pointer">
                   <input type="checkbox" required onChange={(e) => setAcceptedTerms(e.target.checked)} className="mt-0.5" />
-                  <span className={isDark ? 'text-neutral-400' : 'text-neutral-500'}>{t.terms} <a href="#" onClick={(e) => { e.preventDefault(); setShowTerms(true); }} className="underline">Ver aquí</a></span>
+                  <span className={isDark ? 'text-neutral-400' : 'text-neutral-500'}>{t.termsCheck} <a href="#" onClick={(e) => { e.preventDefault(); setShowTerms(true); }} className="underline">{t.viewHere}</a></span>
                 </label>
               )}
 
@@ -1179,7 +1301,7 @@ export default function Home() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Procesando...
+                    {t.processing}
                   </>
                 ) : (isForgotPassword ? t.recover : (isLogin ? t.login : t.register))}
               </button>
@@ -1193,13 +1315,13 @@ export default function Home() {
 
             {!isForgotPassword && (
               <button onClick={() => setIsLogin(!isLogin)} className={`w-full text-center mt-6 text-xs underline transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>
-                {isLogin ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}
+                {isLogin ? t.noAccount : t.haveAccount}
               </button>
             )}
 
             {isForgotPassword && (
               <button onClick={() => setIsForgotPassword(false)} className={`w-full text-center mt-6 text-xs underline transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>
-                Volver a Iniciar Sesión
+                {t.backToLogin}
               </button>
             )}
           </div>
