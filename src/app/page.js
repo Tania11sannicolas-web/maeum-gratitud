@@ -27,7 +27,8 @@ const dict = {
     installTitle: "Instala Maeum", installDesc: "Lleva tu espacio de pausa visual directo en tu pantalla de inicio.",
     understood: "Entendido", noAccount: "¿No tienes cuenta?", haveAccount: "¿Ya tienes cuenta?", backToLogin: "Volver a Iniciar Sesión",
     takeBreakTitle: "Tómate un respiro", takeBreakDesc: "Has contemplado mucha belleza por ahora. Es momento de estar presente en el mundo real, descansar tus ojos y reconectar contigo. Vuelve en una hora.",
-    processing: "Procesando..."
+    processing: "Procesando...",
+    tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" }
   },
   en: { 
     explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", 
@@ -53,7 +54,8 @@ const dict = {
     installTitle: "Install Maeum", installDesc: "Take your visual pause space directly to your home screen.",
     understood: "Understood", noAccount: "Don't have an account?", haveAccount: "Already have an account?", backToLogin: "Back to Log In",
     takeBreakTitle: "Take a breath", takeBreakDesc: "You've contemplated enough beauty for now. Time to be present in the real world. Come back in about an hour.",
-    processing: "Processing..."
+    processing: "Processing...",
+    tags: { nature: "nature", minimal: "minimal", art: "art", space: "space", animals: "animals", cities: "cities", flowers: "flowers", colors: "colors", ocean: "ocean", botanical: "botanical", warm: "warm", desert: "desert", abstract: "abstract", vintage: "vintage", neon: "neon", geometry: "geometry", texture: "texture", landscape: "landscape", clouds: "clouds", macro: "macro" }
   },
   fr: { 
     explore: "Explorer", gallery: "Galerie", profile: "Profil", login: "Connexion", email: "E-mail", password: "Mot de passe", 
@@ -79,7 +81,8 @@ const dict = {
     installTitle: "Installer Maeum", installDesc: "Ajoutez Maeum à votre écran d'accueil.",
     understood: "Compris", noAccount: "Pas de compte?", haveAccount: "Déjà un compte?", backToLogin: "Retour",
     takeBreakTitle: "Prenez une pause", takeBreakDesc: "Vous avez contemplé assez de beauté. Revenez dans une heure.",
-    processing: "Traitement..."
+    processing: "Traitement...",
+    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" }
   },
   ko: { 
     explore: "탐색", gallery: "갤러리", profile: "프로필", login: "로그인", email: "이메일", password: "비밀번호", 
@@ -92,7 +95,7 @@ const dict = {
     pauseTitle1: "휴식과 명상", pauseDesc1: "세상은 너무 시끄럽습니다.", 
     pauseText1: "Maeum은 당신의 은밀한 피난처입니다. 신경계를 위한 약으로 설계된 알고리즘 없는 공간입니다.",
     createRefuge: "나만의 피난처 만들기", pauseTitle2: "명상과 평온", pauseDesc2: "무한 스크롤과 존재감.",
-    pauseText2: "주변 음악과 함께 무한 스크롤을 즐겨보세요. 시각적 아름다움에 노출되면 코르티솔 수치가 감소합니다.",
+    pauseText2: "주변 음악과 함께 무한 스크롤을 즐겨보세요. 시각적 아름다움을 감상하면 코르티솔 수치가 감소합니다.",
     pauseTitle3: "컬렉션", pauseDesc3: "빛의 컬렉션.",
     pauseText3: "내면과 공명하는 시각적 조각을 저장하는 것은 감정 조절과 감사의 닻 역할을 합니다.",
     pauseTitle4: "본질", pauseDesc4: "Maeum은 당신의 평화가 지킬 가치가 있는 영토임을 상기시켜줍니다.",
@@ -105,7 +108,8 @@ const dict = {
     installTitle: "Maeum 설치", installDesc: "홈 화면에 시각적 휴식 공간을 추가하세요.",
     understood: "이해했습니다", noAccount: "계정이 없으신가요?", haveAccount: "이미 계정이 있으신가요?", backToLogin: "로그인으로 돌아가기",
     takeBreakTitle: "잠시 휴식", takeBreakDesc: "충분한 아름다움을 감상하셨습니다. 현실 세계에 머무를 시간입니다. 한 시간 후에 다시 오세요.",
-    processing: "처리 중..."
+    processing: "처리 중...",
+    tags: { nature: "자연", minimal: "미니멀", art: "예술", space: "우주", animals: "동물", cities: "도시", flowers: "꽃", colors: "색상", ocean: "바다", botanical: "식물", warm: "따뜻한", desert: "사막", abstract: "추상", vintage: "빈티지", neon: "네온", geometry: "기하학", texture: "질감", landscape: "풍경", clouds: "구름", macro: "매크로" }
   }
 };
 
@@ -149,6 +153,7 @@ export default function Home() {
   const [galleryView, setGalleryView] = useState("grid");
   const [photoToDelete, setPhotoToDelete] = useState(null);
   const [activeMenuPhotoId, setActiveMenuPhotoId] = useState(null); 
+  const [activeInfoId, setActiveInfoId] = useState(null); // Nuevo estado para información de imagen
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -279,6 +284,7 @@ export default function Home() {
       setLikes(data.map(item => ({
         id: item.photo_id,
         url: item.photo_url,
+        title: item.title,
         authorName: item.author_name,
         authorUsername: item.author_username,
         downloadLocation: item.download_location
@@ -328,7 +334,7 @@ export default function Home() {
           return { 
             id: img.id, 
             url: img.urls.regular, 
-            title: img.alt_description || "Pausa",
+            title: img.alt_description || "Destello",
             authorName: img.user?.name || "Unsplash",
             authorUsername: img.user?.username || "unsplash",
             downloadLocation: img.links?.download_location
@@ -460,6 +466,7 @@ export default function Home() {
         user_id: user.id,
         photo_id: photo.id,
         photo_url: photo.url,
+        title: photo.title,
         author_name: photo.authorName,
         author_username: photo.authorUsername,
         download_location: photo.downloadLocation
@@ -498,14 +505,27 @@ export default function Home() {
       if (downloadLocation) triggerUnsplashDownload(downloadLocation);
       const response = await fetch(url);
       const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = `maeum-${id}.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(blobUrl);
+      
+      const file = new File([blob], `maeum-${id}.jpg`, { type: blob.type });
+
+      // Verificamos si podemos usar el API nativo de compartir (iOS/Android lo aman)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Maeum',
+          text: 'Destello de Maeum'
+        });
+      } else {
+        // Fallback tradicional si no está soportado
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `maeum-${id}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+      }
     } catch (err) {
       window.open(url, '_blank');
     }
@@ -613,7 +633,7 @@ export default function Home() {
             ) : (
               selectedTags.map(cat => (
                 <button key={cat} onClick={() => setActiveCategory(cat)} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${activeCategory === cat ? (isDark ? 'border-neutral-300 text-neutral-100 bg-neutral-900' : 'border-neutral-900 text-neutral-900') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-400')}`}>
-                  {cat.toUpperCase()}
+                  {t.tags?.[cat] ? t.tags[cat].toUpperCase() : cat.toUpperCase()}
                 </button>
               ))
             )}
@@ -635,6 +655,25 @@ export default function Home() {
                   >
                     <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" style={{ willChange: "transform" }} />
                     
+                    {/* Botón de Información Elegante */}
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }}
+                      className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </button>
+
+                    {/* Overlay de Información Glassmorphism */}
+                    {activeInfoId === photo.id && (
+                      <div 
+                        onClick={(e) => { e.stopPropagation(); setActiveInfoId(null); }}
+                        className={`absolute inset-0 z-10 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 ${isDark ? 'bg-neutral-900/70 text-white' : 'bg-white/70 text-neutral-900'}`}
+                      >
+                         <p className="text-lg md:text-xl font-light mb-2 capitalize leading-relaxed drop-shadow-md">{photo.title}</p>
+                         <p className="text-xs uppercase tracking-widest opacity-80 mt-4">{t.photoBy} {photo.authorName}</p>
+                      </div>
+                    )}
+
                     <a 
                       href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
                       target="_blank" 
@@ -779,6 +818,25 @@ export default function Home() {
                 >
                   <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover" />
                   
+                  {/* Botón de Información Elegante en Galería */}
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }}
+                    className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </button>
+
+                  {/* Overlay de Información Glassmorphism */}
+                  {activeInfoId === photo.id && (
+                    <div 
+                      onClick={(e) => { e.stopPropagation(); setActiveInfoId(null); }}
+                      className={`absolute inset-0 z-10 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 ${isDark ? 'bg-neutral-900/70 text-white' : 'bg-white/70 text-neutral-900'}`}
+                    >
+                       <p className="text-lg md:text-xl font-light mb-2 capitalize leading-relaxed drop-shadow-md">{photo.title}</p>
+                       <p className="text-xs uppercase tracking-widest opacity-80 mt-4">{t.photoBy} {photo.authorName}</p>
+                    </div>
+                  )}
+
                   <button 
                     onClick={() => setActiveMenuPhotoId(activeMenuPhotoId === photo.id ? null : photo.id)} 
                     className={`absolute top-4 right-4 backdrop-blur-sm p-2 rounded-full shadow-md transition-all z-20 active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
@@ -866,7 +924,7 @@ export default function Home() {
                     onClick={() => toggleTag(tag)}
                     className={`flex items-center gap-1 px-3 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${isDark ? 'border-neutral-300 bg-neutral-800 text-white hover:bg-neutral-700' : 'border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-800'}`}
                   >
-                    {tag} 
+                    {t.tags?.[tag] || tag} 
                     <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                   </button>
                 ))}
@@ -900,7 +958,7 @@ export default function Home() {
                     onClick={() => toggleTag(tag)}
                     className={`px-3 py-1 text-xs rounded-full border transition-all active:scale-95 ${isDark ? 'border-neutral-800 text-neutral-500 hover:text-neutral-300' : 'border-neutral-200 text-neutral-500 hover:text-neutral-800'}`}
                   >
-                    + {tag}
+                    + {t.tags?.[tag] || tag}
                   </button>
                 ))}
               </div>
