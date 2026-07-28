@@ -34,7 +34,8 @@ const dict = {
     premiumBenefit1: "Hasta 5 etiquetas de inspiración", premiumBenefit2: "Guarda hasta 300 destellos en tu galería", premiumBenefit3: "50 pausas visuales por hora",
     monthly: "$3 / mes", yearly: "$33 / año", subscribeBtn: "Actualizar a Premium", manageSubscription: "Gestionar Suscripción", galleryFull: "Galería llena",
     galleryFullDescFree: "Has alcanzado tu límite de 24 destellos. Actualiza a Premium para guardar hasta 300.", galleryFullDescPremium: "Has alcanzado el límite máximo de 300 destellos.",
-    tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" }
+    tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" },
+    deleteAccount: "Eliminar cuenta permanentemente", deleteAccountConfirm: "Esta acción borrará tu galería, perfil y cancelará cualquier suscripción activa. No se puede deshacer. ¿Estás seguro/a?"
   },
   en: { 
     explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", 
@@ -67,7 +68,8 @@ const dict = {
     premiumBenefit1: "Up to 5 inspiration tags", premiumBenefit2: "Save up to 300 flashes in your gallery", premiumBenefit3: "50 visual pauses per hour",
     monthly: "$3 / month", yearly: "$33 / year", subscribeBtn: "Upgrade to Premium", manageSubscription: "Manage Subscription", galleryFull: "Gallery full",
     galleryFullDescFree: "You've reached your limit of 24 flashes. Upgrade to Premium to save up to 300.", galleryFullDescPremium: "You've reached the maximum limit of 300 flashes.",
-    tags: { nature: "nature", minimal: "minimal", art: "art", space: "space", animals: "animals", cities: "cities", flowers: "flowers", colors: "colors", ocean: "ocean", botanical: "botanical", warm: "warm", desert: "desert", abstract: "abstract", vintage: "vintage", neon: "neon", geometry: "geometry", texture: "texture", landscape: "landscape", clouds: "clouds", macro: "macro" }
+    tags: { nature: "nature", minimal: "minimal", art: "art", space: "space", animals: "animals", cities: "cities", flowers: "flowers", colors: "colors", ocean: "ocean", botanical: "botanical", warm: "warm", desert: "desert", abstract: "abstract", vintage: "vintage", neon: "neon", geometry: "geometry", texture: "texture", landscape: "landscape", clouds: "clouds", macro: "macro" },
+    deleteAccount: "Delete account permanently", deleteAccountConfirm: "This action will delete your gallery, profile, and cancel any active subscription. It cannot be undone. Are you sure?"
   },
   fr: { 
     explore: "Explorer", gallery: "Galerie", profile: "Profil", login: "Connexion", email: "E-mail", password: "Mot de passe", 
@@ -100,7 +102,8 @@ const dict = {
     premiumBenefit1: "Jusqu'à 5 tags d'inspiration", premiumBenefit2: "Sauvegardez jusqu'à 300 éclats", premiumBenefit3: "50 pauses visuelles par heure",
     monthly: "3 $ / mois", yearly: "33 $ / an", subscribeBtn: "Passer à Premium", manageSubscription: "Gérer l'abonnement", galleryFull: "Galerie pleine",
     galleryFullDescFree: "Vous avez atteint votre limite de 24 éclats. Passez à Premium pour en sauvegarder 300.", galleryFullDescPremium: "Vous avez atteint la limite maximale de 300 éclats.",
-    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" }
+    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" },
+    deleteAccount: "Supprimer le compte définitivement", deleteAccountConfirm: "Cette action supprimera votre galerie, votre profil et annulera tout abonnement actif. Elle est irréversible. Êtes-vous sûr(e)?"
   },
   ko: { 
     explore: "탐색", gallery: "갤러리", profile: "프로필", login: "로그인", email: "이메일", password: "비밀번호", 
@@ -133,7 +136,8 @@ const dict = {
     premiumBenefit1: "최대 5개의 영감 태그", premiumBenefit2: "갤러리에 최대 300개의 추억 저장", premiumBenefit3: "시간당 50번의 시각적 휴식",
     monthly: "월 $3", yearly: "연 $33", subscribeBtn: "프리미엄으로 업그레이드", manageSubscription: "구독 관리", galleryFull: "갤러리 가득 참",
     galleryFullDescFree: "24개의 저장 한도에 도달했습니다. 최대 300개를 저장하려면 프리미엄으로 업그레이드하세요.", galleryFullDescPremium: "최대 300개 저장 한도에 도달했습니다.",
-    tags: { nature: "자연", minimal: "미니멀", art: "예술", space: "우주", animals: "동물", cities: "도시", flowers: "꽃", colors: "색상", ocean: "바다", botanical: "식물", warm: "따뜻한", desert: "사막", abstract: "추상", vintage: "빈티지", neon: "네온", geometry: "기하학", texture: "질감", landscape: "풍경", clouds: "구름", macro: "매크로" }
+    tags: { nature: "자연", minimal: "미니멀", art: "예술", space: "우주", animals: "동물", cities: "도시", flowers: "꽃", colors: "색상", ocean: "바다", botanical: "식물", warm: "따뜻한", desert: "사막", abstract: "추상", vintage: "빈티지", neon: "네온", geometry: "기하학", texture: "질감", landscape: "풍경", clouds: "구름", macro: "매크로" },
+    deleteAccount: "계정 영구 삭제", deleteAccountConfirm: "이 작업은 갤러리, 프로필을 삭제하고 활성 구독을 취소합니다. 취소할 수 없습니다. 확실합니까?"
   }
 };
 
@@ -374,7 +378,8 @@ export default function Home() {
     loadingRef.current = true;
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
-      const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=12&query=${querySearch}`);
+      // MODIFICACIÓN 1: Pidiendo 15 imágenes en vez de 12
+      const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=15&query=${querySearch}`);
       
       if (!res.ok) {
         if (res.status === 403 || res.status === 429) {
@@ -511,6 +516,41 @@ export default function Home() {
     setUserPlan("free");
     setCurrentTab("explore");
     setIsSigningOut(false);
+  };
+
+  // MODIFICACIÓN 2: Lógica para eliminar cuenta
+  const handleDeleteAccount = async () => {
+    const confirmed = window.confirm(t.deleteAccountConfirm);
+    if (!confirmed) return;
+
+    setIsSigningOut(true);
+    try {
+      // Llamada al backend para procesar cancelación en Stripe y borrado en Supabase
+      await fetch('/api/delete-account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id })
+      });
+      
+      await supabase.auth.signOut();
+      
+      for (let key in localStorage) {
+        if (key.startsWith('sb-')) {
+          localStorage.removeItem(key);
+        }
+      }
+      
+      setUser(null);
+      setLikes([]);
+      setSelectedTags([]);
+      setProfileName("");
+      setUserPlan("free");
+      setCurrentTab("explore");
+    } catch (error) {
+      setAppMessage({ title: "Error", text: "Hubo un problema al intentar eliminar la cuenta." });
+    } finally {
+      setIsSigningOut(false);
+    }
   };
 
   const toggleLike = async (photo, e) => {
@@ -778,7 +818,46 @@ export default function Home() {
                     </div>
                   )}
 
-                  {!user && index === 3 && (
+                  {!user && index === 4 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle2}</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc2}
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          {t.pauseText2}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 7 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle3}</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc3}
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          {t.pauseText3}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 10 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle4}</span>
+                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc4}
+                        </h2>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 13 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-4xl w-full flex flex-col items-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
                         <span className={`text-[10px] uppercase tracking-[0.3em] mb-10 font-medium text-center ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pricingTitle}</span>
@@ -814,44 +893,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {!user && index === 5 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle2}</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc2}
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          {t.pauseText2}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 7 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle3}</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc3}
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          {t.pauseText3}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 9 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle4}</span>
-                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc4}
-                        </h2>
-                      </div>
-                    </div>
-                  )}
                 </Fragment>
               );
             })}
@@ -1207,6 +1248,17 @@ export default function Home() {
               </svg>
               {t.followInstagram}
             </a>
+
+            {/* BOTÓN OCULTO PARA ELIMINAR CUENTA */}
+            <div className="mt-12 mb-8 flex justify-center">
+              <button 
+                onClick={handleDeleteAccount} 
+                disabled={isSigningOut}
+                className={`text-[10px] tracking-widest uppercase transition-colors opacity-40 hover:opacity-100 ${isDark ? 'text-red-400' : 'text-red-500'}`}
+              >
+                {t.deleteAccount}
+              </button>
+            </div>
 
           </div>
         </section>
