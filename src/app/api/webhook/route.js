@@ -159,8 +159,11 @@ export async function POST(req) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
+    console.error("Webhook signature verification failed:", err.message);
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
   }
+
+  console.log(`Stripe Event Received: ${event.type}`);
 
   switch (event.type) {
     case 'checkout.session.completed': {
@@ -177,23 +180,20 @@ export async function POST(req) {
       let userLang = 'es';
       if (userId) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
-        if (user?.email) {
-          userEmail = user.email;
-        }
-        if (user?.user_metadata?.lang) {
-          userLang = user.user_metadata.lang;
-        }
+        if (user?.email) userEmail = user.email;
+        if (user?.user_metadata?.lang) userLang = user.user_metadata.lang;
       }
 
       if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
-          await resend.emails.send({
+          const resendResponse = await resend.emails.send({
             from: 'Maeum <onboarding@resend.dev>',
             to: userEmail,
             subject: subject,
             html: html
           });
+          console.log("Correo de éxito enviado:", resendResponse);
         } catch (emailErr) {
           console.error("Error al enviar correo de éxito:", emailErr.message);
         }
@@ -219,23 +219,20 @@ export async function POST(req) {
 
       if (profile?.id) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
-        if (user?.email) {
-          userEmail = user.email;
-        }
-        if (user?.user_metadata?.lang) {
-          userLang = user.user_metadata.lang;
-        }
+        if (user?.email) userEmail = user.email;
+        if (user?.user_metadata?.lang) userLang = user.user_metadata.lang;
       }
 
       if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
-          await resend.emails.send({
+          const resendResponse = await resend.emails.send({
             from: 'Maeum <onboarding@resend.dev>',
             to: userEmail,
             subject: subject,
             html: html
           });
+          console.log("Correo de fallo enviado:", resendResponse);
         } catch (emailErr) {
           console.error("Error al enviar correo de fallo:", emailErr.message);
         }
@@ -246,13 +243,16 @@ export async function POST(req) {
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
-      // Si el usuario marcó la suscripción para cancelarse al final del periodo o se canceló de inmediato
+      console.log("Evaluando subscription.updated. Cancel at period end:", subscription.cancel_at_period_end, "Status:", subscription.status);
+
       if (subscription.cancel_at_period_end || subscription.status === 'canceled') {
         const { data: profile } = await supabaseAdmin
           .from('profiles')
           .select('id')
           .eq('stripe_customer_id', customerId)
           .single();
+
+        console.log("Perfil encontrado en Supabase para cancelación:", profile);
 
         if (profile?.id) {
           const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
@@ -261,12 +261,13 @@ export async function POST(req) {
             const userLang = user?.user_metadata?.lang || 'es';
             try {
               const { subject, html } = getEmailTemplate(userLang, 'delete');
-              await resend.emails.send({
+              const resendResponse = await resend.emails.send({
                 from: 'Maeum <onboarding@resend.dev>',
                 to: userEmail,
                 subject: subject,
                 html: html
               });
+              console.log("Correo de cancelación enviado con éxito a:", userEmail, resendResponse);
             } catch (emailErr) {
               console.error("Error al enviar correo de cancelación:", emailErr.message);
             }
@@ -297,12 +298,13 @@ export async function POST(req) {
           const userLang = user?.user_metadata?.lang || 'es';
           try {
             const { subject, html } = getEmailTemplate(userLang, 'delete');
-            await resend.emails.send({
+            const resendResponse = await resend.emails.send({
               from: 'Maeum <onboarding@resend.dev>',
               to: userEmail,
               subject: subject,
               html: html
             });
+            console.log("Correo de cancelación (deleted) enviado a:", userEmail, resendResponse);
           } catch (emailErr) {
             console.error("Error al enviar correo de cancelación:", emailErr.message);
           }
