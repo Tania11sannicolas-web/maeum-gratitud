@@ -167,29 +167,32 @@ export async function POST(req) {
       const session = event.data.object;
       const userId = session.metadata.userId;
       const customerId = session.customer;
-      const customerEmail = session.customer_details?.email;
 
       await supabaseAdmin
         .from('profiles')
         .update({ plan: 'premium', stripe_customer_id: customerId })
         .eq('id', userId);
 
-      // Obtenemos el idioma preferido del usuario desde Supabase Auth (metadata)
+      // Obtenemos el correo y el idioma directamente desde Supabase Auth
+      let userEmail = null;
       let userLang = 'es';
       if (userId) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(userId);
+        if (user?.email) {
+          userEmail = user.email;
+        }
         if (user?.user_metadata?.lang) {
           userLang = user.user_metadata.lang;
         }
       }
 
-      // Enviar correo de confirmación Premium con diseño y multiidioma
-      if (customerEmail) {
+      // Enviar correo de confirmación Premium con diseño y multiidioma al correo de registro
+      if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
           await resend.emails.send({
             from: 'Maeum <onboarding@resend.dev>',
-            to: customerEmail,
+            to: userEmail,
             subject: subject,
             html: html
           });
@@ -202,14 +205,14 @@ export async function POST(req) {
     case 'invoice.payment_failed': {
       const invoice = event.data.object;
       const customerId = invoice.customer;
-      const customerEmail = invoice.customer_email;
 
       await supabaseAdmin
         .from('profiles')
         .update({ plan: 'free' })
         .eq('stripe_customer_id', customerId);
 
-      // Buscamos el idioma del usuario asociado al customerId
+      // Buscamos el usuario por stripe_customer_id para obtener su correo de registro e idioma
+      let userEmail = null;
       let userLang = 'es';
       const { data: profile } = await supabaseAdmin
         .from('profiles')
@@ -219,18 +222,21 @@ export async function POST(req) {
 
       if (profile?.id) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+        if (user?.email) {
+          userEmail = user.email;
+        }
         if (user?.user_metadata?.lang) {
           userLang = user.user_metadata.lang;
         }
       }
 
-      // Enviar correo de aviso por fallo de pago con diseño y multiidioma
-      if (customerEmail) {
+      // Enviar correo de aviso por fallo de pago al correo de registro
+      if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
           await resend.emails.send({
             from: 'Maeum <onboarding@resend.dev>',
-            to: customerEmail,
+            to: userEmail,
             subject: subject,
             html: html
           });
@@ -244,7 +250,7 @@ export async function POST(req) {
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
-      // Buscamos el correo asociado en Supabase antes de actualizar el plan
+      // Buscamos el perfil asociado en Supabase antes de actualizar el plan
       const { data: profile } = await supabaseAdmin
         .from('profiles')
         .select('id')
@@ -260,12 +266,13 @@ export async function POST(req) {
       if (profile?.id) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
         if (user?.email) {
+          const userEmail = user.email;
           const userLang = user?.user_metadata?.lang || 'es';
           try {
             const { subject, html } = getEmailTemplate(userLang, 'delete');
             await resend.emails.send({
               from: 'Maeum <onboarding@resend.dev>',
-              to: user.email,
+              to: userEmail,
               subject: subject,
               html: html
             });

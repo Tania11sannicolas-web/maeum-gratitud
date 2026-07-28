@@ -60,14 +60,7 @@ export async function POST(request) {
       .delete()
       .eq('id', userId);
 
-    // 5. Borramos al usuario por completo de Supabase Auth
-    const { error: deleteAuthError } = await supabaseAdmin.auth.admin.deleteUser(userId);
-
-    if (deleteAuthError) {
-      return NextResponse.json({ error: deleteAuthError.message }, { status: 400 });
-    }
-
-    // 6. Generamos el HTML del correo multilenguaje basado en tu diseño
+    // 5. Generamos el HTML del correo multilenguaje basado en tu diseño
     let emailHtml = '';
     let emailSubject = 'Cuenta eliminada — Maeum';
 
@@ -126,7 +119,7 @@ export async function POST(request) {
       `;
     }
 
-    // 7. Enviamos el correo de confirmación de eliminación con Resend
+    // 6. Enviamos el correo de confirmación de eliminación con Resend (antes de borrar la auth)
     if (userEmail) {
       try {
         await resend.emails.send({
@@ -138,6 +131,13 @@ export async function POST(request) {
       } catch (emailErr) {
         console.error("Error al enviar correo de eliminación:", emailErr.message);
       }
+    }
+
+    // 7. Borramos al usuario por completo de Supabase Auth
+    const { error: deleteAuthError } = await supabaseAdmin.auth.admin.deleteUser(userId);
+
+    if (deleteAuthError) {
+      return NextResponse.json({ error: deleteAuthError.message }, { status: 400 });
     }
 
     return NextResponse.json({ success: true, message: "Cuenta eliminada correctamente" }, { status: 200 });
