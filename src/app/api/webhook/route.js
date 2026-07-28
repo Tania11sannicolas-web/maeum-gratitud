@@ -173,7 +173,6 @@ export async function POST(req) {
         .update({ plan: 'premium', stripe_customer_id: customerId })
         .eq('id', userId);
 
-      // Obtenemos el correo y el idioma directamente desde Supabase Auth
       let userEmail = null;
       let userLang = 'es';
       if (userId) {
@@ -186,7 +185,6 @@ export async function POST(req) {
         }
       }
 
-      // Enviar correo de confirmación Premium con diseño y multiidioma al correo de registro
       if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
@@ -211,7 +209,6 @@ export async function POST(req) {
         .update({ plan: 'free' })
         .eq('stripe_customer_id', customerId);
 
-      // Buscamos el usuario por stripe_customer_id para obtener su correo de registro e idioma
       let userEmail = null;
       let userLang = 'es';
       const { data: profile } = await supabaseAdmin
@@ -230,7 +227,6 @@ export async function POST(req) {
         }
       }
 
-      // Enviar correo de aviso por fallo de pago al correo de registro
       if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
@@ -246,11 +242,43 @@ export async function POST(req) {
       }
       break;
     }
+    case 'customer.subscription.updated': {
+      const subscription = event.data.object;
+      const customerId = subscription.customer;
+
+      // Si el usuario marcó la suscripción para cancelarse al final del periodo o se canceló de inmediato
+      if (subscription.cancel_at_period_end || subscription.status === 'canceled') {
+        const { data: profile } = await supabaseAdmin
+          .from('profiles')
+          .select('id')
+          .eq('stripe_customer_id', customerId)
+          .single();
+
+        if (profile?.id) {
+          const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+          if (user?.email) {
+            const userEmail = user.email;
+            const userLang = user?.user_metadata?.lang || 'es';
+            try {
+              const { subject, html } = getEmailTemplate(userLang, 'delete');
+              await resend.emails.send({
+                from: 'Maeum <onboarding@resend.dev>',
+                to: userEmail,
+                subject: subject,
+                html: html
+              });
+            } catch (emailErr) {
+              console.error("Error al enviar correo de cancelación:", emailErr.message);
+            }
+          }
+        }
+      }
+      break;
+    }
     case 'customer.subscription.deleted': {
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
-      // Buscamos el perfil asociado en Supabase antes de actualizar el plan
       const { data: profile } = await supabaseAdmin
         .from('profiles')
         .select('id')
@@ -262,7 +290,6 @@ export async function POST(req) {
         .update({ plan: 'free' })
         .eq('stripe_customer_id', customerId);
 
-      // Si encontramos al usuario, obtenemos su correo de Auth y su idioma para notificarle
       if (profile?.id) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
         if (user?.email) {
