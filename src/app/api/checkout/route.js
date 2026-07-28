@@ -10,8 +10,8 @@ export async function GET(request) {
     const interval = url.searchParams.get('interval'); // 'month' o 'year'
 
     // Define aquí tus dos Price IDs reales de Stripe
-    const monthlyPriceId = 'prod_UyBMaiORnoXTz7'; // 3 dólares al mes
-    const yearlyPriceId = 'prod_UyBMg8770K7nME';     // 33 dólares al año
+    const monthlyPriceId = 'price_1TyEzYA474woCtDPfWoKCzhj'; // 3 dólares al mes
+    const yearlyPriceId = 'price_1TyF0DA474woCtDPbwb7C1l5';     // 33 dólares al año
 
     // Selecciona el precio según lo que el usuario eligió
     const selectedPrice = interval === 'year' ? yearlyPriceId : monthlyPriceId;
