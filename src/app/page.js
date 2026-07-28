@@ -26,8 +26,14 @@ const dict = {
     spamNotice: "*Si no lo ves, por favor revisa tu carpeta de Spam o Correo no deseado.", verifiedEnter: "Ya lo verifiqué → Entrar",
     installTitle: "Instala Maeum", installDesc: "Lleva tu espacio de pausa visual directo en tu pantalla de inicio.",
     understood: "Entendido", noAccount: "¿No tienes cuenta?", haveAccount: "¿Ya tienes cuenta?", backToLogin: "Volver a Iniciar Sesión",
-    takeBreakTitle: "Tómate un respiro", takeBreakDesc: "Has contemplado mucha belleza por ahora. Es momento de estar presente en el mundo real, descansar tus ojos y reconectar contigo. Vuelve en una hora.",
+    takeBreakTitleFree: "Límite alcanzado", takeBreakDescFree: "Has contemplado mucha belleza por ahora. Vuelve en una hora para seguir viendo o actualiza a Premium para extender tu tiempo.",
+    takeBreakTitlePremium: "Tómate un respiro", takeBreakDescPremium: "Es momento de estar presente en la vida real. Relaja tu mente, descansa tus ojos y reconecta contigo. Vuelve en una hora.",
     processing: "Procesando...",
+    pricingTitle: "Elige tu Refugio", pricingFree: "Pausa Continua", pricingPremium: "Refugio Profundo",
+    freeBenefit1: "Hasta 5 etiquetas de inspiración", freeBenefit2: "Guarda 24 destellos en tu galería", freeBenefit3: "15 pausas visuales por hora",
+    premiumBenefit1: "Hasta 5 etiquetas de inspiración", premiumBenefit2: "Guarda hasta 300 destellos en tu galería", premiumBenefit3: "50 pausas visuales por hora",
+    monthly: "$3 / mes", yearly: "$33 / año", subscribeBtn: "Actualizar a Premium", manageSubscription: "Gestionar Suscripción", galleryFull: "Galería llena",
+    galleryFullDescFree: "Has alcanzado tu límite de 24 destellos. Actualiza a Premium para guardar hasta 300.", galleryFullDescPremium: "Has alcanzado el límite máximo de 300 destellos.",
     tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" }
   },
   en: { 
@@ -53,8 +59,14 @@ const dict = {
     spamNotice: "*If you don't see it, please check your Spam folder.", verifiedEnter: "I verified it → Enter",
     installTitle: "Install Maeum", installDesc: "Take your visual pause space directly to your home screen.",
     understood: "Understood", noAccount: "Don't have an account?", haveAccount: "Already have an account?", backToLogin: "Back to Log In",
-    takeBreakTitle: "Take a breath", takeBreakDesc: "You've contemplated enough beauty for now. Time to be present in the real world. Come back in about an hour.",
+    takeBreakTitleFree: "Limit reached", takeBreakDescFree: "You've contemplated a lot of beauty for now. Come back in an hour to keep viewing or upgrade to Premium for more time.",
+    takeBreakTitlePremium: "Take a breath", takeBreakDescPremium: "It's time to be present in the real world. Relax your mind, rest your eyes, and reconnect. Come back in an hour.",
     processing: "Processing...",
+    pricingTitle: "Choose your Refuge", pricingFree: "Continuous Pause", pricingPremium: "Deep Refuge",
+    freeBenefit1: "Up to 5 inspiration tags", freeBenefit2: "Save 24 flashes in your gallery", freeBenefit3: "15 visual pauses per hour",
+    premiumBenefit1: "Up to 5 inspiration tags", premiumBenefit2: "Save up to 300 flashes in your gallery", premiumBenefit3: "50 visual pauses per hour",
+    monthly: "$3 / month", yearly: "$33 / year", subscribeBtn: "Upgrade to Premium", manageSubscription: "Manage Subscription", galleryFull: "Gallery full",
+    galleryFullDescFree: "You've reached your limit of 24 flashes. Upgrade to Premium to save up to 300.", galleryFullDescPremium: "You've reached the maximum limit of 300 flashes.",
     tags: { nature: "nature", minimal: "minimal", art: "art", space: "space", animals: "animals", cities: "cities", flowers: "flowers", colors: "colors", ocean: "ocean", botanical: "botanical", warm: "warm", desert: "desert", abstract: "abstract", vintage: "vintage", neon: "neon", geometry: "geometry", texture: "texture", landscape: "landscape", clouds: "clouds", macro: "macro" }
   },
   fr: { 
@@ -80,8 +92,14 @@ const dict = {
     spamNotice: "*Vérifiez vos spams si besoin.", verifiedEnter: "Vérifié → Entrer",
     installTitle: "Installer Maeum", installDesc: "Ajoutez Maeum à votre écran d'accueil.",
     understood: "Compris", noAccount: "Pas de compte?", haveAccount: "Déjà un compte?", backToLogin: "Retour",
-    takeBreakTitle: "Prenez une pause", takeBreakDesc: "Vous avez contemplé assez de beauté. Revenez dans une heure.",
+    takeBreakTitleFree: "Limite atteinte", takeBreakDescFree: "Vous avez contemplé beaucoup de beauté pour l'instant. Revenez dans une heure ou passez à Premium pour prolonger votre temps.",
+    takeBreakTitlePremium: "Prenez une pause", takeBreakDescPremium: "Il est temps d'être présent dans le monde réel. Détendez votre esprit, reposez vos yeux. Revenez dans une heure.",
     processing: "Traitement...",
+    pricingTitle: "Choisissez votre Refuge", pricingFree: "Pause Continue", pricingPremium: "Refuge Profond",
+    freeBenefit1: "Jusqu'à 5 tags d'inspiration", freeBenefit2: "Sauvegardez 24 éclats dans votre galerie", freeBenefit3: "15 pauses visuelles par heure",
+    premiumBenefit1: "Jusqu'à 5 tags d'inspiration", premiumBenefit2: "Sauvegardez jusqu'à 300 éclats", premiumBenefit3: "50 pauses visuelles par heure",
+    monthly: "3 $ / mois", yearly: "33 $ / an", subscribeBtn: "Passer à Premium", manageSubscription: "Gérer l'abonnement", galleryFull: "Galerie pleine",
+    galleryFullDescFree: "Vous avez atteint votre limite de 24 éclats. Passez à Premium pour en sauvegarder 300.", galleryFullDescPremium: "Vous avez atteint la limite maximale de 300 éclats.",
     tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" }
   },
   ko: { 
@@ -107,16 +125,31 @@ const dict = {
     spamNotice: "*보이지 않는다면 스팸함을 확인해 주세요.", verifiedEnter: "확인 완료 → 입장",
     installTitle: "Maeum 설치", installDesc: "홈 화면에 시각적 휴식 공간을 추가하세요.",
     understood: "이해했습니다", noAccount: "계정이 없으신가요?", haveAccount: "이미 계정이 있으신가요?", backToLogin: "로그인으로 돌아가기",
-    takeBreakTitle: "잠시 휴식", takeBreakDesc: "충분한 아름다움을 감상하셨습니다. 현실 세계에 머무를 시간입니다. 한 시간 후에 다시 오세요.",
+    takeBreakTitleFree: "한도 도달", takeBreakDescFree: "충분한 아름다움을 감상하셨습니다. 계속 보시려면 한 시간 후에 다시 오시거나 프리미엄으로 업그레이드하세요.",
+    takeBreakTitlePremium: "잠시 휴식", takeBreakDescPremium: "현실 세계에 머무를 시간입니다. 마음을 편안하게 하고 눈을 쉬게 하세요. 한 시간 후에 다시 오세요.",
     processing: "처리 중...",
+    pricingTitle: "피난처 선택", pricingFree: "지속적인 휴식", pricingPremium: "깊은 피난처",
+    freeBenefit1: "최대 5개의 영감 태그", freeBenefit2: "갤러리에 24개의 추억 저장", freeBenefit3: "시간당 15번의 시각적 휴식",
+    premiumBenefit1: "최대 5개의 영감 태그", premiumBenefit2: "갤러리에 최대 300개의 추억 저장", premiumBenefit3: "시간당 50번의 시각적 휴식",
+    monthly: "월 $3", yearly: "연 $33", subscribeBtn: "프리미엄으로 업그레이드", manageSubscription: "구독 관리", galleryFull: "갤러리 가득 참",
+    galleryFullDescFree: "24개의 저장 한도에 도달했습니다. 최대 300개를 저장하려면 프리미엄으로 업그레이드하세요.", galleryFullDescPremium: "최대 300개 저장 한도에 도달했습니다.",
     tags: { nature: "자연", minimal: "미니멀", art: "예술", space: "우주", animals: "동물", cities: "도시", flowers: "꽃", colors: "색상", ocean: "바다", botanical: "식물", warm: "따뜻한", desert: "사막", abstract: "추상", vintage: "빈티지", neon: "네온", geometry: "기하학", texture: "질감", landscape: "풍경", clouds: "구름", macro: "매크로" }
   }
 };
 
 const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities", "flowers", "colors", "ocean", "botanical", "warm", "desert", "abstract", "vintage", "neon", "geometry", "texture", "landscape", "clouds", "macro"];
 
+// Configuración de límites
+const LIMITS = {
+  free: { apiCalls: 15, gallery: 24 },
+  premium: { apiCalls: 50, gallery: 300 },
+  lifetime: { apiCalls: 50, gallery: 300 }
+};
+
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [userPlan, setUserPlan] = useState("free"); // free, premium, lifetime
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -165,6 +198,28 @@ export default function Home() {
   const loadingRef = useRef(false);
 
   const isDark = theme === "dark";
+  const t = dict[lang] || dict.es;
+
+  // Lógica de límites
+  const currentLimits = LIMITS[userPlan] || LIMITS.free;
+
+  const checkApiLimit = () => {
+    const now = Date.now();
+    const storedData = JSON.parse(localStorage.getItem('maeum_api_tracker') || '{"count": 0, "timestamp": 0}');
+    
+    // Resetear cada hora
+    if (now - storedData.timestamp > 3600000) {
+      localStorage.setItem('maeum_api_tracker', JSON.stringify({ count: 1, timestamp: now }));
+      return true;
+    }
+    
+    if (storedData.count >= currentLimits.apiCalls) {
+      return false; // Límite excedido
+    }
+    
+    localStorage.setItem('maeum_api_tracker', JSON.stringify({ count: storedData.count + 1, timestamp: storedData.timestamp }));
+    return true;
+  };
 
   const normalizedLikes = useMemo(() => {
     let arr = likes.map(p => ({
@@ -176,10 +231,12 @@ export default function Home() {
       downloadLocation: p.downloadLocation || `https://api.unsplash.com/photos/${p.id}/download`
     }));
 
-    if (sortOrder === "newest") return arr.reverse();
-    if (sortOrder === "random") return arr.sort(() => Math.random() - 0.5);
-    return arr;
-  }, [likes, sortOrder]);
+    if (sortOrder === "newest") arr = arr.reverse();
+    if (sortOrder === "random") arr = arr.sort(() => Math.random() - 0.5);
+    
+    // Regla de ocultar fotos más allá del límite si bajó a versión free
+    return arr.slice(0, currentLimits.gallery);
+  }, [likes, sortOrder, currentLimits.gallery]);
 
   const displayedGallery = useMemo(() => {
     return normalizedLikes.slice(0, galleryLimit);
@@ -216,6 +273,7 @@ export default function Home() {
         setLikes([]); 
         setSelectedTags([]); 
         setProfileName(""); 
+        setUserPlan("free");
       }
     });
 
@@ -259,35 +317,29 @@ export default function Home() {
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    if (u.user_metadata?.theme) {
-      setTheme(u.user_metadata.theme);
-      localStorage.setItem('maeum-theme', u.user_metadata.theme);
-    }
-    
-    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) {
-      setLang(u.user_metadata.lang);
-      localStorage.setItem('maeum-lang', u.user_metadata.lang);
-    }
-    
-    if (u.user_metadata?.tags) {
-      setSelectedTags(u.user_metadata.tags);
+    // --- NUEVO: Consultamos el plan de la tabla segura profiles ---
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('plan')
+      .eq('id', u.id)
+      .single();
+      
+    if (profileData && profileData.plan) {
+      setUserPlan(profileData.plan);
     } else {
-      setSelectedTags([]);
+      setUserPlan("free");
     }
+    // -------------------------------------------------------------
+    
+    if (u.user_metadata?.theme) { setTheme(u.user_metadata.theme); localStorage.setItem('maeum-theme', u.user_metadata.theme); }
+    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { setLang(u.user_metadata.lang); localStorage.setItem('maeum-lang', u.user_metadata.lang); }
+    if (u.user_metadata?.tags) setSelectedTags(u.user_metadata.tags); else setSelectedTags([]);
 
-    const { data, error } = await supabase
-      .from('user_likes')
-      .select('*')
-      .eq('user_id', u.id);
-
+    const { data, error } = await supabase.from('user_likes').select('*').eq('user_id', u.id);
     if (!error && data) {
       setLikes(data.map(item => ({
-        id: item.photo_id,
-        url: item.photo_url,
-        title: item.title,
-        authorName: item.author_name,
-        authorUsername: item.author_username,
-        downloadLocation: item.download_location
+        id: item.photo_id, url: item.photo_url, title: item.title, authorName: item.author_name,
+        authorUsername: item.author_username, downloadLocation: item.download_location
       })));
     }
   };
@@ -310,6 +362,15 @@ export default function Home() {
 
   const loadMorePhotos = async () => {
     if (loadingRef.current) return;
+
+    if (!checkApiLimit()) {
+      setAppMessage({
+        title: userPlan === 'free' ? t.takeBreakTitleFree : t.takeBreakTitlePremium,
+        text: userPlan === 'free' ? t.takeBreakDescFree : t.takeBreakDescPremium
+      });
+      return;
+    }
+
     loadingRef.current = true;
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
@@ -317,9 +378,9 @@ export default function Home() {
       
       if (!res.ok) {
         if (res.status === 403 || res.status === 429) {
-          setAppMessage({
-            title: dict[lang].takeBreakTitle,
-            text: dict[lang].takeBreakDesc
+          setAppMessage({ 
+            title: "Pausa obligatoria", 
+            text: "El mundo requiere tu presencia. La API necesita un respiro. Vuelve pronto." 
           });
         }
         loadingRef.current = false;
@@ -392,7 +453,7 @@ export default function Home() {
       if (error) {
         setAppMessage({ title: "Error", text: error.message });
       } else {
-        setAppMessage({ title: "Email", text: dict[lang].magicLinkText });
+        setAppMessage({ title: "Email", text: t.magicLinkText });
         setShowAuthModal(false);
       }
       setIsAuthenticating(false);
@@ -400,7 +461,7 @@ export default function Home() {
     }
 
     if (!isLogin && !acceptedTerms) {
-      setAppMessage({ title: "Aviso", text: dict[lang].termsCheck });
+      setAppMessage({ title: "Aviso", text: t.termsCheck });
       setIsAuthenticating(false);
       return;
     }
@@ -414,7 +475,7 @@ export default function Home() {
     } else {
       authResult = await supabase.auth.signUp({ 
         email, password, 
-        options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme, lang: currentLang } }
+        options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme, lang: currentLang, plan: "free" } }
       });
     }
 
@@ -447,6 +508,7 @@ export default function Home() {
     setLikes([]);
     setSelectedTags([]);
     setProfileName("");
+    setUserPlan("free");
     setCurrentTab("explore");
     setIsSigningOut(false);
   };
@@ -462,6 +524,14 @@ export default function Home() {
       setLikes(newLikes);
       await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', photo.id);
     } else {
+      if (likes.length >= currentLimits.gallery) {
+        setAppMessage({ 
+          title: t.galleryFull, 
+          text: userPlan === 'free' ? t.galleryFullDescFree : t.galleryFullDescPremium 
+        });
+        return;
+      }
+
       const newPhotoRecord = {
         user_id: user.id,
         photo_id: photo.id,
@@ -508,7 +578,6 @@ export default function Home() {
       
       const file = new File([blob], `maeum-${id}.jpg`, { type: blob.type });
 
-      // Verificamos si podemos usar el API nativo de compartir (iOS/Android lo aman)
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
@@ -516,7 +585,6 @@ export default function Home() {
           text: 'Destello de Maeum'
         });
       } else {
-        // Fallback tradicional si no está soportado
         const blobUrl = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = blobUrl;
@@ -544,7 +612,7 @@ export default function Home() {
         if (passError) throw passError;
         setNewPassword("");
       }
-      setAppMessage({ title: "Info", text: dict[lang].save + " ✓" });
+      setAppMessage({ title: "Info", text: t.save + " ✓" });
     } catch (error) {
       setAppMessage({ title: "Error", text: error.message });
     } finally {
@@ -591,8 +659,6 @@ export default function Home() {
     else audioRef.current.play();
     setIsPlaying(!isPlaying);
   };
-
-  const t = dict[lang] || dict.es;
 
   return (
     <main className={`min-h-screen pb-24 font-light transition-colors duration-500 ${isDark ? 'bg-neutral-950 text-neutral-300' : 'bg-white text-neutral-800'}`}>
@@ -714,6 +780,42 @@ export default function Home() {
 
                   {!user && index === 3 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-4xl w-full flex flex-col items-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-10 font-medium text-center ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pricingTitle}</span>
+                        
+                        <div className="flex flex-col md:flex-row gap-8 w-full justify-center">
+                          {/* Plan Free */}
+                          <div className={`flex-1 p-8 rounded-2xl border ${isDark ? 'border-neutral-800 bg-neutral-900/50' : 'border-neutral-200 bg-white'}`}>
+                            <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingFree}</h3>
+                            <p className={`text-2xl font-light mb-8 ${isDark ? 'text-white' : 'text-black'}`}>Gratis</p>
+                            <ul className={`space-y-4 text-sm font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit1}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit2}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit3}</li>
+                            </ul>
+                          </div>
+
+                          {/* Plan Premium */}
+                          <div className={`flex-1 p-8 rounded-2xl border relative overflow-hidden ${isDark ? 'border-neutral-700 bg-neutral-800/50' : 'border-neutral-900 bg-neutral-50'}`}>
+                            <div className="absolute top-0 right-0 px-3 py-1 bg-neutral-900 text-white text-[10px] tracking-widest uppercase rounded-bl-lg">Premium</div>
+                            <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingPremium}</h3>
+                            <div className="flex items-end gap-2 mb-8">
+                              <p className={`text-2xl font-light ${isDark ? 'text-white' : 'text-black'}`}>{t.monthly}</p>
+                              <span className={`text-xs pb-1 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>o {t.yearly}</span>
+                            </div>
+                            <ul className={`space-y-4 text-sm font-light ${isDark ? 'text-neutral-300' : 'text-neutral-600'}`}>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit1}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit2}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit3}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 5 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
                         <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle2}</span>
                         <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
@@ -726,7 +828,7 @@ export default function Home() {
                     </div>
                   )}
 
-                  {!user && index === 5 && (
+                  {!user && index === 7 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
                         <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle3}</span>
@@ -740,7 +842,7 @@ export default function Home() {
                     </div>
                   )}
 
-                  {!user && index === 7 && (
+                  {!user && index === 9 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
                         <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle4}</span>
@@ -768,7 +870,7 @@ export default function Home() {
           <div className={`mb-6 border-b pb-4 ${isDark ? 'border-neutral-900' : 'border-neutral-100'}`}>
             <div className="flex justify-between items-center px-2">
                <h2 className={`text-xs tracking-widest uppercase ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>
-                 {t.gallery} ({normalizedLikes.length})
+                 {t.gallery} ({normalizedLikes.length}/{currentLimits.gallery})
                </h2>
                
                {normalizedLikes.length > 0 && (
@@ -909,6 +1011,8 @@ export default function Home() {
               className={`w-full text-2xl font-normal text-center bg-transparent border-b outline-none pb-2 transition-colors text-[16px] sm:text-2xl ${isDark ? 'border-transparent focus:border-neutral-700 text-neutral-100' : 'border-transparent focus:border-neutral-200 text-neutral-900'}`} 
             />
             <p className={`text-xs mt-2 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{user.email}</p>
+            {userPlan === 'premium' && <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-neutral-800 to-neutral-900 text-white text-[10px] uppercase tracking-widest rounded-full">Premium Activo</span>}
+            {userPlan === 'lifetime' && <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-neutral-800 to-neutral-900 text-white text-[10px] uppercase tracking-widest rounded-full">Premium de por Vida</span>}
           </div>
 
           <div className="space-y-8">
@@ -1048,6 +1152,33 @@ export default function Home() {
                 </>
               ) : t.save}
             </button>
+
+            {/* SECCIÓN STRIPE EN PERFIL */}
+            {userPlan === 'free' && (
+              <div className="flex flex-col gap-3 mt-4">
+                <button 
+                  onClick={() => window.location.href = `/api/checkout?user_id=${user.id}&interval=month`} 
+                  className={`w-full py-4 text-xs tracking-widest uppercase rounded-md flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg ${isDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
+                >
+                  {t.subscribeBtn} — Mensual ($3)
+                </button>
+                <button 
+                  onClick={() => window.location.href = `/api/checkout?user_id=${user.id}&interval=year`} 
+                  className={`w-full py-4 text-xs tracking-widest uppercase rounded-md flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg border ${isDark ? 'border-neutral-700 text-white hover:bg-neutral-800' : 'border-neutral-300 text-black hover:bg-neutral-50'}`}
+                >
+                  {t.subscribeBtn} — Anual ($33)
+                </button>
+              </div>
+            )}
+            
+            {userPlan === 'premium' && (
+              <button 
+                onClick={() => window.location.href = `/api/billing-portal?user_id=${user.id}`} 
+                className={`w-full py-4 border text-xs tracking-widest uppercase rounded-md flex items-center justify-center gap-2 active:scale-95 transition-all mt-4 ${isDark ? 'border-neutral-700 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'}`}
+              >
+                {t.manageSubscription}
+              </button>
+            )}
             
             <button 
               onClick={handleSignOut} 
@@ -1154,37 +1285,48 @@ export default function Home() {
               <h4 className={`font-semibold uppercase tracking-widest text-[10px] mt-6 ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>1. Términos y Condiciones de Uso</h4>
               <p className="italic">Última actualización: Julio de 2026</p>
               <p>Bienvenido a Maeum. Al acceder, registrarte o utilizar nuestra aplicación web y PWA (en adelante, "la App"), aceptas cumplir y estar sujeto a los siguientes Términos y Condiciones de Uso. Por favor, léelos detenidamente.</p>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Descripción del Servicio</p>
               <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Unsplash), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cuentas de Usuario y Registro</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>Para acceder a ciertas funciones, como guardar tu galería o personalizar tu perfil, es necesario crear una cuenta con un correo electrónico válido.</li>
                 <li>Eres responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</li>
               </ul>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Planes de Suscripción (Free y Premium)</p>
               <p>Maeum ofrece dos modalidades de uso:</p>
               <ul className="list-disc pl-4 space-y-2">
-                <li>Plan Gratuito (Free): Permite seleccionar un máximo de 2 etiquetas de inspiración, almacenar hasta 21 fotos en la galería personal y disfrutar de un límite de 3 minutos de reproducción continua de audio ambiental por sesión.</li>
-                <li>Plan Premium: Mediante una suscripción de pago ($5 USD al mes o $35 USD al año), el usuario desbloquea hasta 5 etiquetas simultáneas, galería ilimitada de fotos guardadas y reproducción de audio ambiental ilimitada.</li>
+                <li>Plan Gratuito (Free): Permite seleccionar hasta 5 etiquetas de inspiración, almacenar hasta 24 fotos en la galería personal y disfrutar de un límite de 15 pausas visuales por hora. Cuentas inactivas por 6 meses serán eliminadas junto con sus datos.</li>
+                <li>Plan Premium: Mediante una suscripción ($3 USD/mes o $33 USD/año), el usuario desbloquea galería de hasta 300 fotos y 50 pausas visuales por hora. El pago se procesa por Stripe. Puedes cancelar en cualquier momento y mantendrás el acceso hasta el fin del periodo pagado.</li>
               </ul>
+              <p>Si un pago de renovación falla tras los intentos automáticos, la cuenta regresará a la versión Free y se ocultarán las imágenes por encima del límite de 24.</p>
+
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Pagos y Procesamiento a través de Stripe</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propias políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
                 <li>Maeum no almacena directamente los números completos de tus tarjetas de crédito o débito en sus servidores. Las suscripciones se renuevan de manera automática según el periodo elegido (mensual o anual), pudiendo cancelarse en cualquier momento desde la configuración de tu cuenta.</li>
               </ul>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Propiedad Intelectual y Contenido</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>El diseño, código fuente, logotipos y la marca Maeum son propiedad exclusiva de sus creadores.</li>
                 <li>Las imágenes mostradas son proporcionadas a través de la API de Unsplash y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
               </ul>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>6. Limitación de Responsabilidad</p>
               <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Unsplash.</p>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>7. Modificaciones</p>
               <p>Podemos actualizar estos Términos ocasionalmente. Notificaremos cambios significativos a través de la App. El uso continuado tras dichos cambios implica su aceptación.</p>
+              
               <hr className={`my-6 ${isDark ? 'border-neutral-800' : 'border-neutral-100'}`} />
+              
               <h4 className={`font-semibold uppercase tracking-widest text-[10px] ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>2. Política de Privacidad</h4>
               <p className="italic">Última actualización: Julio de 2026</p>
               <p>En Maeum, valoramos profundamente tu privacidad y tu tranquilidad digital. Esta Política de Privacidad explica qué datos recopilamos, cómo los utilizamos y cómo los protegemos.</p>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Información que Recopilamos</p>
               <p>Cuando creas una cuenta o utilizas Maeum, recopilamos únicamente la información esencial para el funcionamiento de la App:</p>
               <ul className="list-disc pl-4 space-y-2">
@@ -1192,6 +1334,7 @@ export default function Home() {
                 <li>Preferencias de Perfil: Las etiquetas de inspiración seleccionadas, tu frase inspiradora personal y las fotografías guardadas en tu galería.</li>
                 <li>Datos de Pago (Stripe): Si decides adquirir el plan Premium, los datos financieros y de cobro (como tarjetas de crédito o débito) son recopilados, procesados y almacenados de manera directa y segura por Stripe, nuestro procesador de pagos certificado. Maeum solo recibe confirmaciones de estado de pago (activo/inactivo) para habilitar tus beneficios.</li>
               </ul>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cómo Utilizamos tu Información</p>
               <p>Utilizamos tus datos exclusivamente para:</p>
               <ul className="list-disc pl-4 space-y-2">
@@ -1199,10 +1342,13 @@ export default function Home() {
                 <li>Sincronizar tu galería personal, preferencias estéticas y nivel de suscripción (Free o Premium) en tus dispositivos.</li>
                 <li>Nunca vendemos, rentamos ni compartimos tus datos personales con terceros con fines publicitarios o comerciales.</li>
               </ul>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>3. Seguridad de los Datos</p>
               <p>Utilizamos servicios de infraestructura en la nube seguros y estándares de la industria (Supabase y pasarelas de pago cifradas como Stripe con protocolo HTTPS) para garantizar que tu información y credenciales estén protegidas contra accesos no autorizados.</p>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Tus Derechos</p>
               <p>Tienes el derecho absoluto de acceder a tu información, modificarla desde tu perfil o solicitar la eliminación de tu cuenta y todos los datos asociados en cualquier momento.</p>
+              
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Contacto</p>
               <p>Si tienes dudas o solicitudes sobre esta política o tus datos personales, puedes escribirnos a través de nuestras redes oficiales (como nuestro Instagram @maeum_gratitud).</p>
             </div>
