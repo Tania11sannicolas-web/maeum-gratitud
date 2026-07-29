@@ -185,7 +185,7 @@ export async function POST(req) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
           await resend.emails.send({
-            from: 'Maeum <onboarding@resend.dev>',
+            from: 'Maeum <hola@maeumgratitud.com>',
             to: userEmail,
             subject: subject,
             html: html
@@ -223,7 +223,7 @@ export async function POST(req) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
           await resend.emails.send({
-            from: 'Maeum <onboarding@resend.dev>',
+            from: 'Maeum <hola@maeumgratitud.com>',
             to: userEmail,
             subject: subject,
             html: html
@@ -254,7 +254,7 @@ export async function POST(req) {
             try {
               const { subject, html } = getEmailTemplate(userLang, 'delete');
               await resend.emails.send({
-                from: 'Maeum <onboarding@resend.dev>',
+                from: 'Maeum <hola@maeumgratitud.com>',
                 to: userEmail,
                 subject: subject,
                 html: html
@@ -290,7 +290,7 @@ export async function POST(req) {
           try {
             const { subject, html } = getEmailTemplate(userLang, 'delete');
             await resend.emails.send({
-              from: 'Maeum <onboarding@resend.dev>',
+              from: 'Maeum <hola@maeumgratitud.com>',
               to: userEmail,
               subject: subject,
               html: html
