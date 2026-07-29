@@ -1,4 +1,4 @@
-// Forzando dominio oficial directo - 2026-07-28
+// Log de depuración total - 2026-07-28
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
@@ -160,14 +160,18 @@ export async function POST(req) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
+    console.error("❌ Error de firma en Webhook:", err.message);
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
   }
+
+  console.log(`🔔 Evento recibido de Stripe: ${event.type}`);
 
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object;
       const userId = session.metadata?.userId;
       const customerId = session.customer;
+      console.log(`👤 Procesando compra para userId: ${userId}, customerId: ${customerId}`);
 
       if (userId) {
         await supabaseAdmin
@@ -184,17 +188,20 @@ export async function POST(req) {
         if (user?.user_metadata?.lang) userLang = user.user_metadata.lang;
       }
 
+      console.log(`📧 Correo destino obtenido para éxito: ${userEmail}`);
+
       if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
-          await resend.emails.send({
+          const resendRes = await resend.emails.send({
             from: 'Maeum <hola@maeumgratitud.com>',
             to: userEmail,
             subject: subject,
             html: html
           });
+          console.log("✅ Resend respondió con éxito:", resendRes);
         } catch (emailErr) {
-          console.error("Error al enviar correo de éxito:", emailErr.message);
+          console.error("❌ Error enviando correo de éxito con Resend:", emailErr);
         }
       }
       break;
@@ -222,17 +229,20 @@ export async function POST(req) {
         if (user?.user_metadata?.lang) userLang = user.user_metadata.lang;
       }
 
+      console.log(`📧 Correo destino obtenido para fallo: ${userEmail}`);
+
       if (userEmail) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
-          await resend.emails.send({
+          const resendRes = await resend.emails.send({
             from: 'Maeum <hola@maeumgratitud.com>',
             to: userEmail,
             subject: subject,
             html: html
           });
+          console.log("✅ Resend respondió con éxito:", resendRes);
         } catch (emailErr) {
-          console.error("Error al enviar correo de fallo:", emailErr.message);
+          console.error("❌ Error enviando correo de fallo con Resend:", emailErr);
         }
       }
       break;
@@ -241,6 +251,7 @@ export async function POST(req) {
     case 'customer.subscription.deleted': {
       const subscription = event.data.object;
       const customerId = subscription.customer;
+      console.log(`🔄 Procesando suscripción ${event.type} para customerId: ${customerId}`);
 
       if (event.type === 'customer.subscription.deleted') {
         await supabaseAdmin
@@ -255,28 +266,33 @@ export async function POST(req) {
         .eq('stripe_customer_id', customerId)
         .single();
 
+      console.log(`🗂️ Perfil encontrado en Supabase para cancelación:`, profile);
+
       if (profile?.id) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
         if (user?.email) {
           const userEmail = user.email;
           const userLang = user?.user_metadata?.lang || 'es';
+          console.log(`📧 Correo destino obtenido para cancelación: ${userEmail}`);
+
           try {
             const { subject, html } = getEmailTemplate(userLang, 'delete');
-            await resend.emails.send({
+            const resendRes = await resend.emails.send({
               from: 'Maeum <hola@maeumgratitud.com>',
               to: userEmail,
               subject: subject,
               html: html
             });
+            console.log("✅ Resend respondió con éxito en cancelación:", resendRes);
           } catch (emailErr) {
-            console.error("Error al enviar correo de cancelación:", emailErr.message);
+            console.error("❌ Error enviando correo de cancelación con Resend:", emailErr);
           }
         }
       }
       break;
     }
     default:
-      console.log(`Evento no manejado: ${event.type}`);
+      console.log(`⚠️ Evento ignorado (no manejado): ${event.type}`);
   }
 
   return NextResponse.json({ received: true });
