@@ -6,7 +6,7 @@ const dict = {
   es: { 
     explore: "Explorar", gallery: "Galería", profile: "Perfil", login: "Entrar", email: "Correo", password: "Contraseña", 
     termsCheck: "Acepto los Términos y Política de Privacidad", viewHere: "Ver aquí", register: "Crear cuenta", empty: "Aún no hay destellos guardados.", 
-    deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", cancel: "Cancelar", phrase: "Tu frase inspiradora", save: "Guardar", 
+    deleteConfirm: "¿Soltar este recuerdo?", yes: "Sí", no: "No", phrase: "Tu frase inspiradora", save: "Guardar", 
     newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña", newest: "Más recientes", 
     oldest: "Más antiguas", random: "Aleatorio", installApp: "Instalar App", loginBtn: "Iniciar sesión", 
     profileTagsHint: "En tu perfil puedes elegir las etiquetas de inspiración que prefieras.",
@@ -36,12 +36,12 @@ const dict = {
     galleryFullDescFree: "Has alcanzado tu límite de 24 destellos. Actualiza a Premium para guardar hasta 300.", galleryFullDescPremium: "Has alcanzado el límite máximo de 300 destellos.",
     tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" },
     deleteAccount: "Eliminar cuenta permanentemente", deleteAccountConfirm: "Esta acción borrará tu galería, perfil y cancelará cualquier suscripción activa. No se puede deshacer. ¿Estás seguro/a?",
-    premiumActive: "Premium", lifetimeActive: "Premium de por Vida"
+    premiumActive: "Premium Activo", lifetimeActive: "Premium de por Vida", loginErrorTitle: "Acceso denegado", tryAgain: "Volver a intentarlo", invalidCredentials: "El correo o la contraseña son incorrectos."
   },
   en: { 
     explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", 
     termsCheck: "I accept Terms and Privacy Policy", viewHere: "View here", register: "Sign Up", empty: "No flashes saved yet.", 
-    deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", cancel: "Cancel", phrase: "Your inspiring quote", save: "Save", 
+    deleteConfirm: "Let go of this memory?", yes: "Yes", no: "No", phrase: "Your inspiring quote", save: "Save", 
     newPass: "New password", forgot: "Forgot your password?", recover: "Recover password", newest: "Newest first", 
     oldest: "Oldest first", random: "Random", installApp: "Install App", loginBtn: "Log In", 
     profileTagsHint: "You can choose your preferred inspiration tags in your profile.",
@@ -71,12 +71,12 @@ const dict = {
     galleryFullDescFree: "You've reached your limit of 24 flashes. Upgrade to Premium to save up to 300.", galleryFullDescPremium: "You've reached the maximum limit of 300 flashes.",
     tags: { nature: "nature", minimal: "minimal", art: "art", space: "space", animals: "animals", cities: "cities", flowers: "flowers", colors: "colors", ocean: "ocean", botanical: "botanical", warm: "warm", desert: "desert", abstract: "abstract", vintage: "vintage", neon: "neon", geometry: "geometry", texture: "texture", landscape: "landscape", clouds: "clouds", macro: "macro" },
     deleteAccount: "Delete account permanently", deleteAccountConfirm: "This action will delete your gallery, profile, and cancel any active subscription. It cannot be undone. Are you sure?",
-    premiumActive: "Premium Active", lifetimeActive: "Lifetime Premium"
+    premiumActive: "Active Premium", lifetimeActive: "Lifetime Premium", loginErrorTitle: "Access Denied", tryAgain: "Try Again", invalidCredentials: "Email or password is incorrect."
   },
   fr: { 
     explore: "Explorer", gallery: "Galerie", profile: "Profil", login: "Connexion", email: "E-mail", password: "Mot de passe", 
     termsCheck: "J'accepte les conditions", viewHere: "Voir ici", register: "S'inscrire", empty: "Aucun souvenir enregistré.", 
-    deleteConfirm: "Lâcher ce souvenir?", yes: "Oui", no: "Non", cancel: "Annuler", phrase: "Votre citation", save: "Enregistrer", 
+    deleteConfirm: "Lâcher ce souvenir?", yes: "Oui", no: "Non", phrase: "Votre citation", save: "Enregistrer", 
     newPass: "Nouveau mot de passe", forgot: "Mot de passe oublié?", recover: "Récupérer", newest: "Plus récents", 
     oldest: "Plus anciens", random: "Aléatoire", installApp: "Installer l'App", loginBtn: "Connexion", 
     profileTagsHint: "Choisissez vos tags d'inspiration dans votre profil.",
@@ -106,12 +106,12 @@ const dict = {
     galleryFullDescFree: "Vous avez atteint votre limite de 24 éclats. Passez à Premium pour en sauvegarder 300.", galleryFullDescPremium: "Vous avez atteint la limite maximale de 300 éclats.",
     tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" },
     deleteAccount: "Supprimer le compte définitivement", deleteAccountConfirm: "Cette action supprimera votre galerie, votre profil et annulera tout abonnement actif. Elle est irréversible. Êtes-vous sûr(e)?",
-    premiumActive: "Premium Actif", lifetimeActive: "Premium à Vie"
+    premiumActive: "Premium Actif", lifetimeActive: "Premium à Vie", loginErrorTitle: "Accès Refusé", tryAgain: "Réessayer", invalidCredentials: "L'e-mail ou le mot de passe est incorrect."
   },
   ko: { 
     explore: "탐색", gallery: "갤러리", profile: "프로필", login: "로그인", email: "이메일", password: "비밀번호", 
     termsCheck: "이용약관 및 개인정보 보호정책에 동의합니다", viewHere: "여기서 보기", register: "가입하기", empty: "저장된 추억이 없습니다.", 
-    deleteConfirm: "이 기억을 놓아주시겠습니까?", yes: "네", no: "아니요", cancel: "취소", phrase: "영감을 주는 문구", save: "저장", 
+    deleteConfirm: "이 기억을 놓아주시겠습니까?", yes: "네", no: "아니요", phrase: "영감을 주는 문구", save: "저장", 
     newPass: "새 비밀번호", forgot: "비밀번호를 잊으셨나요?", recover: "비밀번호 찾기", newest: "최신순", 
     oldest: "오래된순", random: "무작위", installApp: "앱 설치", loginBtn: "로그인", 
     profileTagsHint: "프로필에서 원하는 영감 태그를 선택할 수 있습니다.",
@@ -141,7 +141,7 @@ const dict = {
     galleryFullDescFree: "24개의 저장 한도에 도달했습니다. 최대 300개를 저장하려면 프리미엄으로 업그레이드하세요.", galleryFullDescPremium: "최대 300개 저장 한도에 도달했습니다.",
     tags: { nature: "자연", minimal: "미니멀", art: "예술", space: "우주", animals: "동물", cities: "도시", flowers: "꽃", colors: "색상", ocean: "바다", botanical: "식물", warm: "따뜻한", desert: "사막", abstract: "추상", vintage: "빈티지", neon: "네온", geometry: "기하학", texture: "질감", landscape: "풍경", clouds: "구름", macro: "매크로" },
     deleteAccount: "계정 영구 삭제", deleteAccountConfirm: "이 작업은 갤러리, 프로필을 삭제하고 활성 구독을 취소합니다. 취소할 수 없습니다. 확실합니까?",
-    premiumActive: "프리미엄 활성", lifetimeActive: "평생 프리미엄"
+    premiumActive: "프리미엄 활성", lifetimeActive: "평생 프리미엄", loginErrorTitle: "접근 거부", tryAgain: "다시 시도", invalidCredentials: "이메일 또는 비밀번호가 올바르지 않습니다."
   }
 };
 
@@ -156,7 +156,7 @@ const LIMITS = {
 
 export default function Home() {
   const [user, setUser] = useState(null);
-  const [userPlan, setUserPlan] = useState("free"); 
+  const [userPlan, setUserPlan] = useState("free"); // free, premium, lifetime
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -167,7 +167,8 @@ export default function Home() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [appMessage, setAppMessage] = useState(null);
-  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
@@ -189,23 +190,13 @@ export default function Home() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [customTag, setCustomTag] = useState("");
   const [theme, setTheme] = useState("light");
-  
-  // Detección automática del idioma sin parpadeos
-  const [lang, setLang] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedLang = window.localStorage.getItem('maeum-lang');
-      if (savedLang && dict[savedLang]) return savedLang;
-      const browserLang = window.navigator.language.slice(0, 2);
-      if (dict[browserLang]) return browserLang;
-    }
-    return "es";
-  });
+  const [lang, setLang] = useState("es"); // Por defecto español, se actualizará en useEffect
   
   const [currentTab, setCurrentTab] = useState("explore"); 
   const [galleryView, setGalleryView] = useState("grid");
   const [photoToDelete, setPhotoToDelete] = useState(null);
   const [activeMenuPhotoId, setActiveMenuPhotoId] = useState(null); 
-  const [activeInfoId, setActiveInfoId] = useState(null); 
+  const [activeInfoId, setActiveInfoId] = useState(null); // Nuevo estado para información de imagen
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -253,6 +244,7 @@ export default function Home() {
     if (sortOrder === "newest") arr = arr.reverse();
     if (sortOrder === "random") arr = arr.sort(() => Math.random() - 0.5);
     
+    // Regla de ocultar fotos más allá del límite si bajó a versión free
     return arr.slice(0, currentLimits.gallery);
   }, [likes, sortOrder, currentLimits.gallery]);
 
@@ -260,49 +252,66 @@ export default function Home() {
     return normalizedLikes.slice(0, galleryLimit);
   }, [normalizedLikes, galleryLimit]);
 
-useEffect(() => {
-  const savedTheme = localStorage.getItem('maeum-theme');
-  if (savedTheme) setTheme(savedTheme);
-
-  audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
-  audioRef.current.loop = true;
-
-  // onAuthStateChange maneja tanto la sesión inicial como los cambios de estado
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-    if (session?.user) {
-      loadUserData(session.user);
-      setIsEmailSent(false); 
-    } else { 
-      setUser(null); 
-      setLikes([]); 
-      setSelectedTags([]); 
-      setProfileName(""); 
-      setUserPlan("free");
+  useEffect(() => {
+    // Detección de idioma
+    const savedLang = localStorage.getItem('maeum-lang');
+    if (savedLang && dict[savedLang]) {
+      setLang(savedLang);
+    } else {
+      const browserLang = typeof window !== 'undefined' ? (navigator.language || navigator.userLanguage || '').slice(0, 2) : 'es';
+      if (dict[browserLang]) {
+        setLang(browserLang);
+        localStorage.setItem('maeum-lang', browserLang);
+      } else {
+        setLang('es');
+      }
     }
-  });
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(console.error);
-  }
+    const savedTheme = localStorage.getItem('maeum-theme');
+    if (savedTheme) setTheme(savedTheme);
 
-  const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  setIsStandalone(checkStandalone);
-  
-  const iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  setIsIOS(iosDevice);
+    audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
+    audioRef.current.loop = true;
 
-  const handleBeforeInstallPrompt = (e) => {
-    e.preventDefault();
-    setDeferredPrompt(e);
-  };
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) loadUserData(user);
+    });
 
-  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        loadUserData(session.user);
+        setIsEmailSent(false); 
+      } else { 
+        setUser(null); 
+        setLikes([]); 
+        setSelectedTags([]); 
+        setProfileName(""); 
+        setUserPlan("free");
+      }
+    });
 
-  return () => {
-    subscription.unsubscribe();
-    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  };
-}, []);
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(console.error);
+    }
+
+    const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    setIsStandalone(checkStandalone);
+    
+    const iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    setIsIOS(iosDevice);
+
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -316,55 +325,37 @@ useEffect(() => {
     }
   };
 
- const loadUserData = async (u) => {
-  try {
+  const loadUserData = async (u) => {
     setUser(u);
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    // Usamos maybeSingle() en lugar de single() para evitar bloqueos si el perfil no existe aún
-    const { data: profileData, error: profileError } = await supabase
+    // --- NUEVO: Consultamos el plan de la tabla segura profiles ---
+    const { data: profileData } = await supabase
       .from('profiles')
       .select('plan')
       .eq('id', u.id)
-      .maybeSingle();
+      .single();
       
-    if (!profileError && profileData?.plan) {
+    if (profileData && profileData.plan) {
       setUserPlan(profileData.plan);
     } else {
-      setUserPlan(u.user_metadata?.plan || "free");
+      setUserPlan("free");
     }
+    // -------------------------------------------------------------
     
-    if (u.user_metadata?.theme) { 
-      setTheme(u.user_metadata.theme); 
-      localStorage.setItem('maeum-theme', u.user_metadata.theme); 
-    }
-    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { 
-      setLang(u.user_metadata.lang); 
-      localStorage.setItem('maeum-lang', u.user_metadata.lang); 
-    }
-    if (u.user_metadata?.tags) {
-      setSelectedTags(u.user_metadata.tags); 
-    } else {
-      setSelectedTags([]);
-    }
+    if (u.user_metadata?.theme) { setTheme(u.user_metadata.theme); localStorage.setItem('maeum-theme', u.user_metadata.theme); }
+    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { setLang(u.user_metadata.lang); localStorage.setItem('maeum-lang', u.user_metadata.lang); }
+    if (u.user_metadata?.tags) setSelectedTags(u.user_metadata.tags); else setSelectedTags([]);
 
     const { data, error } = await supabase.from('user_likes').select('*').eq('user_id', u.id);
     if (!error && data) {
       setLikes(data.map(item => ({
-        id: item.photo_id, 
-        url: item.photo_url, 
-        title: item.title, 
-        authorName: item.author_name,
-        authorUsername: item.author_username, 
-        downloadLocation: item.download_location
+        id: item.photo_id, url: item.photo_url, title: item.title, authorName: item.author_name,
+        authorUsername: item.author_username, downloadLocation: item.download_location
       })));
     }
-  } catch (err) {
-    console.error("Error al cargar datos del usuario:", err);
-    setUserPlan("free");
-  }
-};
+  };
 
   const changeTheme = async (newTheme) => {
     setTheme(newTheme);
@@ -396,6 +387,7 @@ useEffect(() => {
     loadingRef.current = true;
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
+      // MODIFICACIÓN 1: Pidiendo 15 imágenes en vez de 12
       const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=15&query=${querySearch}`);
       
       if (!res.ok) {
@@ -501,9 +493,14 @@ useEffect(() => {
       });
     }
 
-   if (authResult.error) {
-      setAppMessage({ title: "Error", text: authResult.error.message });
-      setShowAuthModal(false); // <--- ¡Añade esta línea para cerrar el login y mostrar el error limpio!
+    if (authResult.error) {
+      if (isLogin) {
+        setShowAuthModal(false);
+        const isInvalid = authResult.error.message.toLowerCase().includes("invalid");
+        setLoginError(isInvalid ? t.invalidCredentials : authResult.error.message);
+      } else {
+        setAppMessage({ title: "Error", text: authResult.error.message });
+      }
     } else {
       if (!isLogin && authResult.data?.user && !authResult.data?.session) {
         setIsEmailSent(true);
@@ -536,14 +533,12 @@ useEffect(() => {
     setIsSigningOut(false);
   };
 
-  const handleDeleteAccountRequest = () => {
-    setShowDeleteAccountModal(true);
-  };
-
-  const confirmDeleteAccount = async () => {
-    setShowDeleteAccountModal(false);
+  // MODIFICACIÓN 2: Lógica para eliminar cuenta
+  const executeDeleteAccount = async () => {
+    setShowDeleteConfirm(false);
     setIsSigningOut(true);
     try {
+      // Llamada al backend para procesar cancelación en Stripe y borrado en Supabase
       await fetch('/api/delete-account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -719,7 +714,7 @@ useEffect(() => {
   };
 
   return (
-    <main suppressHydrationWarning className={`min-h-screen pb-24 font-light transition-colors duration-500 ${isDark ? 'bg-neutral-950 text-neutral-300' : 'bg-white text-neutral-800'}`}>
+    <main className={`min-h-screen pb-24 font-light transition-colors duration-500 ${isDark ? 'bg-neutral-950 text-neutral-300' : 'bg-white text-neutral-800'}`}>
       
       <header className={`sticky top-0 z-40 border-b flex flex-col transition-all duration-500 backdrop-blur-md ${isDark ? 'bg-neutral-950/90 border-neutral-900' : 'bg-white/90 border-neutral-100'}`}>
         <div className="py-6 px-6 flex justify-between items-center">
@@ -1155,6 +1150,7 @@ useEffect(() => {
               </div>
             </div>
             
+            {/* Selector de idiomas agregado al perfil */}
             <div>
               <label className={`text-xs tracking-widest uppercase mb-2 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.language}</label>
               <div className="flex gap-2">
@@ -1266,10 +1262,10 @@ useEffect(() => {
               {t.followInstagram}
             </a>
 
-            {/* BOTÓN PARA ABRIR MODAL DE ELIMINAR CUENTA */}
+            {/* BOTÓN PARA ELIMINAR CUENTA (AHORA ABRE EL MODAL CUSTOM) */}
             <div className="mt-12 mb-8 flex justify-center">
               <button 
-                onClick={handleDeleteAccountRequest} 
+                onClick={() => setShowDeleteConfirm(true)} 
                 disabled={isSigningOut}
                 className={`text-[10px] tracking-widest uppercase transition-colors opacity-40 hover:opacity-100 ${isDark ? 'text-red-400' : 'text-red-500'}`}
               >
@@ -1349,7 +1345,7 @@ useEffect(() => {
             <button onClick={() => setShowTerms(false)} className={`absolute top-4 right-4 rounded-full w-8 h-8 flex items-center justify-center transition-colors ${isDark ? 'text-neutral-400 bg-neutral-800 hover:bg-neutral-700' : 'text-neutral-400 bg-white hover:bg-neutral-100'}`}>✕</button>
             <h3 className={`text-lg font-normal mb-6 text-center ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Términos y Política de Privacidad</h3>
             
-            {/* TEXTOS LEGALES */}
+            {/* TEXTOS LEGALES (Siempre en idioma base por estándares de App) */}
             <div className={`text-xs space-y-4 font-light leading-relaxed text-justify ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
               <h4 className={`font-semibold uppercase tracking-widest text-[10px] mt-6 ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>1. Términos y Condiciones de Uso</h4>
               <p className="italic">Última actualización: Julio de 2026</p>
@@ -1475,7 +1471,6 @@ useEffect(() => {
         </div>
       )}
 
-      {/* MODAL DE ELIMINAR FOTO */}
       {photoToDelete && (
         <div 
           className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
@@ -1495,7 +1490,7 @@ useEffect(() => {
               </button>
               <button 
                 onClick={() => confirmDelete(photoToDelete)} 
-                className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg"
+                className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest hover:bg-red-600"
               >
                 {t.yes}
               </button>
@@ -1504,34 +1499,64 @@ useEffect(() => {
         </div>
       )}
 
-      {/* MODAL DE ELIMINAR CUENTA (NUEVO) */}
-      {showDeleteAccountModal && (
+      {showDeleteConfirm && (
         <div 
           className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setShowDeleteAccountModal(false)}
+          onClick={() => setShowDeleteConfirm(false)}
         >
           <div 
-            className={`p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}
+            className={`p-8 rounded-lg max-w-sm w-full text-center shadow-xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-              {t.deleteAccount}
-            </h3>
-            <p className={`text-xs mb-8 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-              {t.deleteAccountConfirm}
-            </p>
+            <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-red-400' : 'text-red-500'}`}>{t.deleteAccount}</h3>
+            <p className={`text-sm mb-6 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.deleteAccountConfirm}</p>
             <div className="flex gap-4">
               <button 
-                onClick={() => setShowDeleteAccountModal(false)} 
-                className={`flex-1 py-3 border rounded-md text-xs uppercase tracking-widest ${isDark ? 'border-neutral-700 text-neutral-300' : 'text-neutral-600 border-neutral-300'}`}
+                onClick={() => setShowDeleteConfirm(false)} 
+                className={`flex-1 py-3 border rounded-md text-xs uppercase tracking-widest ${isDark ? 'border-neutral-700 text-neutral-300' : 'text-neutral-600'}`}
               >
-                {t.cancel}
+                {t.no}
               </button>
               <button 
-                onClick={confirmDeleteAccount} 
-                className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg"
+                onClick={executeDeleteAccount} 
+                className="flex-1 py-3 bg-red-500 text-white rounded-md text-xs uppercase tracking-widest hover:bg-red-600"
               >
                 {t.yes}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {appMessage && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
+            <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{appMessage.title}</h3>
+            <p className={`text-sm mb-8 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{appMessage.text}</p>
+            <button onClick={() => setAppMessage(null)} className={`w-full py-4 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
+              {t.understood}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {loginError && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
+            <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.loginErrorTitle}</h3>
+            <p className={`text-sm mb-6 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{loginError}</p>
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => { setLoginError(null); setIsLogin(true); setIsForgotPassword(false); setShowAuthModal(true); }} 
+                className={`w-full py-3 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+              >
+                {t.tryAgain}
+              </button>
+              <button 
+                onClick={() => { setLoginError(null); setIsLogin(true); setIsForgotPassword(true); setShowAuthModal(true); }} 
+                className={`w-full py-3 border rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'border-neutral-700 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}
+              >
+                {t.forgot}
               </button>
             </div>
           </div>
@@ -1623,19 +1648,6 @@ useEffect(() => {
           </div>
         </div>
       )}
-
-      {appMessage && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
-          <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
-            <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{appMessage.title}</h3>
-            <p className={`text-sm mb-8 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{appMessage.text}</p>
-            <button onClick={() => setAppMessage(null)} className={`w-full py-4 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
-              {t.understood}
-            </button>
-          </div>
-        </div>
-      )}
-
     </main>
   );
 }
