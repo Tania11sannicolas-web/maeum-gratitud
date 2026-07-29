@@ -260,52 +260,49 @@ export default function Home() {
     return normalizedLikes.slice(0, galleryLimit);
   }, [normalizedLikes, galleryLimit]);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('maeum-theme');
-    if (savedTheme) setTheme(savedTheme);
+useEffect(() => {
+  const savedTheme = localStorage.getItem('maeum-theme');
+  if (savedTheme) setTheme(savedTheme);
 
-    audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
-    audioRef.current.loop = true;
+  audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
+  audioRef.current.loop = true;
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) loadUserData(user);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        loadUserData(session.user);
-        setIsEmailSent(false); 
-      } else { 
-        setUser(null); 
-        setLikes([]); 
-        setSelectedTags([]); 
-        setProfileName(""); 
-        setUserPlan("free");
-      }
-    });
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(console.error);
+  // onAuthStateChange maneja tanto la sesión inicial como los cambios de estado
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    if (session?.user) {
+      loadUserData(session.user);
+      setIsEmailSent(false); 
+    } else { 
+      setUser(null); 
+      setLikes([]); 
+      setSelectedTags([]); 
+      setProfileName(""); 
+      setUserPlan("free");
     }
+  });
 
-    const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    setIsStandalone(checkStandalone);
-    
-    const iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    setIsIOS(iosDevice);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(console.error);
+  }
 
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
+  const checkStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  setIsStandalone(checkStandalone);
+  
+  const iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  setIsIOS(iosDevice);
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  const handleBeforeInstallPrompt = (e) => {
+    e.preventDefault();
+    setDeferredPrompt(e);
+  };
 
-    return () => {
-      subscription.unsubscribe();
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
+  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+  return () => {
+    subscription.unsubscribe();
+    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  };
+}, []);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -319,35 +316,55 @@ export default function Home() {
     }
   };
 
-  const loadUserData = async (u) => {
+ const loadUserData = async (u) => {
+  try {
     setUser(u);
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    const { data: profileData } = await supabase
+    // Usamos maybeSingle() en lugar de single() para evitar bloqueos si el perfil no existe aún
+    const { data: profileData, error: profileError } = await supabase
       .from('profiles')
       .select('plan')
       .eq('id', u.id)
-      .single();
+      .maybeSingle();
       
-    if (profileData && profileData.plan) {
+    if (!profileError && profileData?.plan) {
       setUserPlan(profileData.plan);
     } else {
-      setUserPlan("free");
+      setUserPlan(u.user_metadata?.plan || "free");
     }
     
-    if (u.user_metadata?.theme) { setTheme(u.user_metadata.theme); localStorage.setItem('maeum-theme', u.user_metadata.theme); }
-    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { setLang(u.user_metadata.lang); localStorage.setItem('maeum-lang', u.user_metadata.lang); }
-    if (u.user_metadata?.tags) setSelectedTags(u.user_metadata.tags); else setSelectedTags([]);
+    if (u.user_metadata?.theme) { 
+      setTheme(u.user_metadata.theme); 
+      localStorage.setItem('maeum-theme', u.user_metadata.theme); 
+    }
+    if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { 
+      setLang(u.user_metadata.lang); 
+      localStorage.setItem('maeum-lang', u.user_metadata.lang); 
+    }
+    if (u.user_metadata?.tags) {
+      setSelectedTags(u.user_metadata.tags); 
+    } else {
+      setSelectedTags([]);
+    }
 
     const { data, error } = await supabase.from('user_likes').select('*').eq('user_id', u.id);
     if (!error && data) {
       setLikes(data.map(item => ({
-        id: item.photo_id, url: item.photo_url, title: item.title, authorName: item.author_name,
-        authorUsername: item.author_username, downloadLocation: item.download_location
+        id: item.photo_id, 
+        url: item.photo_url, 
+        title: item.title, 
+        authorName: item.author_name,
+        authorUsername: item.author_username, 
+        downloadLocation: item.download_location
       })));
     }
-  };
+  } catch (err) {
+    console.error("Error al cargar datos del usuario:", err);
+    setUserPlan("free");
+  }
+};
 
   const changeTheme = async (newTheme) => {
     setTheme(newTheme);
