@@ -501,8 +501,9 @@ useEffect(() => {
       });
     }
 
-    if (authResult.error) {
+   if (authResult.error) {
       setAppMessage({ title: "Error", text: authResult.error.message });
+      setShowAuthModal(false); // <--- ¡Añade esta línea para cerrar el login y mostrar el error limpio!
     } else {
       if (!isLogin && authResult.data?.user && !authResult.data?.session) {
         setIsEmailSent(true);
@@ -1634,7 +1635,7 @@ useEffect(() => {
           </div>
         </div>
       )}
-      
+
     </main>
   );
 }
