@@ -1,4 +1,4 @@
-// Forzando actualización total de webhook - 2026-07-28
+// Forzando dominio oficial - 2026-07-28
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
@@ -7,6 +7,8 @@ import { Resend } from 'resend';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const SENDER_EMAIL = 'Maeum <hola@maeumgratitud.com>';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -163,8 +165,6 @@ export async function POST(req) {
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
   }
 
-  console.log(`Evento recibido de Stripe: ${event.type}`);
-
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object;
@@ -190,12 +190,11 @@ export async function POST(req) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
           await resend.emails.send({
-            from: 'Maeum <hola@maeumgratitud.com>',
+            from: SENDER_EMAIL,
             to: userEmail,
             subject: subject,
             html: html
           });
-          console.log("Correo de éxito enviado a:", userEmail);
         } catch (emailErr) {
           console.error("Error al enviar correo de éxito:", emailErr.message);
         }
@@ -229,12 +228,11 @@ export async function POST(req) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
           await resend.emails.send({
-            from: 'Maeum <hola@maeumgratitud.com>',
+            from: SENDER_EMAIL,
             to: userEmail,
             subject: subject,
             html: html
           });
-          console.log("Correo de fallo enviado a:", userEmail);
         } catch (emailErr) {
           console.error("Error al enviar correo de fallo:", emailErr.message);
         }
@@ -267,12 +265,11 @@ export async function POST(req) {
           try {
             const { subject, html } = getEmailTemplate(userLang, 'delete');
             await resend.emails.send({
-              from: 'Maeum <hola@maeumgratitud.com>',
+              from: SENDER_EMAIL,
               to: userEmail,
               subject: subject,
               html: html
             });
-            console.log("Correo de cancelación enviado a:", userEmail);
           } catch (emailErr) {
             console.error("Error al enviar correo de cancelación:", emailErr.message);
           }
