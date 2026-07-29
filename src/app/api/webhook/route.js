@@ -1,4 +1,4 @@
-// Forzando dominio oficial - 2026-07-28
+// Forzando dominio oficial directo - 2026-07-28
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
@@ -7,8 +7,6 @@ import { Resend } from 'resend';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-const SENDER_EMAIL = 'Maeum <hola@maeumgratitud.com>';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -141,7 +139,7 @@ const getEmailTemplate = (lang, type) => {
     </head>
     <body>
       <div class="container">
-        <div class="logo">${l === 'ko' ? '마음 (Maeum)' : 'Maeum Gratitude'}</div>
+        <div class="logo">${l === 'ko' ? '마음 (Maeum)' : 'Maeum Gratitud'}</div>
         <div class="title">${title}</div>
         <p class="text">${text}</p>
         <div class="footer">${t.footer}</div>
@@ -190,7 +188,7 @@ export async function POST(req) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'success');
           await resend.emails.send({
-            from: SENDER_EMAIL,
+            from: 'Maeum <hola@maeumgratitud.com>',
             to: userEmail,
             subject: subject,
             html: html
@@ -228,7 +226,7 @@ export async function POST(req) {
         try {
           const { subject, html } = getEmailTemplate(userLang, 'fail');
           await resend.emails.send({
-            from: SENDER_EMAIL,
+            from: 'Maeum <hola@maeumgratitud.com>',
             to: userEmail,
             subject: subject,
             html: html
@@ -265,7 +263,7 @@ export async function POST(req) {
           try {
             const { subject, html } = getEmailTemplate(userLang, 'delete');
             await resend.emails.send({
-              from: SENDER_EMAIL,
+              from: 'Maeum <hola@maeumgratitud.com>',
               to: userEmail,
               subject: subject,
               html: html
