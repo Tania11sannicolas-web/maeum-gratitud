@@ -1,3 +1,4 @@
+// Forzando actualización de webhook - 2026-07-28
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
@@ -238,7 +239,6 @@ export async function POST(req) {
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
-      // Si se actualizó la suscripción desde el portal (por ejemplo, solicitando cancelación)
       const { data: profile } = await supabaseAdmin
         .from('profiles')
         .select('id')
