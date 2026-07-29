@@ -238,30 +238,28 @@ export async function POST(req) {
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
-      // Si el usuario canceló la suscripción
-      if (subscription.cancel_at_period_end || subscription.status === 'canceled') {
-        const { data: profile } = await supabaseAdmin
-          .from('profiles')
-          .select('id')
-          .eq('stripe_customer_id', customerId)
-          .single();
+      // Si se actualizó la suscripción desde el portal (por ejemplo, solicitando cancelación)
+      const { data: profile } = await supabaseAdmin
+        .from('profiles')
+        .select('id')
+        .eq('stripe_customer_id', customerId)
+        .single();
 
-        if (profile?.id) {
-          const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
-          if (user?.email) {
-            const userEmail = user.email;
-            const userLang = user?.user_metadata?.lang || 'es';
-            try {
-              const { subject, html } = getEmailTemplate(userLang, 'delete');
-              await resend.emails.send({
-                from: 'Maeum <hola@maeumgratitud.com>',
-                to: userEmail,
-                subject: subject,
-                html: html
-              });
-            } catch (emailErr) {
-              console.error("Error al enviar correo de cancelación:", emailErr.message);
-            }
+      if (profile?.id) {
+        const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+        if (user?.email) {
+          const userEmail = user.email;
+          const userLang = user?.user_metadata?.lang || 'es';
+          try {
+            const { subject, html } = getEmailTemplate(userLang, 'delete');
+            await resend.emails.send({
+              from: 'Maeum <hola@maeumgratitud.com>',
+              to: userEmail,
+              subject: subject,
+              html: html
+            });
+          } catch (emailErr) {
+            console.error("Error al enviar correo de cancelación:", emailErr.message);
           }
         }
       }
