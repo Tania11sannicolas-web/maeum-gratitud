@@ -1,4 +1,4 @@
-// Forzando actualización de webhook - 2026-07-28
+// Forzando actualización total de webhook - 2026-07-28
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
@@ -163,16 +163,20 @@ export async function POST(req) {
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
   }
 
+  console.log(`Evento recibido de Stripe: ${event.type}`);
+
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object;
-      const userId = session.metadata.userId;
+      const userId = session.metadata?.userId;
       const customerId = session.customer;
 
-      await supabaseAdmin
-        .from('profiles')
-        .update({ plan: 'premium', stripe_customer_id: customerId })
-        .eq('id', userId);
+      if (userId) {
+        await supabaseAdmin
+          .from('profiles')
+          .update({ plan: 'premium', stripe_customer_id: customerId })
+          .eq('id', userId);
+      }
 
       let userEmail = null;
       let userLang = 'es';
@@ -191,6 +195,7 @@ export async function POST(req) {
             subject: subject,
             html: html
           });
+          console.log("Correo de éxito enviado a:", userEmail);
         } catch (emailErr) {
           console.error("Error al enviar correo de éxito:", emailErr.message);
         }
@@ -229,56 +234,30 @@ export async function POST(req) {
             subject: subject,
             html: html
           });
+          console.log("Correo de fallo enviado a:", userEmail);
         } catch (emailErr) {
           console.error("Error al enviar correo de fallo:", emailErr.message);
         }
       }
       break;
     }
-    case 'customer.subscription.updated': {
-      const subscription = event.data.object;
-      const customerId = subscription.customer;
-
-      const { data: profile } = await supabaseAdmin
-        .from('profiles')
-        .select('id')
-        .eq('stripe_customer_id', customerId)
-        .single();
-
-      if (profile?.id) {
-        const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
-        if (user?.email) {
-          const userEmail = user.email;
-          const userLang = user?.user_metadata?.lang || 'es';
-          try {
-            const { subject, html } = getEmailTemplate(userLang, 'delete');
-            await resend.emails.send({
-              from: 'Maeum <hola@maeumgratitud.com>',
-              to: userEmail,
-              subject: subject,
-              html: html
-            });
-          } catch (emailErr) {
-            console.error("Error al enviar correo de cancelación:", emailErr.message);
-          }
-        }
-      }
-      break;
-    }
+    case 'customer.subscription.updated':
     case 'customer.subscription.deleted': {
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
+      if (event.type === 'customer.subscription.deleted') {
+        await supabaseAdmin
+          .from('profiles')
+          .update({ plan: 'free' })
+          .eq('stripe_customer_id', customerId);
+      }
+
       const { data: profile } = await supabaseAdmin
         .from('profiles')
         .select('id')
         .eq('stripe_customer_id', customerId)
         .single();
-
-      await supabaseAdmin
-        .from('profiles')
-        .update({ plan: 'free' })
-        .eq('stripe_customer_id', customerId);
 
       if (profile?.id) {
         const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(profile.id);
@@ -293,6 +272,7 @@ export async function POST(req) {
               subject: subject,
               html: html
             });
+            console.log("Correo de cancelación enviado a:", userEmail);
           } catch (emailErr) {
             console.error("Error al enviar correo de cancelación:", emailErr.message);
           }
@@ -301,7 +281,7 @@ export async function POST(req) {
       break;
     }
     default:
-      console.log(`Unhandled event type ${event.type}`);
+      console.log(`Evento no manejado: ${event.type}`);
   }
 
   return NextResponse.json({ received: true });
