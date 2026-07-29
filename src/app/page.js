@@ -36,7 +36,7 @@ const dict = {
     galleryFullDescFree: "Has alcanzado tu límite de 24 destellos. Actualiza a Premium para guardar hasta 300.", galleryFullDescPremium: "Has alcanzado el límite máximo de 300 destellos.",
     tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" },
     deleteAccount: "Eliminar cuenta permanentemente", deleteAccountConfirm: "Esta acción borrará tu galería, perfil y cancelará cualquier suscripción activa. No se puede deshacer. ¿Estás seguro/a?",
-    premiumActive: "Premium Activo", lifetimeActive: "Premium de por Vida"
+    premiumActive: "Premium", lifetimeActive: "Premium de por Vida"
   },
   en: { 
     explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", 
@@ -1538,7 +1538,7 @@ useEffect(() => {
       )}
 
       {appMessage && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{appMessage.title}</h3>
             <p className={`text-sm mb-8 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{appMessage.text}</p>
