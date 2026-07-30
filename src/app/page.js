@@ -767,6 +767,105 @@ export default function Home() {
               const isLiked = likes.some(p => p.id === photo.id);
               return (
                 <Fragment key={photo.id}>
+                  
+                  {!user && index === 0 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle1}</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc1}
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg mb-10 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          {t.pauseText1}
+                        </p>
+                        <button 
+                          onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
+                          className={`group relative px-8 py-4 text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+                        >
+                          <span className="relative z-10 flex items-center gap-3">
+                            {t.createRefuge}
+                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 1 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle2}</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc2}
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          {t.pauseText2}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 2 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle3}</span>
+                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc3}
+                        </h2>
+                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          {t.pauseText3}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 3 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle4}</span>
+                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+                          {t.pauseDesc4}
+                        </h2>
+                      </div>
+                    </div>
+                  )}
+
+                  {!user && index === 4 && (
+                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
+                      <div className={`max-w-4xl w-full flex flex-col items-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
+                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-10 font-medium text-center ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pricingTitle}</span>
+                        
+                        <div className="flex flex-col md:flex-row gap-8 w-full justify-center">
+                          {/* Plan Free */}
+                          <div className={`flex-1 p-8 rounded-2xl border ${isDark ? 'border-neutral-800 bg-neutral-900/50' : 'border-neutral-200 bg-white'}`}>
+                            <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingFree}</h3>
+                            <p className={`text-2xl font-light mb-8 ${isDark ? 'text-white' : 'text-black'}`}>Gratis</p>
+                            <ul className={`space-y-4 text-sm font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit1}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit2}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit3}</li>
+                            </ul>
+                          </div>
+
+                          {/* Plan Premium */}
+                          <div className={`flex-1 p-8 rounded-2xl border relative overflow-hidden ${isDark ? 'border-neutral-700 bg-neutral-800/50' : 'border-neutral-900 bg-neutral-50'}`}>
+                            <div className="absolute top-0 right-0 px-3 py-1 bg-neutral-900 text-white text-[10px] tracking-widest uppercase rounded-bl-lg">Premium</div>
+                            <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingPremium}</h3>
+                            <div className="flex items-end gap-2 mb-8">
+                              <p className={`text-2xl font-light ${isDark ? 'text-white' : 'text-black'}`}>{t.monthly}</p>
+                              <span className={`text-xs pb-1 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>o {t.yearly}</span>
+                            </div>
+                            <ul className={`space-y-4 text-sm font-light ${isDark ? 'text-neutral-300' : 'text-neutral-600'}`}>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit1}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit2}</li>
+                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit3}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div 
                     className={`relative group overflow-hidden rounded-md transition-colors ${isDark ? 'bg-neutral-900' : 'bg-neutral-50'}`}
                     onDoubleClick={(e) => toggleLike(photo, e)} 
@@ -807,104 +906,6 @@ export default function Home() {
                       <svg className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : (isDark ? 'text-neutral-500 fill-none' : 'text-neutral-400 fill-none')}`} stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                     </button>
                   </div>
-
-                  {!user && index === 1 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle1}</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc1}
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg mb-10 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          {t.pauseText1}
-                        </p>
-                        <button 
-                          onClick={() => { setIsLogin(false); setIsForgotPassword(false); setShowAuthModal(true); }} 
-                          className={`group relative px-8 py-4 text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
-                        >
-                          <span className="relative z-10 flex items-center gap-3">
-                            {t.createRefuge}
-                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 4 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle2}</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc2}
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          {t.pauseText2}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 7 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle3}</span>
-                        <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-6 leading-tight tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc3}
-                        </h2>
-                        <p className={`font-light text-[15px] sm:text-base leading-relaxed max-w-lg ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                          {t.pauseText3}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 10 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-6 font-medium ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pauseTitle4}</span>
-                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light mb-6 leading-relaxed tracking-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
-                          {t.pauseDesc4}
-                        </h2>
-                      </div>
-                    </div>
-                  )}
-
-                  {!user && index === 13 && (
-                    <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
-                      <div className={`max-w-4xl w-full flex flex-col items-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
-                        <span className={`text-[10px] uppercase tracking-[0.3em] mb-10 font-medium text-center ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pricingTitle}</span>
-                        
-                        <div className="flex flex-col md:flex-row gap-8 w-full justify-center">
-                          {/* Plan Free */}
-                          <div className={`flex-1 p-8 rounded-2xl border ${isDark ? 'border-neutral-800 bg-neutral-900/50' : 'border-neutral-200 bg-white'}`}>
-                            <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingFree}</h3>
-                            <p className={`text-2xl font-light mb-8 ${isDark ? 'text-white' : 'text-black'}`}>Gratis</p>
-                            <ul className={`space-y-4 text-sm font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit1}</li>
-                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit2}</li>
-                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.freeBenefit3}</li>
-                            </ul>
-                          </div>
-
-                          {/* Plan Premium */}
-                          <div className={`flex-1 p-8 rounded-2xl border relative overflow-hidden ${isDark ? 'border-neutral-700 bg-neutral-800/50' : 'border-neutral-900 bg-neutral-50'}`}>
-                            <div className="absolute top-0 right-0 px-3 py-1 bg-neutral-900 text-white text-[10px] tracking-widest uppercase rounded-bl-lg">Premium</div>
-                            <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingPremium}</h3>
-                            <div className="flex items-end gap-2 mb-8">
-                              <p className={`text-2xl font-light ${isDark ? 'text-white' : 'text-black'}`}>{t.monthly}</p>
-                              <span className={`text-xs pb-1 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>o {t.yearly}</span>
-                            </div>
-                            <ul className={`space-y-4 text-sm font-light ${isDark ? 'text-neutral-300' : 'text-neutral-600'}`}>
-                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit1}</li>
-                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit2}</li>
-                              <li className="flex items-center gap-3"><svg className="w-4 h-4 text-neutral-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> {t.premiumBenefit3}</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
 
                 </Fragment>
               );
@@ -1370,7 +1371,7 @@ export default function Home() {
 
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>4. Pagos y Procesamiento a través de Stripe</p>
               <ul className="list-disc pl-4 space-y-2">
-                <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propias políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
+                <li>Los pagos de las suscripciones Premium son procesados de forma segura a través de Stripe. Al suscribirte, aceptas que Stripe recopile y almacene de forma cifrada los datos de tu tarjeta de pago de acuerdo con sus propio políticas de seguridad y cumplimiento normativo (PCI-DSS).</li>
                 <li>Maeum no almacena directamente los números completos de tus tarjetas de crédito o débito en sus servidores. Las suscripciones se renuevan de manera automática según el periodo elegido (mensual o anual), pudiendo cancelarse en cualquier momento desde la configuración de tu cuenta.</li>
               </ul>
               
