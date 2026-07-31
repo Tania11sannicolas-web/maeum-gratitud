@@ -21,7 +21,7 @@ const dict = {
     pauseText4: "Guardar fragmentos visuales que resuenan con tu interior funciona como un ancla de gratitud y regulación emocional.",
     pauseTitle5: "Esencia", pauseDesc5: "Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.",
     viewGrid: "Ver Mosaico", yourName: "Tu Nombre", yourTags: "Tus etiquetas (Máx. 5)", noTags: "Ninguna etiqueta seleccionada.",
-    writeTag: "Escribe tu propia etiqueta (ej. gatos)", tagSuggestions: "Sugerencias para inspirarte", phrasePlaceholder: "Ej. Aceptar que se va a escurrir... soltar",
+    writeTag: "Escribe tu propia etiqueta (ej. gatos)", tagSuggestions: "Suggestions for inspiration", phrasePlaceholder: "Ej. Aceptar que se va a escurrir... soltar",
     appearance: "Apariencia", light: "Claro", dark: "Oscuro", language: "Idioma", newPassPlaceholder: "Escribe para cambiar tu contraseña",
     saving: "Guardando...", signOut: "Salir de la cuenta", signingOut: "Saliendo...", followInstagram: "Síguenos en Instagram",
     checkInbox: "Revisa tu bandeja", magicLinkText: "Hemos enviado un enlace mágico para confirmar tu espacio.",
@@ -804,7 +804,7 @@ export default function Home() {
       }
 
       const data = await res.json();
-      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk'];
+      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv'];
 
       if (data.photos && Array.isArray(data.photos)) {
         const newPhotos = data.photos
@@ -989,6 +989,12 @@ export default function Home() {
   };
 
   const handleSelectState = (stateObj) => {
+    if (!user) {
+      setShowCheckInModal(false);
+      setShowAuthModal(true);
+      return;
+    }
+
     const randIndex = Math.floor(Math.random() * stateObj.prescriptions.length);
     const prescription = stateObj.prescriptions[randIndex];
     setActivePrescription(prescription);
@@ -1030,7 +1036,7 @@ export default function Home() {
         
         if (res.ok) {
           const data = await res.json();
-          const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk'];
+          const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv'];
           if (data.photos && Array.isArray(data.photos)) {
             const newPhotos = data.photos
               .filter(img => {
@@ -1689,6 +1695,7 @@ export default function Home() {
           </div>
         </div>
       )}
+
     </main>
   );
 }
