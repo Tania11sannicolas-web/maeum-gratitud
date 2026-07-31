@@ -345,7 +345,7 @@ const dict = {
         { tag: 'minimal', instruction: 'Cherchez l’espace vide. Le cerveau anxieux cherche des menaces constantes ; observer l’espace négatif lui apprend physiquement qu’il n’y a aucun danger ici.', reflection: 'Votre respiration est-elle devenue un peu plus profonde ?' },
         { tag: 'clouds', instruction: 'Observez l\'immensité. Les nuages bougent lentement et sans effort. Synchroniser votre vue avec des objets lents désactive l\'urgence de l\'amygdale.', reflection: 'Quelle sensation physique a changé dans votre poitrine ?' },
         { tag: 'ocean', instruction: 'Imaginez le rythme des vagues. La rythmicité visuelle de l\'eau aide à induire la cohérence cardiaque.', reflection: 'Sentez-vous que votre pouls s\'est un peu aligné avec les images ?' },
-        { tag: 'space', instruction: 'Contemplez l\'échelle de l\'univers. Face à l\'immensité, le cerveau relativise l\'urgence des problèmes, réduisant le cortisol.', reflection: 'Vos inquiétudes semblent-elles un peu moins lourdes maintenant ?' },
+        { tag: 'space', instruction: 'Contempla l\'échelle de l\'univers. Face à l\'immensité, le cerveau relativise l\'urgence des problèmes, réduisant le cortisol.', reflection: 'Vos inquiétudes semblent-elles un peu moins lourdes maintenant ?' },
         { tag: 'macro', instruction: 'Concentrez-vous sur les micro-détails. En forçant les yeux à se concentrer de près, vous empêchez le cerveau de scanner l\'environnement en quête de danger.', reflection: 'Votre esprit se sent-il un peu plus ancré dans le présent ?' },
         { tag: 'texture', instruction: 'Imaginez la sensation tactile. Engager la mémoire sensori-motrice ramène votre énergie anxieuse dans le corps physique.', reflection: 'Quelle partie de votre corps se sent plus présente ?' },
         { tag: 'nature', instruction: 'Absorbez les motifs verts. Il est cliniquement prouvé que les fractales de la nature réduisent la réponse de fuite ou de combat en quelques minutes.', reflection: 'Ressentez-vous un peu plus de fraîcheur intérieure ?' },
@@ -399,7 +399,7 @@ const dict = {
         { tag: 'abstract', instruction: 'Relâchez le besoin de contrôler ou de comprendre. L\'art abstrait déprogramme le besoin de l\'ego d\'avoir toujours raison.', reflection: 'Sentez-vous que vous pouvez arrêter de vous battre mentalement pour un instant ?' },
         { tag: 'nature', instruction: 'Cherchez les tons terre et verts. Ce sont des environnements biologiquement neutres où votre cerveau reptilien sait qu\'il n\'a pas besoin de se défendre.', reflection: 'Votre respiration a-t-elle cessé d\'être courte et rapide ?' },
         { tag: 'texture', instruction: 'Imaginez toucher des surfaces rugueuses ou froides. Changer la texture imaginée redirige le sang du cerveau limbique vers le cortex sensoriel.', reflection: 'Vous sentez-vous un peu plus "refroidi(e)" intérieurement ?' },
-        { tag: 'macro', instruction: 'Redirigez votre attention. Forcer votre esprit à analyser le détail d\'un insecte ou d\'une goutte brise la boucle des pensées obsessionnelles.', reflection: 'Avez-vous réussi à oublier le déclencheur pendant ces secondes ?' }
+        { tag: 'macro', instruction: 'Redirigez votre attention. Forcer votre esprit à analyser le détail d\'un insecto ou d\'une goutte brise la boucle des pensées obsessionnelles.', reflection: 'Avez-vous réussi à oublier le déclencheur pendant ces secondes ?' }
       ]},
       { id: 'vulnerable', label: 'Insécure / Vulnérable', prescriptions: [
         { tag: 'animals', instruction: 'Cherchez le regard compatissant. En tant que mammifères, nous nous régulons en meute. Observer des animaux nous offre la sécurité d\'une affection sans attente.', reflection: 'Ressentez-vous un peu plus de chaleur protectrice dans votre ventre ?' },
@@ -1692,6 +1692,46 @@ export default function Home() {
             )}
             {isForgotPassword && (
               <button onClick={() => setIsForgotPassword(false)} className={`w-full text-center mt-6 text-xs underline transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>{t.backToLogin}</button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {showCheckInModal && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
+          <div className={`p-8 rounded-lg max-w-2xl w-full relative shadow-2xl max-h-[85vh] overflow-y-auto ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
+            <button onClick={() => { setShowCheckInModal(false); setActivePrescription(null); }} className="absolute top-4 right-4 text-neutral-400">✕</button>
+            <div className="text-center mb-8">
+              <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.checkinTitle}</h3>
+              <p className={`text-sm font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.checkinSubtitle}</p>
+            </div>
+
+            {!activePrescription ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {t.therapyStates.map((state) => (
+                  <button
+                    key={state.id}
+                    onClick={() => handleSelectState(state)}
+                    className={`p-4 text-left rounded-xl border transition-all active:scale-95 ${isDark ? 'border-neutral-800 bg-neutral-800/50 hover:bg-neutral-800 text-neutral-200' : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800'}`}
+                  >
+                    <span className="block text-sm font-medium tracking-wide">{state.label}</span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className={`p-6 rounded-xl border w-full ${isDark ? 'bg-neutral-800/50 border-neutral-700 text-neutral-300' : 'bg-neutral-50 border-neutral-200 text-neutral-700'}`}>
+                  <p className="text-sm font-light leading-relaxed">{activePrescription.instruction}</p>
+                </div>
+                <div className="flex gap-4 w-full">
+                  <button onClick={() => setActivePrescription(null)} className={`flex-1 py-4 rounded-md text-xs uppercase tracking-widest transition-colors border ${isDark ? 'border-neutral-700 text-neutral-400 hover:bg-neutral-800' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}>
+                    Volver
+                  </button>
+                  <button onClick={startTherapySession} className={`flex-1 py-4 rounded-md text-xs uppercase tracking-widest transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
+                    {t.startPause}
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>
