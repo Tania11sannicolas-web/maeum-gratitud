@@ -21,7 +21,7 @@ const dict = {
     pauseText4: "Guardar fragmentos visuales que resuenan con tu interior funciona como un ancla de gratitud y regulación emocional.",
     pauseTitle5: "Esencia", pauseDesc5: "Maeum es recordarte que tu atención es sagrada, y tu paz interior, un territorio que merece ser cuidado.",
     viewGrid: "Ver Mosaico", yourName: "Tu Nombre", yourTags: "Tus etiquetas (Máx. 5)", noTags: "Ninguna etiqueta seleccionada.",
-    writeTag: "Escribe tu propia etiqueta (ej. gatos)", tagSuggestions: "Suggestions for inspiration", phrasePlaceholder: "Ej. Aceptar que se va a escurrir... soltar",
+    writeTag: "Escribe tu propia etiqueta (ej. gatos)", tagSuggestions: "Sugerencias para inspirarte", phrasePlaceholder: "Ej. Aceptar que se va a escurrir... soltar",
     appearance: "Apariencia", light: "Claro", dark: "Oscuro", language: "Idioma", newPassPlaceholder: "Escribe para cambiar tu contraseña",
     saving: "Guardando...", signOut: "Salir de la cuenta", signingOut: "Saliendo...", followInstagram: "Síguenos en Instagram",
     checkInbox: "Revisa tu bandeja", magicLinkText: "Hemos enviado un enlace mágico para confirmar tu espacio.",
@@ -70,7 +70,7 @@ const dict = {
         { tag: 'vintage', instruction: 'Sumérgete en la nostalgia estética. Los tonos apagados requieren menos procesamiento cognitivo, dándole a tu cerebro un descanso activo.', reflection: '¿Se siente tu mente menos saturada ahora?' },
         { tag: 'art', instruction: 'Observa el trazo y el color sin analizar. Contemplar arte activa áreas de placer pasivo en el cerebro, nutriendo sin agotar.', reflection: '¿Qué emoción suave se asomó al ver estas obras?' },
         { tag: 'animals', instruction: 'Conecta con la mirada de estos seres. Los mamíferos nos corregulamos; ver criaturas en reposo le transfiere su estado de ahorro de energía a tu cuerpo.', reflection: '¿Sientes tu respiración más parecida a la de ellos?' },
-        { tag: 'nature', instruction: 'Deja que el verde actúe como un filtro. La biofilia pasiva ayuda a restaurar la fatiga de atención dirigida.', reflection: '¿Sientes un poco más de claridad detrás de tus ojos?' },
+        { tag: 'nature', instruction: 'Deja que el verde actúe como un filtro. La biofilia pasiva ayuda a restaurar la fatigue de atención dirigida.', reflection: '¿Sientes un poco más de claridad detrás de tus ojos?' },
         { tag: 'ocean', instruction: 'Imagina la flotabilidad del agua. Sentir visualmente que el agua te sostiene ayuda a soltar el peso corporal que cargas por agotamiento.', reflection: '¿Tu espalda se siente un gramo más ligera?' },
         { tag: 'minimal', instruction: 'Menos es medicina. Reducir la cantidad de elementos visuales en pantalla apaga el esfuerzo de procesamiento de tu cerebro.', reflection: '¿Sientes alivio al no tener tanto que procesar?' },
         { tag: 'clouds', instruction: 'Mira la suavidad del cielo. Su falta de aristas sólidas permite que los ojos y la mente vaguen sin consumir reservas de energía.', reflection: '¿Sientes que la densidad mental se ha disipado un poco?' }
@@ -114,7 +114,7 @@ const dict = {
       { id: 'vulnerable', label: 'Inseguro / Vulnerable', prescriptions: [
         { tag: 'animals', instruction: 'Busca la mirada compasiva. Como mamíferos, nos regulamos en manada. Observar animales nos brinda la seguridad de un afecto que no exige nada a cambio.', reflection: '¿Sientes un poco más de calor protector en tu estómago?' },
         { tag: 'art', instruction: 'Contempla la historia humana. El arte te recuerda que innumerables personas han cruzado la incertidumbre y han creado belleza a partir de ella.', reflection: '¿Te sientes un poco más capaz de sostener tu propia fragilidad?' },
-        { tag: 'warm', instruction: 'Deja que los tonos cálidos actúen como un refugio. Visualmente imitan el calor de un fuego o un hogar seguro, calmando la sensación de exposición.', reflection: '¿Sientes que tienes un escudo sutil protegiéndote ahora?' },
+        { tag: 'warm', instruction: 'Deja que los tonos cálidos actúen como un refugio. Visuellement, imitan el calor de un fuego o un hogar seguro, calmando la sensación de exposición.', reflection: '¿Sientes que tienes un escudo sutil protegiéndote ahora?' },
         { tag: 'nature', instruction: 'Observa la solidez de los árboles. La naturaleza sobrevive a todas las tormentas anclándose profundo, no huyendo. Pide prestada esa fuerza visual.', reflection: '¿Sientes tus pies más anclados al piso en este momento?' },
         { tag: 'vintage', instruction: 'Conecta con la permanencia. Las cosas del pasado que perduran nos recuerdan que también nosotros tenemos resiliencia para sobrevivir al tiempo.', reflection: '¿Sientes un poco más de seguridad en tu propia historia?' },
         { tag: 'botanical', instruction: 'Observa el crecimiento constante. Cada planta encuentra la manera de buscar la luz, incluso en terrenos difíciles. Así como tú.', reflection: '¿Sientes un destello de confianza en tus propios recursos?' },
@@ -804,7 +804,7 @@ export default function Home() {
       }
 
       const data = await res.json();
-      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv'];
+      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv', 'machine', 'bicycle', 'bike', 'engine', 'airplane', 'train', 'subway'];
 
       if (data.photos && Array.isArray(data.photos)) {
         const newPhotos = data.photos
@@ -991,6 +991,7 @@ export default function Home() {
   const handleSelectState = (stateObj) => {
     if (!user) {
       setShowCheckInModal(false);
+      setIsIntentionalPauseActive(false);
       setShowAuthModal(true);
       return;
     }
@@ -1036,7 +1037,7 @@ export default function Home() {
         
         if (res.ok) {
           const data = await res.json();
-          const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv'];
+          const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv', 'machine', 'bicycle', 'bike', 'engine', 'airplane', 'train', 'subway'];
           if (data.photos && Array.isArray(data.photos)) {
             const newPhotos = data.photos
               .filter(img => {
@@ -1456,7 +1457,7 @@ export default function Home() {
       </nav>
 
       {isEmailSent && (
-        <div className="fixed inset-0 bg-neutral-900/90 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-6 text-center">
+        <div className="fixed inset-0 bg-neutral-900/90 backdrop-blur-md z-[160] flex flex-col items-center justify-center p-6 text-center">
           <div className={`p-8 rounded-2xl max-w-sm w-full shadow-2xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <div className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-6 ${isDark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
               <svg className={`w-6 h-6 ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
@@ -1472,7 +1473,7 @@ export default function Home() {
       )}
 
       {showTerms && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
           <div className={`p-6 sm:p-8 rounded-lg max-w-lg w-full relative shadow-2xl max-h-[80vh] overflow-y-auto ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <button onClick={() => setShowTerms(false)} className={`absolute top-4 right-4 rounded-full w-8 h-8 flex items-center justify-center transition-colors ${isDark ? 'text-neutral-400 bg-neutral-800 hover:bg-neutral-700' : 'text-neutral-400 bg-white hover:bg-neutral-100'}`}>✕</button>
             <h3 className={`text-lg font-normal mb-6 text-center ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Términos y Política de Privacidad</h3>
@@ -1540,7 +1541,7 @@ export default function Home() {
       )}
 
       {showInstallGuide && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 pb-12 sm:pb-4">
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-end sm:items-center justify-center p-4 pb-12 sm:pb-4">
           <div className={`p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <button onClick={() => setShowInstallGuide(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
             <h3 className={`text-lg font-normal mb-2 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.installTitle}</h3>
@@ -1586,7 +1587,7 @@ export default function Home() {
       )}
 
       {photoToDelete && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setPhotoToDelete(null)}>
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4" onClick={() => setPhotoToDelete(null)}>
           <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`} onClick={(e) => e.stopPropagation()}>
             <h3 className={`text-sm tracking-widest uppercase mb-6 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.deleteConfirm}</h3>
             <div className="flex gap-4">
@@ -1598,7 +1599,7 @@ export default function Home() {
       )}
 
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowDeleteConfirm(false)}>
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4" onClick={() => setShowDeleteConfirm(false)}>
           <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`} onClick={(e) => e.stopPropagation()}>
             <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-red-400' : 'text-red-500'}`}>{t.deleteAccount}</h3>
             <p className={`text-sm mb-6 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.deleteAccountConfirm}</p>
@@ -1611,7 +1612,7 @@ export default function Home() {
       )}
 
       {appMessage && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-2xl relative ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{appMessage.title}</h3>
             <p className={`text-sm mb-8 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{appMessage.text}</p>
@@ -1623,7 +1624,7 @@ export default function Home() {
       )}
 
       {loginError && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full text-center shadow-xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <h3 className={`text-sm tracking-widest uppercase mb-4 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.loginErrorTitle}</h3>
             <p className={`text-sm mb-6 font-light leading-relaxed ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{loginError}</p>
@@ -1640,7 +1641,7 @@ export default function Home() {
       )}
 
       {showAuthModal && !user && (
-        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full relative shadow-2xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
             <h3 className={`text-sm text-center tracking-widest uppercase mb-6 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
@@ -1695,7 +1696,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
     </main>
   );
 }
