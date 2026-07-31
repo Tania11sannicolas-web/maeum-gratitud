@@ -138,7 +138,7 @@ const dict = {
       { id: 'stuck', label: 'Estancado / Bloqueado', prescriptions: [
         { tag: 'abstract', instruction: 'Fuerza nuevas rutas neuronales. Mirar formas que no tienen lógica predefinida estimula el pensamiento lateral y la creatividad bloqueada.', reflection: '¿Qué formas o figuras inesperadas descubrió tu cerebro aquí?' },
         { tag: 'neon', instruction: 'Enciende la chispa dopaminérgica. Los colores eléctricos de alto contraste despiertan al sistema nervioso simpático, empujándolo a la acción.', reflection: '¿Sientes un ligero incremento en tus ganas de hacer algo?' },
-        { tag: 'cities', instruction: 'Contágiate del flujo. Observar la arquitectura y el movimiento humano reactiva la percepción de que el mundo avanza, llevándote con él.', reflection: '¿Sientes un poco de esa energía colectiva en ti?' },
+        { tag: 'cities', instruction: 'Contágiate del flujo. Observar la arquitectura y el movimiento humano reactiva la percepción que el mundo avanza, llevándote con él.', reflection: '¿Sientes un poco de esa energía colectiva en ti?' },
         { tag: 'colors', instruction: 'Rompe la monotonía mental. Inyectar colores puros y variados sacude la habituación visual, el primer paso para salir del estancamiento.', reflection: '¿Tu percepción del momento actual se siente más vívida?' },
         { tag: 'art', instruction: 'Usa la perspectiva de otro. Ver cómo un artista resolvió un lienzo te recuerda que siempre hay más de una forma de ver tu propia situación.', reflection: '¿Lograste sentir inspiración o asombro genuino?' },
         { tag: 'macro', instruction: 'Cambia radicalmente tu ángulo. Si estás bloqueado en el panorama general, sumergirte en lo minúsculo resetea tu marco de referencia cognitivo.', reflection: '¿Te diste cuenta de cuánta complejidad hay en lo pequeño?' },
@@ -597,7 +597,7 @@ const LIMITS = {
 
 export default function Home() {
   const [user, setUser] = useState(null);
-  const [userPlan, setUserPlan] = useState("free"); // free, premium, lifetime
+  const [userPlan, setUserPlan] = useState("free"); 
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -631,7 +631,7 @@ export default function Home() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [customTag, setCustomTag] = useState("");
   const [theme, setTheme] = useState("light");
-  const [lang, setLang] = useState("es"); // Por defecto español, se actualizará en useEffect
+  const [lang, setLang] = useState("es"); 
   
   const [currentTab, setCurrentTab] = useState("explore"); 
   const [galleryView, setGalleryView] = useState("grid");
@@ -648,7 +648,7 @@ export default function Home() {
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
 
-  // NUEVOS ESTADOS: Check-in Somático y Pausa Intencional
+  // Estados: Check-in Somático y Pausa Intencional
   const [showCheckInModal, setShowCheckInModal] = useState(false);
   const [activePrescription, setActivePrescription] = useState(null);
   const [showReflection, setShowReflection] = useState(false);
@@ -657,7 +657,6 @@ export default function Home() {
   const isDark = theme === "dark";
   const t = dict[lang] || dict.es;
 
-  // Lógica de límites generales API
   const currentLimits = LIMITS[userPlan] || LIMITS.free;
 
   const checkApiLimit = () => {
@@ -672,7 +671,6 @@ export default function Home() {
     return true;
   };
 
-  // Lógica de límite de Pausa Intencional
   const checkIntentionalLimit = () => {
     const now = Date.now();
     const storedData = JSON.parse(localStorage.getItem('maeum_intentional_tracker') || '{"count": 0, "timestamp": 0}');
@@ -715,9 +713,7 @@ export default function Home() {
     audioRef.current.loop = true;
 
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        loadUserData(user);
-      }
+      if (user) loadUserData(user);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -784,12 +780,9 @@ export default function Home() {
   };
 
   const loadMorePhotos = async () => {
-    if (loadingRef.current || isIntentionalPauseActive) return; // No carga más si es pausa intencional
+    if (loadingRef.current || isIntentionalPauseActive) return; 
     if (!checkApiLimit()) {
-      setAppMessage({
-        title: userPlan === 'free' ? t.takeBreakTitleFree : t.takeBreakTitlePremium,
-        text: userPlan === 'free' ? t.takeBreakDescFree : t.takeBreakDescPremium
-      });
+      setAppMessage({ title: userPlan === 'free' ? t.takeBreakTitleFree : t.takeBreakTitlePremium, text: userPlan === 'free' ? t.takeBreakDescFree : t.takeBreakDescPremium });
       return;
     }
 
@@ -811,7 +804,7 @@ export default function Home() {
       }
 
       const data = await res.json();
-      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl'];
+      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk'];
 
       if (data.photos && Array.isArray(data.photos)) {
         const newPhotos = data.photos
@@ -834,10 +827,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Si la categoría cambia de manera normal (scroll infinito)
-    if (!isIntentionalPauseActive) {
-      setFeedPhotos([]); seenIds.current.clear(); loadMorePhotos();
-    }
+    if (!isIntentionalPauseActive) { setFeedPhotos([]); seenIds.current.clear(); loadMorePhotos(); }
   }, [activeCategory]);
 
   useEffect(() => { if (currentTab === "gallery") setGalleryLimit(12); }, [currentTab]);
@@ -848,7 +838,6 @@ export default function Home() {
       if (!isScrolling) {
         window.requestAnimationFrame(() => {
           if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
-            // Solo hacer fetch si NO estamos en pausa intencional aislada
             if (currentTab === "explore" && !isIntentionalPauseActive) {
               if (!user) { if (feedPhotos.length > 0) setShowAuthModal(true); } 
               else loadMorePhotos();
@@ -999,13 +988,11 @@ export default function Home() {
     setIsPlaying(!isPlaying);
   };
 
-  // Funciones para el Check-in Somático
   const handleSelectState = (stateObj) => {
     const randIndex = Math.floor(Math.random() * stateObj.prescriptions.length);
     const prescription = stateObj.prescriptions[randIndex];
     setActivePrescription(prescription);
     
-    // (Opcional) Log a base de datos de supabase
     if (user) {
       supabase.from('therapy_logs').insert([{ 
         user_id: user.id, state_selected: stateObj.id, tag_recommended: prescription.tag 
@@ -1015,6 +1002,7 @@ export default function Home() {
 
   const startTherapySession = async () => {
     if (!user) {
+      setShowCheckInModal(false);
       setShowAuthModal(true);
       return;
     }
@@ -1028,7 +1016,6 @@ export default function Home() {
     setShowReflection(false);
     
     if (activePrescription) {
-      // Bloquear feed y preparar visualización aislada de exactamente 12 fotos
       setIsIntentionalPauseActive(true);
       setActiveCategory(activePrescription.tag);
       setFeedPhotos([]); 
@@ -1043,7 +1030,7 @@ export default function Home() {
         
         if (res.ok) {
           const data = await res.json();
-          const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl'];
+          const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk'];
           if (data.photos && Array.isArray(data.photos)) {
             const newPhotos = data.photos
               .filter(img => {
@@ -1056,7 +1043,7 @@ export default function Home() {
                   authorName: img.photographer || "Pexels", authorUsername: img.photographer_url || "https://www.pexels.com", downloadLocation: null
                 };
               });
-            setFeedPhotos(newPhotos.slice(0, 12)); // Exactamente hasta 12 fotos
+            setFeedPhotos(newPhotos.slice(0, 12)); 
           }
         }
       } catch (error) { console.log(error); }
@@ -1080,7 +1067,6 @@ export default function Home() {
           <h1 className={`text-xl tracking-widest uppercase font-normal ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Maeum</h1>
           <div className="flex items-center gap-3 sm:gap-6">
             
-            {/* Ícono permanente de Check-in para TODOS */}
             <button 
               onClick={() => { setActivePrescription(null); setShowCheckInModal(true); }}
               className={`p-2 rounded-full transition-all active:scale-95 ${isDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-400 hover:text-neutral-900'}`}
@@ -1109,7 +1095,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Botón flotante para la Pausa Intencional (Solo visible en Home si no estamos ya en Pausa Aislada) */}
         {currentTab === "explore" && !isIntentionalPauseActive && (
           <div className="flex justify-center w-full bg-transparent pt-3 pb-1 border-b border-transparent">
             <button 
@@ -1121,7 +1106,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Categorías (Scroll Infinito) solo visibles si NO estamos en pausa intencional */}
         {currentTab === "explore" && !isIntentionalPauseActive && (
           <div className="flex overflow-x-auto gap-4 py-4 px-6 scrollbar-hide snap-x" style={{ willChange: "transform" }}>
             {selectedTags.length === 0 ? (
@@ -1136,7 +1120,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Header específico cuando estamos en Pausa Intencional */}
         {currentTab === "explore" && isIntentionalPauseActive && activePrescription && (
           <div className="py-4 px-6 flex justify-between items-center bg-gradient-to-r from-blue-500/10 to-transparent">
             <p className={`text-xs uppercase tracking-widest ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>Medicina Visual: {t.tags?.[activePrescription.tag] || activePrescription.tag}</p>
@@ -1148,7 +1131,6 @@ export default function Home() {
       {currentTab === "explore" && (
         <section className="max-w-6xl mx-auto p-4 mt-4 relative">
           
-          {/* BANNER FLOTANTE DE REFLEXIÓN (Check-in) */}
           {showReflection && activePrescription && isIntentionalPauseActive && (
             <div className="fixed bottom-28 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[28rem] z-30 animate-fade-in-up">
               <div className={`backdrop-blur-xl p-6 rounded-2xl shadow-2xl border flex flex-col gap-4 relative ${isDark ? 'bg-neutral-900/90 border-neutral-800 text-neutral-200' : 'bg-white/90 border-neutral-100 text-neutral-800'}`}>
@@ -1171,7 +1153,6 @@ export default function Home() {
               return (
                 <Fragment key={photo.id}>
                   
-                  {/* TEXTOS EDITORIALES SÓLO VISIBLES SI NO ESTAMOS EN PAUSA INTENCIONAL */}
                   {!user && !isIntentionalPauseActive && index === 0 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
@@ -1195,7 +1176,6 @@ export default function Home() {
                     </div>
                   )}
 
-                  {/* NUEVO TEXTO PROMOCIONAL INCORPORADO (Indice 2) */}
                   {!user && !isIntentionalPauseActive && index === 2 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
@@ -1535,7 +1515,7 @@ export default function Home() {
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cómo Utilizamos tu Información</p>
               <p>Utilizamos tus datos exclusivamente para:</p>
               <ul className="list-disc pl-4 space-y-2">
-                <li>Autenticar tu acceso, gestionar tu cuenta et permettre la récupération de ton mot de passe.</li>
+                <li>Autenticar tu acceso, gestionar tu cuenta y permitirte recuperar tu contraseña.</li>
                 <li>Sincronizar tu galería personal, preferencias estéticas y nivel de suscripción (Free o Premium) en tus dispositivos.</li>
                 <li>Nunca vendemos, rentamos ni compartimos tus datos personales con terceros con fines publicitarios o comerciales.</li>
               </ul>
@@ -1709,69 +1689,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      {/* NUEVO MODAL: Check-in Somático */}
-      {showCheckInModal && (
-        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-md z-[120] flex items-center justify-center p-4 animate-fade-in">
-          <div className={`p-8 md:p-12 rounded-3xl max-w-lg w-full relative shadow-2xl transition-all ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
-            <button onClick={() => setShowCheckInModal(false)} className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600 transition-colors">✕</button>
-            
-            {!activePrescription ? (
-              <>
-                <div className="flex flex-col items-center mb-8">
-                  <span className={`p-3 rounded-full mb-4 ${isDark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
-                    <svg className={`w-6 h-6 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                  </span>
-                  <h3 className={`text-xl md:text-2xl font-light text-center mb-2 leading-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.checkinTitle}</h3>
-                  <p className={`text-sm text-center font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.checkinSubtitle}</p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
-                  {t.therapyStates?.map(state => (
-                    <button 
-                      key={state.id} 
-                      onClick={() => handleSelectState(state)}
-                      className={`text-left p-4 rounded-xl border text-sm transition-all active:scale-95 ${isDark ? 'border-neutral-800 hover:bg-neutral-800 hover:border-neutral-700 text-neutral-300' : 'border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 text-neutral-700'}`}
-                    >
-                      {state.label}
-                    </button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="animate-fade-in flex flex-col items-center text-center">
-                <span className={`text-[10px] uppercase tracking-[0.2em] mb-6 font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-                  Etiqueta: {t.tags?.[activePrescription.tag] || activePrescription.tag}
-                </span>
-                
-                <p className={`text-base md:text-lg font-light leading-relaxed mb-6 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>
-                  {activePrescription.instruction}
-                </p>
-
-                <div className={`w-full p-4 rounded-xl mb-8 border ${isDark ? 'bg-neutral-800/50 border-neutral-700' : 'bg-neutral-50 border-neutral-200'}`}>
-                  <p className={`text-xs italic mb-4 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                    {t.audioSuggest}
-                  </p>
-                  <button 
-                    onClick={toggleAudio}
-                    className={`px-6 py-2 text-xs uppercase tracking-widest rounded-full transition-colors active:scale-95 border ${isPlaying ? (isDark ? 'bg-blue-500 text-white border-blue-500' : 'bg-blue-500 text-white border-blue-500') : (isDark ? 'bg-transparent text-neutral-300 border-neutral-600 hover:border-neutral-400' : 'bg-transparent text-neutral-600 border-neutral-300 hover:border-neutral-500')}`}
-                  >
-                    {isPlaying ? t.audioToggleOff : t.audioToggleOn}
-                  </button>
-                </div>
-
-                <button 
-                  onClick={startTherapySession} 
-                  className={`w-full py-4 text-xs uppercase tracking-widest rounded-full transition-colors active:scale-95 shadow-lg ${isDark ? 'bg-neutral-100 text-neutral-900 hover:bg-white' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
-                >
-                  {t.startPause}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
     </main>
   );
 }
