@@ -104,7 +104,7 @@ const dict = {
     premiumBenefit1: "Jusqu'à 5 tags d'inspiration", premiumBenefit2: "Sauvegardez jusqu'à 300 éclats", premiumBenefit3: "50 pauses visuelles par heure",
     monthly: "3 $ / mois", yearly: "33 $ / an", subscribeBtn: "Passer à Premium", manageSubscription: "Gérer l'abonnement", galleryFull: "Galerie pleine",
     galleryFullDescFree: "Vous avez atteint votre limite de 24 éclats. Passez à Premium pour en sauvegarder 300.", galleryFullDescPremium: "Vous avez atteint la limite maximale de 300 éclats.",
-    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" },
+    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" },
     deleteAccount: "Supprimer le compte définitivement", deleteAccountConfirm: "Cette action supprimera votre galerie, votre profil et annulera tout abonnement actif. Elle est irréversible. Êtes-vous sûr(e)?",
     premiumActive: "Premium Actif", lifetimeActive: "Premium à Vie", loginErrorTitle: "Accès Refusé", tryAgain: "Réessayer", invalidCredentials: "L'e-mail ou le mot de passe est incorrect."
   },
@@ -238,7 +238,7 @@ export default function Home() {
       title: p.title || "Destello",
       authorName: p.authorName || "Autor",
       authorUsername: p.authorUsername || "unsplash",
-      downloadLocation: p.downloadLocation || `https://api.unsplash.com/photos/${p.id}/download`
+      downloadLocation: p.downloadLocation || null
     }));
 
     if (sortOrder === "newest") arr = arr.reverse();
@@ -387,8 +387,14 @@ export default function Home() {
     loadingRef.current = true;
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
-      // MODIFICACIÓN 1: Pidiendo 15 imágenes en vez de 12
-      const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}&count=15&query=${querySearch}`);
+      // Añadimos una página aleatoria entre 1 y 5 para asegurar variedad con Pexels
+      const randomPage = Math.floor(Math.random() * 5) + 1;
+      
+      const res = await fetch(`https://api.pexels.com/v1/search?query=${querySearch}&per_page=15&page=${randomPage}`, {
+        headers: {
+          Authorization: process.env.NEXT_PUBLIC_PEXELS_KEY
+        }
+      });
       
       if (!res.ok) {
         if (res.status === 403 || res.status === 429) {
@@ -403,16 +409,16 @@ export default function Home() {
 
       const data = await res.json();
       
-      if (Array.isArray(data)) {
-        const newPhotos = data.filter(img => !seenIds.current.has(img.id)).map(img => {
-          seenIds.current.add(img.id);
+      if (data.photos && Array.isArray(data.photos)) {
+        const newPhotos = data.photos.filter(img => !seenIds.current.has(img.id.toString())).map(img => {
+          seenIds.current.add(img.id.toString());
           return { 
-            id: img.id, 
-            url: img.urls.regular, 
-            title: img.alt_description || "Destello",
-            authorName: img.user?.name || "Unsplash",
-            authorUsername: img.user?.username || "unsplash",
-            downloadLocation: img.links?.download_location
+            id: img.id.toString(), 
+            url: img.src.large2x || img.src.large, 
+            title: img.alt || "Destello",
+            authorName: img.photographer || "Pexels",
+            authorUsername: img.photographer_url || "https://www.pexels.com",
+            downloadLocation: null
           };
         });
         setFeedPhotos(prev => [...prev, ...newPhotos]);
@@ -893,7 +899,7 @@ export default function Home() {
                     )}
 
                     <a 
-                      href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
+                      href={photo.authorUsername?.startsWith('http') ? photo.authorUsername : `https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="absolute bottom-6 left-5 z-10 text-[9px] uppercase tracking-widest text-white/70 hover:text-white transition-colors"
@@ -1006,7 +1012,7 @@ export default function Home() {
                   {activeMenuPhotoId === photo.id && (
                     <div className={`absolute top-16 right-4 backdrop-blur-md rounded-lg shadow-xl border p-2 z-30 min-w-[200px] text-left ${isDark ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-100'}`}>
                       <a 
-                        href={`https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
+                        href={photo.authorUsername?.startsWith('http') ? photo.authorUsername : `https://unsplash.com/@${photo.authorUsername || 'unsplash'}?utm_source=maeum_gratitud&utm_medium=referral`} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         onClick={() => triggerUnsplashDownload(photo.downloadLocation)}
