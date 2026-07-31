@@ -30,8 +30,7 @@ const dict = {
     understood: "Entendido", noAccount: "¿No tienes cuenta?", haveAccount: "¿Ya tienes cuenta?", backToLogin: "Volver a Iniciar Sesión",
     takeBreakTitleFree: "Límite alcanzado", takeBreakDescFree: "Has contemplado mucha belleza por ahora. Vuelve en una hora para seguir viendo o actualiza a Premium para extender tu tiempo.",
     takeBreakTitlePremium: "Tómate un respiro", takeBreakDescPremium: "Es momento de estar presente en la vida real. Relaja tu mente, descansa tus ojos y reconecta contigo. Vuelve en una hora.",
-    processing: "Procesando...",
-    pricingTitle: "Elige tu Refugio", pricingFree: "Pausa Continua", pricingPremium: "Refugio Profundo",
+    processing: "Procesando...", pricingTitle: "Elige tu Refugio", pricingFree: "Pausa Continua", pricingPremium: "Refugio Profundo",
     freeBenefit1: "Hasta 5 etiquetas de inspiración", freeBenefit2: "Guarda 24 destellos en tu galería", freeBenefit3: "3 pausas intencionales por hora",
     premiumBenefit1: "Hasta 5 etiquetas de inspiración", premiumBenefit2: "Guarda hasta 300 destellos en tu galería", premiumBenefit3: "5 pausas intencionales por hora",
     monthly: "$3 / mes", yearly: "$33 / año", subscribeBtn: "Actualizar a Premium", manageSubscription: "Gestionar Suscripción", galleryFull: "Galería llena",
@@ -45,11 +44,15 @@ const dict = {
     audioToggleOn: "Activar Audio", audioToggleOff: "Silenciar Audio",
     intentionalLimitReached: "Has abrazado suficientes pausas por ahora. Deja que las semillas germinen en la vida real. Regresa en una hora.",
     limitReachedTitle: "Descanso Sagrado",
-    
+
     checkinTitle: "¿Cómo se siente tu sistema nervioso ahora mismo?",
     checkinSubtitle: "Elige el estado que más resuene contigo para recibir tu medicina visual.",
     startPause: "Comenzar pausa intencional",
     closeReflection: "Cerrar reflexión",
+    tagLabel: "Etiqueta",
+    visualMedicine: "Medicina Visual",
+    goBack: "Volver",
+    closeBtn: "Cerrar",
     therapyStates: [
       { id: 'anxious', label: 'Ansioso / Acelerado', prescriptions: [
         { tag: 'minimal', instruction: 'Busca el espacio vacío en estas imágenes. El cerebro ansioso busca amenazas constantes; observar el espacio negativo le enseña físicamente a tu mente que aquí no hay peligro.', reflection: '¿Notas si tu respiración se ha vuelto un poco más profunda y lenta?' },
@@ -113,8 +116,8 @@ const dict = {
       ]},
       { id: 'vulnerable', label: 'Inseguro / Vulnerable', prescriptions: [
         { tag: 'animals', instruction: 'Busca la mirada compasiva. Como mamíferos, nos regulamos en manada. Observar animales nos brinda la seguridad de un afecto que no exige nada a cambio.', reflection: '¿Sientes un poco más de calor protector en tu estómago?' },
-        { tag: 'art', instruction: 'Contempla la historia humana. El arte te recuerda que innumerables personas han cruzado la incertidumbre y han creado belleza a partir de ella.', reflection: '¿Te sientes un poco más capaz de sostener tu propia fragilidad?' },
-        { tag: 'warm', instruction: 'Deja que los tonos cálidos actúen como un refugio. Visuellement, imitan el calor de un fuego o un hogar seguro, calmando la sensación de exposición.', reflection: '¿Sientes que tienes un escudo sutil protegiéndote ahora?' },
+        { tag: 'art', instruction: 'Contempla la historia humana. El arte te recuerda que innumerables personas han cruzado la incertidumbre y han creado belleza a partir d\'elle.', reflection: '¿Te sientes un poco más capaz de sostener tu propia fragilidad?' },
+        { tag: 'warm', instruction: 'Deja que los tonos cálidos actúen como un refugio. Visualmente imitan el calor de un fuego o un hogar seguro, calmando la sensación de exposición.', reflection: '¿Sientes que tienes un escudo sutil protegiéndote ahora?' },
         { tag: 'nature', instruction: 'Observa la solidez de los árboles. La naturaleza sobrevive a todas las tormentas anclándose profundo, no huyendo. Pide prestada esa fuerza visual.', reflection: '¿Sientes tus pies más anclados al piso en este momento?' },
         { tag: 'vintage', instruction: 'Conecta con la permanencia. Las cosas del pasado que perduran nos recuerdan que también nosotros tenemos resiliencia para sobrevivir al tiempo.', reflection: '¿Sientes un poco más de seguridad en tu propia historia?' },
         { tag: 'botanical', instruction: 'Observa el crecimiento constante. Cada planta encuentra la manera de buscar la luz, incluso en terrenos difíciles. Así como tú.', reflection: '¿Sientes un destello de confianza en tus propios recursos?' },
@@ -135,17 +138,17 @@ const dict = {
         { tag: 'abstract', instruction: 'Desengancha la narrativa. No intentes buscarle historias a estas imágenes, úsalas solo como parches de color para descansar el lenguaje.', reflection: '¿Lograste silenciar tu voz interna por un segundo?' },
         { tag: 'botanical', instruction: 'Busca el verde monocromático. Está demostrado que rodearse visualmente de un solo tono natural disminuye la frecuencia cardíaca y la presión arterial.', reflection: '¿Sientes que tu cuerpo ha soltado el modo de "alerta"?' }
       ]},
-      { id: 'stuck', label: 'Estancado / Bloqueado', prescriptions: [
-        { tag: 'abstract', instruction: 'Fuerza nuevas rutas neuronales. Mirar formas que no tienen lógica predefinida estimula el pensamiento lateral y la creatividad bloqueada.', reflection: '¿Qué formas o figuras inesperadas descubrió tu cerebro aquí?' },
-        { tag: 'neon', instruction: 'Enciende la chispa dopaminérgica. Los colores eléctricos de alto contraste despiertan al sistema nervioso simpático, empujándolo a la acción.', reflection: '¿Sientes un ligero incremento en tus ganas de hacer algo?' },
-        { tag: 'cities', instruction: 'Contágiate del flujo. Observar la arquitectura y el movimiento humano reactiva la percepción que el mundo avanza, llevándote con él.', reflection: '¿Sientes un poco de esa energía colectiva en ti?' },
-        { tag: 'colors', instruction: 'Rompe la monotonía mental. Inyectar colores puros y variados sacude la habituación visual, el primer paso para salir del estancamiento.', reflection: '¿Tu percepción del momento actual se siente más vívida?' },
-        { tag: 'art', instruction: 'Usa la perspectiva de otro. Ver cómo un artista resolvió un lienzo te recuerda que siempre hay más de una forma de ver tu propia situación.', reflection: '¿Lograste sentir inspiración o asombro genuino?' },
-        { tag: 'macro', instruction: 'Cambia radicalmente tu ángulo. Si estás bloqueado en el panorama general, sumergirte en lo minúsculo resetea tu marco de referencia cognitivo.', reflection: '¿Te diste cuenta de cuánta complejidad hay en lo pequeño?' },
-        { tag: 'space', instruction: 'Contempla lo ilimitado. Sentirse atascado es una ilusión de encierro; ver el cosmos te recuerda que las posibilidades son literalmente infinitas.', reflection: '¿Sientes que tus opciones se han expandido ligeramente?' },
-        { tag: 'clouds', instruction: 'Recuerda el principio del movimiento perpetuo. Ninguna nube se queda estática. Tu bloqueo también es una nube temporal que pasará.', reflection: '¿Sientes un poco más de fluidez en tu actitud?' },
-        { tag: 'ocean', instruction: 'Sintoniza con las corrientes. El agua nunca se estanca, siempre encuentra un cauce. Imagina que tu mente copia esa misma propiedad fluida.', reflection: '¿Sientes que la resistencia interior cedió un poco?' },
-        { tag: 'geometry', instruction: 'Busca nuevos ángulos de intersección. Identifying cómo las formas se unen visualmente ayuda al cerebro a buscar conexiones creativas en tus propios bloqueos.', reflection: '¿Pudiste ver algún patrón que te generara claridad?' }
+      { id: 'stuck', label: 'Bloqué / Stagnant', prescriptions: [
+        { tag: 'abstract', instruction: 'Forcez de nouvelles voies neuronales. Regarder des formes qui n\'ont pas de logique prédéfinie stimule la pensée latérale et la créativité bloquée.', reflection: '¿Qué formas o figuras inesperadas descubrió tu cerebro aquí?' },
+        { tag: 'neon', instruction: 'Allumez l\'étincelle dopaminergique. Les couleurs électriques très contrastées éveillent le système nerveux sympathique, le poussant à l\'action.', reflection: '¿Sientes un ligero incremento en tus ganas de hacer algo?' },
+        { tag: 'cities', instruction: 'Contaminez-vous par le flux. Observer l\'architecture et le mouvement humain réactive la perception que le mundo avanza, llevándote con él.', reflection: '¿Sientes un poco de esa energía colectiva en ti?' },
+        { tag: 'colors', instruction: 'Brisez la monotonie mentale. Injecter des couleurs pures et variées secoue l\'habituation visuelle, premier pas pour sortir de la stagnation.', reflection: '¿Tu percepción del momento actual se siente más vívida?' },
+        { tag: 'art', instruction: 'Utilisez la perspective d\'un autre. Voir comment un artiste a résolu une toile vous rappelle qu\'il y a toujours plus d\'une façon de voir tu propia situación.', reflection: '¿Lograste sentir inspiración o asombro genuino?' },
+        { tag: 'macro', instruction: 'Changez radicalement votre angle. Si vous êtes bloqué dans la vue d\'ensemble, plonger dans le minuscule réinitialise votre cadre de référence.', reflection: '¿Te diste cuenta de cuánta complejidad hay en lo pequeño?' },
+        { tag: 'space', instruction: 'Contemplez l\'illimité. Sentirse atascado es una ilusión de encierro; ver el cosmos te recuerda que las posibilidades son literalmente infinitas.', reflection: '¿Sientes que tus opciones se han expandido ligeramente?' },
+        { tag: 'clouds', instruction: 'Rappelez-vous le principe du mouvement perpétuel. Ninguna nube se queda estática. Tu bloqueo también es una nube temporal que pasará.', reflection: '¿Sientes un poco más de fluidez en tu actitud?' },
+        { tag: 'ocean', instruction: 'Syntonisez les courants. El agua nunca se estanca, siempre encuentra un cauce. Imagina que tu mente copia esa misma propiedad fluida.', reflection: '¿Sientes que la resistencia interior cedió un poco?' },
+        { tag: 'geometry', instruction: 'Cherchez de nouveaux angles d\'intersection. Identifying cómo las formas se unen visualmente ayuda al cerebro a buscar conexiones creativas en tus propios bloqueos.', reflection: '¿Pudiste ver algún patrón que te generara claridad?' }
       ]}
     ]
   },
@@ -195,6 +198,10 @@ const dict = {
     checkinSubtitle: "Choose the state that resonates with you to receive your visual medicine.",
     startPause: "Begin intentional pause",
     closeReflection: "Close reflection",
+    tagLabel: "Tag",
+    visualMedicine: "Visual Medicine",
+    goBack: "Go Back",
+    closeBtn: "Close",
     therapyStates: [
       { id: 'anxious', label: 'Anxious / Rushed', prescriptions: [
         { tag: 'minimal', instruction: 'Look for the empty space in these images. The anxious brain constantly looks for threats; observing negative space physically teaches your mind that there is no danger here.', reflection: 'Do you notice if your breathing has become a little deeper and slower?' },
@@ -340,6 +347,10 @@ const dict = {
     checkinSubtitle: "Choisissez l'état qui résonne en vous pour recevoir votre médecine visuelle.",
     startPause: "Commencer la pause intentionnelle",
     closeReflection: "Fermer la réflexion",
+    tagLabel: "Étiquette",
+    visualMedicine: "Médecine Visuelle",
+    goBack: "Retour",
+    closeBtn: "Fermer",
     therapyStates: [
       { id: 'anxious', label: 'Anxieux / Pressé', prescriptions: [
         { tag: 'minimal', instruction: 'Cherchez l’espace vide. Le cerveau anxieux cherche des menaces constantes ; observer l’espace négatif lui apprend physiquement qu’il n’y a aucun danger ici.', reflection: 'Votre respiration est-elle devenue un peu plus profonde ?' },
@@ -368,7 +379,7 @@ const dict = {
       { id: 'sad', label: 'Triste / Mélancolique', prescriptions: [
         { tag: 'botanical', instruction: 'La nature est maîtresse des cycles. Observer les plantes vous rappelle biologiquement qu\'après l\'hiver, la vitalité revient toujours.', reflection: 'Pouvez-vous ressentir un petit espace d\'acceptation en vous ?' },
         { tag: 'ocean', instruction: 'L\'eau contient et nettoie. Visualisez que les courants marins soutiennent cette lourdeur que vous portez dans le cœur aujourd\'hui.', reflection: 'Sentez-vous que vous avez la permission de relâcher un soupir ?' },
-        { tag: 'flowers', instruction: 'Contemplez leur beauté fragile. Reconnaître la beauté dans l\'éphémère aide à embrasser nos propres émotions temporaires.', reflection: 'Ressentez-vous un peu plus de tendresse envers vous-même ?' },
+        { tag: 'flowers', instruction: 'Contemplez leur beauté fragile. Reconnaître la beauté dans l\'éphémère aide à embrasser nos propres émotions temporales.', reflection: 'Ressentez-vous un peu plus de tendresse envers vous-même ?' },
         { tag: 'warm', instruction: 'Visualisez cette lumière chaude comme une étreinte physique. La psychologie des couleurs associe ces tons au confinement et au refuge maternel.', reflection: 'Votre poitrine se sent-elle un peu plus au chaud ?' },
         { tag: 'vintage', instruction: 'Observez la beauté du temps qui passe. Comprendre que les choses anciennes ont de la valeur vous aide à embrasser vos propres cicatrices.', reflection: 'Ressentez-vous moins l\'urgence de "réparer" ce que vous ressentez ?' },
         { tag: 'art', instruction: 'Quelqu\'un d\'autre a ressenti la même chose et l\'a transformé en couleur. L\'art nous montre que nous ne sommes pas seuls dans la douleur.', reflection: 'Vous sentez-vous un peu plus accompagné(e) dans votre expérience ?' },
@@ -408,7 +419,7 @@ const dict = {
         { tag: 'nature', instruction: 'Observez la solidez de arbres. La nature survit à toutes les tempêtes en s\'ancrant profondément. Empruntez cette force visuelle.', reflection: 'Sentez-vous vos pieds plus ancrés au sol en ce moment ?' },
         { tag: 'vintage', instruction: 'Connectez-vous à la permanence. Les choses du passé qui perdurent nous rappellent que nous avons aussi la résilience pour survivre au temps.', reflection: 'Sentez-vous un peu plus de sécurité dans votre propre histoire ?' },
         { tag: 'botanical', instruction: 'Observez la croissance constante. Chaque plante trouve un moyen de chercher la lumière, même dans des terrains difficiles. Tout comme vous.', reflection: 'Ressentez-vous un éclair de confiance en vos propres ressources ?' },
-        { tag: 'landscape', instruction: 'Cherchez refuge dans l\'immensité. Un environnement visuel vaste mais pacifique dit à votre subconscient qu\'il y a un espace sûr pour vous dans le monde.', reflection: 'Sentez-vous que le monde est un peu moins menaçant aujourd\'hui ?' },
+        { tag: 'landscape', instruction: 'Cherchez refuge dans l\'immensité. Un environnement visuel vaste mais pacifique dit à votre subconscient qu\'il y a un espace sûr pour vous dans le mundo.', reflection: 'Sentez-vous que le monde est un peu moins menaçant aujourd\'hui ?' },
         { tag: 'minimal', instruction: 'Reposez-vous dans le silence visuel. Quand vous vous sentez exposé, l\'excès d\'informations blesse. La simplicité vous embrasse sans poser de questions.', reflection: 'Ressentez-vous du soulagement à ne pas avoir à vous protéger de ce que vous voyez ?' },
         { tag: 'ocean', instruction: 'Laissez la profondeur de l\'eau vous soutenir. Visualisez que l\'océan est assez fort pour porter vos doutes à votre place.', reflection: 'Vous sentez-vous un peu plus soutenu(e) par la vie ?' },
         { tag: 'clouds', instruction: 'Contemplez la douceur. En l\'absence de bords tranchants dans les nuages, votre esprit détend ses barrières défensives instinctives.', reflection: 'Le besoin de vous protéger a-t-il un peu diminué ?' }
@@ -426,16 +437,16 @@ const dict = {
         { tag: 'botanical', instruction: 'Cherchez le vert monochromatique. Está demostrado que rodearse visualmente de un solo tono natural disminuye la frecuencia cardíaca y la presión arterial.', reflection: 'Sentez-vous que votre corps a relâché le mode "alerte" ?' }
       ]},
       { id: 'stuck', label: 'Bloqué / Stagnant', prescriptions: [
-        { tag: 'abstract', instruction: 'Forcez de nouvelles voies neuronales. Regarder des formes qui n\'ont pas de logique prédéfinie stimule la pensée latérale et la créativité bloquée.', reflection: 'Quelles formes inattendues votre cerveau a-t-il découvertes ici ?' },
-        { tag: 'neon', instruction: 'Allumez l\'étincelle dopaminergique. Les couleurs électriques très contrastées éveillent le système nerveux sympathique, le poussant à l\'action.', reflection: 'Ressentez-vous une légère augmentation de votre envie de faire quelque chose ?' },
-        { tag: 'cities', instruction: 'Contaminez-vous par le flux. Observer l\'architecture et le mouvement humain réactive la perception que le monde avance.', reflection: 'Ressentez-vous un peu de cette énergie collective en vous ?' },
-        { tag: 'colors', instruction: 'Brisez la monotonie mentale. Injecter des couleurs pures et variées secoue l\'habituation visuelle, premier pas pour sortir de la stagnation.', reflection: 'Votre perception du moment présent semble-t-elle plus vive ?' },
-        { tag: 'art', instruction: 'Utilisez la perspective d\'un autre. Voir comment un artiste a résolu une toile vous rappelle qu\'il y a toujours plus d\'une façon de voir votre situation.', reflection: 'Avez-vous réussi à ressentir une véritable inspiration ?' },
-        { tag: 'macro', instruction: 'Changez radicalement votre angle. Si vous êtes bloqué dans la vue d\'ensemble, plonger dans le minuscule réinitialise votre cadre de référence.', reflection: 'Avez-vous réalisé la complexité de ce qui est petit ?' },
-        { tag: 'space', instruction: 'Contemplez l\'illimité. Se sentir coincé est une illusion d\'enfermement ; voir le cosmos vous rappelle que les possibilités sont infinies.', reflection: 'Sentez-vous que vos options se sont légèrement élargies ?' },
-        { tag: 'clouds', instruction: 'Rappelez-vous le principe du mouvement perpétuel. Aucun nuage ne reste statique. Votre blocage est aussi un nuage temporaire qui passera.', reflection: 'Ressentez-vous un peu plus de fluidité dans votre attitude ?' },
-        { tag: 'ocean', instruction: 'Syntonisez les courants. L\'eau ne stagne jamais, elle trouve toujours un lit. Imaginez que votre esprit copie cette même propriété fluide.', reflection: 'Sentez-vous que la résistance intérieure a un peu cédé ?' },
-        { tag: 'geometry', instruction: 'Cherchez de nouveaux angles d\'intersection. Identifying cómo las formas se unen visualmente ayuda al cerebro a buscar conexiones creativas en tus propios bloqueos.', reflection: 'Avez-vous pu voir un motif qui a généré de la clarté pour vous ?' }
+        { tag: 'abstract', instruction: 'Forcez de nouvelles voies neuronales. Regarder des formes qui n\'ont pas de logique prédéfinie stimule la pensée latérale et la créativité bloquée.', reflection: '¿Qué formas o figuras inesperadas descubrió tu cerebro aquí?' },
+        { tag: 'neon', instruction: 'Allumez l\'étincelle dopaminergique. Les couleurs électriques très contrastées éveillent le système nerveux sympathique, le poussant à l\'action.', reflection: '¿Sientes un ligero incremento en tus ganas de hacer algo?' },
+        { tag: 'cities', instruction: 'Contaminez-vous par le flux. Observer l\'architecture et le mouvement humain réactive la perception que le mundo avanza, llevándote con él.', reflection: '¿Sientes un poco de esa energía colectiva en ti?' },
+        { tag: 'colors', instruction: 'Brisez la monotonie mentale. Injecter des couleurs pures et variées secoue l\'habituation visuelle, premier pas pour sortir de la stagnation.', reflection: '¿Tu percepción del momento actual se siente más vívida?' },
+        { tag: 'art', instruction: 'Utilisez la perspective d\'un autre. Voir comment un artiste a résolu une toile vous rappelle qu\'il y a toujours plus d\'une façon de voir tu propia situación.', reflection: '¿Lograste sentir inspiración o asombro genuino?' },
+        { tag: 'macro', instruction: 'Changez radicalement votre angle. Si vous êtes bloqué dans la vue d\'ensemble, plonger dans le minuscule réinitialise votre cadre de référence.', reflection: '¿Te diste cuenta de cuánta complejidad hay en lo pequeño?' },
+        { tag: 'space', instruction: 'Contemplez l\'illimité. Sentirse atascado es una ilusión de encierro; ver el cosmos te recuerda que las posibilidades son literalmente infinitas.', reflection: '¿Sientes que tus opciones se han expandido ligeramente?' },
+        { tag: 'clouds', instruction: 'Rappelez-vous le principe du mouvement perpétuel. Ninguna nube se queda estática. Tu bloqueo también es una nube temporal que pasará.', reflection: '¿Sientes un poco más de fluidez en tu actitud?' },
+        { tag: 'ocean', instruction: 'Syntonisez les courants. El agua nunca se estanca, siempre encuentra un cauce. Imagina que tu mente copia esa misma propiedad fluida.', reflection: '¿Sientes que la resistencia interior cedió un poco?' },
+        { tag: 'geometry', instruction: 'Cherchez de nouveaux angles d\'intersection. Identifying cómo las formas se unen visualmente ayuda al cerebro a buscar conexiones creativas en tus propios bloqueos.', reflection: '¿Pudiste ver algún patrón que te generara claridad?' }
       ]}
     ]
   },
@@ -485,6 +496,10 @@ const dict = {
     checkinSubtitle: "당신과 공명하는 상태를 선택하여 시각적 처방을 받으세요.",
     startPause: "의도적 휴식 시작",
     closeReflection: "닫기",
+    tagLabel: "태그",
+    visualMedicine: "시각적 처방",
+    goBack: "돌아가기",
+    closeBtn: "닫기",
     therapyStates: [
       { id: 'anxious', label: '불안한 / 조급한', prescriptions: [
         { tag: 'minimal', instruction: '이 이미지들에서 빈 공간을 찾으세요. 불안한 뇌는 끊임없이 위협을 찾습니다. 여백을 관찰하는 것은 당신의 마음에 이곳이 안전하다는 것을 육체적으로 가르쳐줍니다.', reflection: '호흡이 조금 더 깊고 느려졌는지 느껴지나요?' },
@@ -1129,8 +1144,8 @@ export default function Home() {
 
         {currentTab === "explore" && isIntentionalPauseActive && activePrescription && (
           <div className="py-4 px-6 flex justify-between items-center bg-gradient-to-r from-blue-500/10 to-transparent">
-            <p className={`text-xs uppercase tracking-widest ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>Medicina Visual: {t.tags?.[activePrescription.tag] || activePrescription.tag}</p>
-            <button onClick={closeTherapySession} className="text-xs uppercase tracking-widest opacity-60 hover:opacity-100">✕ Cerrar</button>
+            <p className={`text-xs uppercase tracking-widest ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>{t.visualMedicine}: {t.tags?.[activePrescription.tag] || activePrescription.tag}</p>
+            <button onClick={closeTherapySession} className="text-xs uppercase tracking-widest opacity-60 hover:opacity-100">✕ {t.closeBtn}</button>
           </div>
         )}
       </header>
@@ -1728,7 +1743,7 @@ export default function Home() {
             ) : (
               <div className="animate-fade-in flex flex-col items-center text-center">
                 <span className={`text-[10px] uppercase tracking-[0.2em] mb-6 font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
-                  Etiqueta: {t.tags?.[activePrescription.tag] || activePrescription.tag}
+                  {t.tagLabel}: {t.tags?.[activePrescription.tag] || activePrescription.tag}
                 </span>
                 
                 <p className={`text-base md:text-lg font-light leading-relaxed mb-6 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>
@@ -1749,7 +1764,7 @@ export default function Home() {
 
                 <div className="flex gap-4 w-full">
                   <button onClick={() => setActivePrescription(null)} className={`flex-1 py-4 text-xs uppercase tracking-widest rounded-full transition-colors border active:scale-95 ${isDark ? 'border-neutral-700 text-neutral-400 hover:bg-neutral-800' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}>
-                    Volver
+                    {t.goBack}
                   </button>
                   <button 
                     onClick={startTherapySession} 
