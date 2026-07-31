@@ -36,7 +36,43 @@ const dict = {
     galleryFullDescFree: "Has alcanzado tu límite de 24 destellos. Actualiza a Premium para guardar hasta 300.", galleryFullDescPremium: "Has alcanzado el límite máximo de 300 destellos.",
     tags: { nature: "naturaleza", minimal: "minimalista", art: "arte", space: "espacio", animals: "animales", cities: "ciudades", flowers: "flores", colors: "colores", ocean: "océano", botanical: "botánica", warm: "cálido", desert: "desierto", abstract: "abstracto", vintage: "vintage", neon: "neón", geometry: "geometría", texture: "textura", landscape: "paisaje", clouds: "nubes", macro: "macro" },
     deleteAccount: "Eliminar cuenta permanentemente", deleteAccountConfirm: "Esta acción borrará tu galería, perfil y cancelará cualquier suscripción activa. No se puede deshacer. ¿Estás seguro/a?",
-    premiumActive: "Premium Activo", lifetimeActive: "Premium de por Vida", loginErrorTitle: "Acceso denegado", tryAgain: "Volver a intentarlo", invalidCredentials: "El correo o la contraseña son incorrectos."
+    premiumActive: "Premium Activo", lifetimeActive: "Premium de por Vida", loginErrorTitle: "Acceso denegado", tryAgain: "Volver a intentarlo", invalidCredentials: "El correo o la contraseña son incorrectos.",
+    checkinTitle: "¿Cómo se siente tu sistema nervioso ahora mismo?",
+    checkinSubtitle: "Elige el estado que más resuene contigo para recibir tu medicina visual.",
+    startPause: "Comenzar pausa intencional",
+    closeReflection: "Cerrar reflexión",
+    therapyStates: [
+      { id: 'anxious', label: 'Ansioso / Acelerado', prescriptions: [
+        { tag: 'minimal', instruction: 'Busca el espacio vacío en estas imágenes. El cerebro ansioso busca amenazas constantes; observar el espacio negativo le enseña físicamente a tu mente que aquí no hay peligro.', reflection: '¿Notas si tu respiración se ha vuelto un poco más profunda y lenta?' },
+        { tag: 'clouds', instruction: 'Observa la inmensidad. Las nubes se mueven lento y siempre cambian, sin esfuerzo. Intenta sincronizar tu inhalación con el movimiento que imaginas en ellas.', reflection: '¿Qué sensación física cambió en tu pecho al mirar hacia arriba, aunque sea en una pantalla?' }
+      ]},
+      { id: 'exhausted', label: 'Agotado / Denso', prescriptions: [
+        { tag: 'texture', instruction: 'Imagina cómo se siente tocar los objetos de estas imágenes. Despertar el sentido táctil visualmente ancla tu sistema nervioso en el presente sin gastar energía.', reflection: '¿Qué parte de tu cuerpo se siente un poco más suelta ahora?' },
+        { tag: 'warm', instruction: 'Permite que los tonos cálidos bañen tus ojos. No tienes que analizar ni procesar nada, solo recibe la luz como si fuera el sol de la tarde.', reflection: '¿Puedes sentir un ligero calor o relajación en tus hombros?' }
+      ]},
+      { id: 'sad', label: 'Triste / Melancólico', prescriptions: [
+        { tag: 'botanical', instruction: 'La naturaleza contiene ciclos continuos de pérdida y renacimiento. Observa las hojas, los tallos y la fractalidad. Esto le indica visualmente a tu corteza prefrontal que estás en un entorno seguro y orgánico.', reflection: '¿Sientes un poco más de ligereza o aceptación en tu interior?' },
+        { tag: 'ocean', instruction: 'El agua contiene, limpia y sostiene. Imagina que la densidad que sientes en tu pecho flota y es sostenida por estas mareas.', reflection: '¿Sientes que hay un poco más de espacio para respirar dentro de ti?' }
+      ]},
+      { id: 'apathetic', label: 'Desconectado / Apático', prescriptions: [
+        { tag: 'macro', instruction: 'Concéntrate en los detalles más pequeños que normalmente pasarían desapercibidos. Despierta tu nervio óptico suavemente, buscando el asombro en lo minúsculo.', reflection: '¿Sientes un poco más de energía o curiosidad en tu mirada?' },
+        { tag: 'colors', instruction: 'Deja que los colores vibrantes estimulen suavemente tu cerebro. Intenta nombrar mentalmente tres colores exactos que veas en cada imagen.', reflection: '¿Sientes tu mente un poco más presente en el "aquí y ahora"?' }
+      ]},
+      { id: 'frustrated', label: 'Frustrado / Enojado', prescriptions: [
+        { tag: 'geometry', instruction: 'Busca el orden visual. La simetría y las líneas claras ayudan a calmar el caos emocional, dándole a tu cerebro un patrón predecible y seguro donde descansar.', reflection: '¿Sientes que el "ruido" mental ha disminuido un poco su volumen?' },
+        { tag: 'landscape', instruction: 'Amplía tu horizonte visual. Cuando nos enojamos, nuestra visión se estrecha (visión de túnel). Mirar paisajes amplios desactiva mecánicamente la respuesta de lucha o huida.', reflection: '¿Sientes tu mandíbula o tus puños más relajados?' }
+      ]},
+      { id: 'vulnerable', label: 'Inseguro / Vulnerable', prescriptions: [
+        { tag: 'animals', instruction: 'Busca la inocencia y la calma en estas imágenes. Los mamíferos regulan su sistema nervioso a través de la conexión; observar seres pacíficos nos contagia su seguridad.', reflection: '¿Sientes un poco más de calor o protección en tu abdomen?' },
+        { tag: 'art', instruction: 'Observa la expresión humana a través del arte. Recuerda que todas las emociones han sido sentidas y expresadas antes. No estás solo/a en tu experiencia.', reflection: '¿Sientes mayor compasión hacia ti mismo/a en este momento?' }
+      ]},
+      { id: 'calm', label: 'Tranquilo / Equilibrado', prescriptions: [
+        { tag: 'nature', instruction: 'Tu sistema ya está regulado. Usa este momento para nutrir tu reserva emocional. Absorbe la belleza natural y guárdala como un ancla para cuando la necesites.', reflection: 'Nombra mentalmente algo pequeño por lo que sientas gratitud hoy.' }
+      ]},
+      { id: 'inspired', label: 'Inspirado / Creativo', prescriptions: [
+        { tag: 'abstract', instruction: 'Tu mente está abierta. Observa las formas abstractas sin intentar darles un significado lógico. Deja que tu intuición juegue libremente con las imágenes.', reflection: '¿Qué nueva idea o sensación despertó esta sesión en ti?' }
+      ]}
+    ]
   },
   en: { 
     explore: "Explore", gallery: "Gallery", profile: "Profile", login: "Log In", email: "Email", password: "Password", 
@@ -71,7 +107,43 @@ const dict = {
     galleryFullDescFree: "You've reached your limit of 24 flashes. Upgrade to Premium to save up to 300.", galleryFullDescPremium: "You've reached the maximum limit of 300 flashes.",
     tags: { nature: "nature", minimal: "minimal", art: "art", space: "space", animals: "animals", cities: "cities", flowers: "flowers", colors: "colors", ocean: "ocean", botanical: "botanical", warm: "warm", desert: "desert", abstract: "abstract", vintage: "vintage", neon: "neon", geometry: "geometry", texture: "texture", landscape: "landscape", clouds: "clouds", macro: "macro" },
     deleteAccount: "Delete account permanently", deleteAccountConfirm: "This action will delete your gallery, profile, and cancel any active subscription. It cannot be undone. Are you sure?",
-    premiumActive: "Active Premium", lifetimeActive: "Lifetime Premium", loginErrorTitle: "Access Denied", tryAgain: "Try Again", invalidCredentials: "Email or password is incorrect."
+    premiumActive: "Active Premium", lifetimeActive: "Lifetime Premium", loginErrorTitle: "Access Denied", tryAgain: "Try Again", invalidCredentials: "Email or password is incorrect.",
+    checkinTitle: "How is your nervous system feeling right now?",
+    checkinSubtitle: "Choose the state that resonates with you to receive your visual medicine.",
+    startPause: "Begin intentional pause",
+    closeReflection: "Close reflection",
+    therapyStates: [
+      { id: 'anxious', label: 'Anxious / Rushed', prescriptions: [
+        { tag: 'minimal', instruction: 'Look for the empty space in these images. The anxious brain constantly looks for threats; observing negative space physically teaches your mind that there is no danger here.', reflection: 'Do you notice if your breathing has become a little deeper and slower?' },
+        { tag: 'clouds', instruction: 'Observe the vastness. Clouds move slowly and always change, effortlessly. Try to synchronize your inhale with their imagined movement.', reflection: 'What physical sensation shifted in your chest while looking up, even on a screen?' }
+      ]},
+      { id: 'exhausted', label: 'Exhausted / Heavy', prescriptions: [
+        { tag: 'texture', instruction: 'Imagine how it feels to touch the objects in these images. Visually awakening your tactile sense anchors your nervous system in the present without spending energy.', reflection: 'Which part of your body feels a little looser now?' },
+        { tag: 'warm', instruction: 'Allow the warm tones to bathe your eyes. You don’t have to analyze or process anything, just receive the light like afternoon sun.', reflection: 'Can you feel a slight warmth or relaxation in your shoulders?' }
+      ]},
+      { id: 'sad', label: 'Sad / Melancholic', prescriptions: [
+        { tag: 'botanical', instruction: 'Nature contains continuous cycles of loss and rebirth. Observe the fractal patterns. This visually tells your prefrontal cortex that you are in a safe, organic environment.', reflection: 'Do you feel a little more lightness or acceptance inside?' },
+        { tag: 'ocean', instruction: 'Water contains, cleanses, and supports. Imagine the density you feel in your chest floating and being held by these tides.', reflection: 'Do you feel a little more space to breathe inside you?' }
+      ]},
+      { id: 'apathetic', label: 'Disconnected / Apathetic', prescriptions: [
+        { tag: 'macro', instruction: 'Focus on the smallest details that would normally go unnoticed. Gently wake up your optic nerve by seeking wonder in the microscopic.', reflection: 'Do you feel a little more energy or curiosity in your gaze?' },
+        { tag: 'colors', instruction: 'Let vibrant colors gently stimulate your brain. Try to mentally name three exact colors you see in each image.', reflection: 'Does your mind feel a bit more present in the "here and now"?' }
+      ]},
+      { id: 'frustrated', label: 'Frustrated / Angry', prescriptions: [
+        { tag: 'geometry', instruction: 'Look for visual order. Symmetry and clear lines help calm emotional chaos by giving your brain a predictable and safe pattern to rest on.', reflection: 'Do you feel the mental "noise" has turned its volume down a bit?' },
+        { tag: 'landscape', instruction: 'Expand your visual horizon. When we get angry, our vision narrows (tunnel vision). Looking at wide landscapes mechanically deactivates the fight-or-flight response.', reflection: 'Do your jaw or fists feel more relaxed?' }
+      ]},
+      { id: 'vulnerable', label: 'Insecure / Vulnerable', prescriptions: [
+        { tag: 'animals', instruction: 'Look for innocence and calm in these images. Mammals regulate their nervous systems through connection; observing peaceful beings transfers their safety to us.', reflection: 'Do you feel a bit more warmth or protection in your core?' },
+        { tag: 'art', instruction: 'Observe human expression through art. Remember that all emotions have been felt and expressed before. You are not alone in your experience.', reflection: 'Do you feel more self-compassion in this moment?' }
+      ]},
+      { id: 'calm', label: 'Calm / Balanced', prescriptions: [
+        { tag: 'nature', instruction: 'Your system is already regulated. Use this moment to nourish your emotional reserve. Absorb the natural beauty and store it as an anchor for when you need it.', reflection: 'Mentally name one small thing you feel gratitude for today.' }
+      ]},
+      { id: 'inspired', label: 'Inspired / Creative', prescriptions: [
+        { tag: 'abstract', instruction: 'Your mind is open. Observe the abstract shapes without trying to give them a logical meaning. Let your intuition play freely with the images.', reflection: 'What new idea or sensation did this session awaken in you?' }
+      ]}
+    ]
   },
   fr: { 
     explore: "Explorer", gallery: "Galerie", profile: "Profil", login: "Connexion", email: "E-mail", password: "Mot de passe", 
@@ -104,9 +176,45 @@ const dict = {
     premiumBenefit1: "Jusqu'à 5 tags d'inspiration", premiumBenefit2: "Sauvegardez jusqu'à 300 éclats", premiumBenefit3: "50 pauses visuelles par heure",
     monthly: "3 $ / mois", yearly: "33 $ / an", subscribeBtn: "Passer à Premium", manageSubscription: "Gérer l'abonnement", galleryFull: "Galerie pleine",
     galleryFullDescFree: "Vous avez atteint votre limite de 24 éclats. Passez à Premium pour en sauvegarder 300.", galleryFullDescPremium: "Vous avez atteint la limite maximale de 300 éclats.",
-    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" },
+    tags: { nature: "nature", minimal: "minimaliste", art: "art", space: "espace", animals: "animaux", cities: "villes", flowers: "fleurs", colors: "couleurs", ocean: "océan", botanical: "botanique", warm: "chaud", desert: "désert", abstract: "abstrait", vintage: "vintage", neon: "néon", geometry: "géométrie", texture: "texture", landscape: "paysage", clouds: "nuages", macro: "macro" },
     deleteAccount: "Supprimer le compte définitivement", deleteAccountConfirm: "Cette action supprimera votre galerie, votre profil et annulera tout abonnement actif. Elle est irréversible. Êtes-vous sûr(e)?",
-    premiumActive: "Premium Actif", lifetimeActive: "Premium à Vie", loginErrorTitle: "Accès Refusé", tryAgain: "Réessayer", invalidCredentials: "L'e-mail ou le mot de passe est incorrect."
+    premiumActive: "Premium Actif", lifetimeActive: "Premium à Vie", loginErrorTitle: "Accès Refusé", tryAgain: "Réessayer", invalidCredentials: "L'e-mail ou le mot de passe est incorrect.",
+    checkinTitle: "Comment se sent votre système nerveux en ce moment ?",
+    checkinSubtitle: "Choisissez l'état qui résonne en vous pour recevoir votre médecine visuelle.",
+    startPause: "Commencer la pause",
+    closeReflection: "Fermer",
+    therapyStates: [
+      { id: 'anxious', label: 'Anxieux / Pressé', prescriptions: [
+        { tag: 'minimal', instruction: 'Cherchez l’espace vide. Le cerveau anxieux cherche des menaces ; observer l’espace négatif lui apprend physiquement qu’il n’y a aucun danger ici.', reflection: 'Votre respiration est-elle devenue un peu plus profonde ?' },
+        { tag: 'clouds', instruction: 'Observez l\'immensité. Les nuages bougent lentement. Essayez de synchroniser votre inspiration avec leur mouvement.', reflection: 'Quelle sensation a changé dans votre poitrine ?' }
+      ]},
+      { id: 'exhausted', label: 'Épuisé / Lourd', prescriptions: [
+        { tag: 'texture', instruction: 'Imaginez la sensation de toucher ces objets. Éveiller visuellement le sens tactile ancre votre système nerveux sans dépenser d’énergie.', reflection: 'Quelle partie de votre corps se sent un peu plus détendue ?' },
+        { tag: 'warm', instruction: 'Laissez les tons chauds baigner vos yeux. Recevez simplement la lumière.', reflection: 'Sentez-vous une légère chaleur ou détente dans vos épaules ?' }
+      ]},
+      { id: 'sad', label: 'Triste / Mélancolique', prescriptions: [
+        { tag: 'botanical', instruction: 'La nature contient des cycles de perte et de renaissance. Cela indique visuellement à votre cortex préfrontal que vous êtes en sécurité.', reflection: 'Ressentez-vous un peu plus de légèreté à l’intérieur ?' },
+        { tag: 'ocean', instruction: 'L\'eau contient, nettoie et soutient. Imaginez que la densité dans votre poitrine flotte.', reflection: 'Sentez-vous qu\'il y a un peu plus d\'espace pour respirer ?' }
+      ]},
+      { id: 'apathetic', label: 'Déconnecté / Apathique', prescriptions: [
+        { tag: 'macro', instruction: 'Concentrez-vous sur les moindres détails. Éveillez doucement votre nerf optique.', reflection: 'Ressentez-vous un peu plus d\'énergie ou de curiosité dans votre regard ?' },
+        { tag: 'colors', instruction: 'Laissez les couleurs vibrantes stimuler doucement votre cerveau. Essayez de nommer mentalement trois couleurs.', reflection: 'Votre esprit se sent-il un peu plus présent ?' }
+      ]},
+      { id: 'frustrated', label: 'Frustré / En colère', prescriptions: [
+        { tag: 'geometry', instruction: 'Cherchez l’ordre visuel. La symétrie aide à calmer le chaos émotionnel en offrant un motif prévisible.', reflection: 'Sentez-vous que le "bruit" mental a diminué ?' },
+        { tag: 'landscape', instruction: 'Élargissez votre horizon visuel. Regarder de vastes paysages désactive mécaniquement la réponse de lutte ou de fuite.', reflection: 'Vos poings ou votre mâchoire sont-ils plus détendus ?' }
+      ]},
+      { id: 'vulnerable', label: 'Insécure / Vulnérable', prescriptions: [
+        { tag: 'animals', instruction: 'Cherchez l’innocence. Les mammifères se régulent par la connexion ; observer des êtres paisibles nous transmet leur sécurité.', reflection: 'Ressentez-vous un peu plus de chaleur dans votre ventre ?' },
+        { tag: 'art', instruction: 'Observez l\'expression humaine à travers l\'art. Vous n\'êtes pas seul(e) dans votre expérience.', reflection: 'Ressentez-vous plus d\'auto-compassion en ce moment ?' }
+      ]},
+      { id: 'calm', label: 'Calme / Équilibré', prescriptions: [
+        { tag: 'nature', instruction: 'Votre système est régulé. Absorbez la beauté naturelle et gardez-la comme ancre.', reflection: 'Nommez mentalement une petite chose pour laquelle vous avez de la gratitude.' }
+      ]},
+      { id: 'inspired', label: 'Inspiré / Créatif', prescriptions: [
+        { tag: 'abstract', instruction: 'Votre esprit est ouvert. Laissez votre intuition jouer librement avec les formes abstraites.', reflection: 'Quelle nouvelle idée s’est éveillée en vous ?' }
+      ]}
+    ]
   },
   ko: { 
     explore: "탐색", gallery: "갤러리", profile: "프로필", login: "로그인", email: "이메일", password: "비밀번호", 
@@ -141,7 +249,43 @@ const dict = {
     galleryFullDescFree: "24개의 저장 한도에 도달했습니다. 최대 300개를 저장하려면 프리미엄으로 업그레이드하세요.", galleryFullDescPremium: "최대 300개 저장 한도에 도달했습니다.",
     tags: { nature: "자연", minimal: "미니멀", art: "예술", space: "우주", animals: "동물", cities: "도시", flowers: "꽃", colors: "색상", ocean: "바다", botanical: "식물", warm: "따뜻한", desert: "사막", abstract: "추상", vintage: "빈티지", neon: "네온", geometry: "기하학", texture: "질감", landscape: "풍경", clouds: "구름", macro: "매크로" },
     deleteAccount: "계정 영구 삭제", deleteAccountConfirm: "이 작업은 갤러리, 프로필을 삭제하고 활성 구독을 취소합니다. 취소할 수 없습니다. 확실합니까?",
-    premiumActive: "프리미엄 활성", lifetimeActive: "평생 프리미엄", loginErrorTitle: "접근 거부", tryAgain: "다시 시도", invalidCredentials: "이메일 또는 비밀번호가 올바르지 않습니다."
+    premiumActive: "프리미엄 활성", lifetimeActive: "평생 프리미엄", loginErrorTitle: "접근 거부", tryAgain: "다시 시도", invalidCredentials: "이메일 또는 비밀번호가 올바르지 않습니다.",
+    checkinTitle: "지금 당신의 신경계는 어떤 상태인가요?",
+    checkinSubtitle: "당신과 공명하는 상태를 선택하여 시각적 처방을 받으세요.",
+    startPause: "의도적 휴식 시작",
+    closeReflection: "닫기",
+    therapyStates: [
+      { id: 'anxious', label: '불안한 / 조급한', prescriptions: [
+        { tag: 'minimal', instruction: '이 이미지들에서 빈 공간을 찾으세요. 불안한 뇌는 끊임없이 위협을 찾습니다. 여백을 관찰하는 것은 당신의 마음에 이곳이 안전하다는 것을 육체적으로 가르쳐줍니다.', reflection: '호흡이 조금 더 깊고 느려졌는지 느껴지나요?' },
+        { tag: 'clouds', instruction: '광활함을 관찰하세요. 구름은 천천히 움직이고 노력 없이 변합니다. 상상 속 구름의 움직임에 들숨을 맞춰보세요.', reflection: '화면으로라도 위를 올려다볼 때 가슴의 어떤 감각이 변했나요?' }
+      ]},
+      { id: 'exhausted', label: '지친 / 무거운', prescriptions: [
+        { tag: 'texture', instruction: '이 이미지 속 물건들을 만지는 느낌을 상상해 보세요. 시각적으로 촉각을 깨우는 것은 에너지를 소모하지 않고 신경계를 현재에 닻을 내리게 합니다.', reflection: '몸의 어느 부분이 조금 더 이완되었나요?' },
+        { tag: 'warm', instruction: '따뜻한 색조가 눈을 감싸게 하세요. 분석하거나 처리할 필요 없이 오후의 햇살처럼 빛을 받아들이기만 하세요.', reflection: '어깨에 약간의 따뜻함이나 이완이 느껴지나요?' }
+      ]},
+      { id: 'sad', label: '슬픈 / 우울한', prescriptions: [
+        { tag: 'botanical', instruction: '자연에는 상실과 재탄생의 순환이 포함되어 있습니다. 이것은 전두엽 피질에 당신이 안전한 환경에 있음을 시각적으로 알려줍니다.', reflection: '내면이 조금 더 가벼워지거나 수용되는 느낌이 드나요?' },
+        { tag: 'ocean', instruction: '물은 품어주고, 씻어내고, 지탱해 줍니다. 가슴에 느껴지는 무거움이 이 물결에 떠서 안기는 것을 상상해 보세요.', reflection: '내면에서 숨 쉴 공간이 조금 더 생긴 것 같나요?' }
+      ]},
+      { id: 'apathetic', label: '무기력한 / 단절된', prescriptions: [
+        { tag: 'macro', instruction: '평소라면 눈에 띄지 않을 아주 작은 디테일에 집중해 보세요. 미세한 것에서 경이로움을 찾으며 시신경을 부드럽게 깨우세요.', reflection: '시선에 약간의 에너지가 생기거나 호기심이 느껴지나요?' },
+        { tag: 'colors', instruction: '생생한 색상이 뇌를 부드럽게 자극하도록 놔두세요. 각 이미지에서 보이는 세 가지 색상의 이름을 마음속으로 불러보세요.', reflection: '마음이 "지금 여기"에 조금 더 머무는 것 같나요?' }
+      ]},
+      { id: 'frustrated', label: '좌절한 / 화가 난', prescriptions: [
+        { tag: 'geometry', instruction: '시각적 질서를 찾으세요. 대칭과 선명한 선은 뇌에 예측 가능하고 안전한 패턴을 제공하여 감정적 혼란을 진정시키는 데 도움이 됩니다.', reflection: '머릿속의 "소음"이 조금 줄어든 것 같나요?' },
+        { tag: 'landscape', instruction: '시각적 지평을 넓히세요. 화가 나면 시야가 좁아집니다(터널 시야). 넓은 풍경을 보는 것은 투쟁-도피 반응을 기계적으로 비활성화합니다.', reflection: '턱이나 주먹이 더 이완되었나요?' }
+      ]},
+      { id: 'vulnerable', label: '취약한 / 불안정한', prescriptions: [
+        { tag: 'animals', instruction: '이 이미지들에서 순수함과 평온함을 찾으세요. 포유류는 연결을 통해 신경계를 조절합니다. 평화로운 존재를 관찰하면 그들의 안전감이 우리에게 전해집니다.', reflection: '복부에 조금 더 따뜻함이나 보호받는 느낌이 드나요?' },
+        { tag: 'art', instruction: '예술을 통한 인간의 표현을 관찰하세요. 모든 감정은 이전에 이미 느껴지고 표현되었다는 것을 기억하세요. 당신의 경험 속에 당신은 혼자가 아닙니다.', reflection: '이 순간 당신 자신에 대해 더 깊은 자기 자비가 느껴지나요?' }
+      ]},
+      { id: 'calm', label: '평온한 / 균형 잡힌', prescriptions: [
+        { tag: 'nature', instruction: '당신의 시스템은 이미 조절되었습니다. 자연의 아름다움을 흡수하여 감정적 예비력으로 저장하세요.', reflection: '오늘 감사함을 느끼는 작은 것 하나를 마음속으로 말해보세요.' }
+      ]},
+      { id: 'inspired', label: '영감을 받은 / 창의적인', prescriptions: [
+        { tag: 'abstract', instruction: '마음이 열려 있습니다. 논리적인 의미를 부여하려 하지 말고 추상적인 형태를 관찰하세요. 직관이 자유롭게 놀도록 놔두세요.', reflection: '이 시간이 당신에게 어떤 새로운 아이디어나 감각을 깨웠나요?' }
+      ]}
+    ]
   }
 };
 
@@ -206,6 +350,11 @@ export default function Home() {
   
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
+
+  // NUEVOS ESTADOS: Check-in Somático
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
+  const [activePrescription, setActivePrescription] = useState(null);
+  const [showReflection, setShowReflection] = useState(false);
 
   const isDark = theme === "dark";
   const t = dict[lang] || dict.es;
@@ -274,7 +423,13 @@ export default function Home() {
     audioRef.current.loop = true;
 
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) loadUserData(user);
+      if (user) {
+        loadUserData(user);
+        // Mostrar Check-in automático una vez por sesión
+        if (!sessionStorage.getItem('maeum_checkin_done')) {
+          setTimeout(() => setShowCheckInModal(true), 1500);
+        }
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -461,6 +616,10 @@ export default function Home() {
                setGalleryLimit(prev => prev + 12);
             }
           }
+          // Lógica para mostrar la reflexión después de hacer scroll en el feed
+          if (currentTab === "explore" && activePrescription && window.scrollY > 2000 && !showReflection) {
+            setShowReflection(true);
+          }
           isScrolling = false;
         });
         isScrolling = true;
@@ -468,7 +627,7 @@ export default function Home() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [user, currentTab, feedPhotos.length]);
+  }, [user, currentTab, feedPhotos.length, activePrescription, showReflection]);
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -547,7 +706,6 @@ export default function Home() {
     setIsSigningOut(false);
   };
 
-  // MODIFICACIÓN 2: Lógica para eliminar cuenta
   const executeDeleteAccount = async () => {
     setShowDeleteConfirm(false);
     setIsSigningOut(true);
@@ -727,14 +885,52 @@ export default function Home() {
     setIsPlaying(!isPlaying);
   };
 
+  // Funciones para el Check-in Somático
+  const handleSelectState = (stateObj) => {
+    const randIndex = Math.floor(Math.random() * stateObj.prescriptions.length);
+    const prescription = stateObj.prescriptions[randIndex];
+    setActivePrescription(prescription);
+    
+    if (user) {
+      supabase.from('therapy_logs').insert([{ 
+        user_id: user.id, 
+        state_selected: stateObj.id, 
+        tag_recommended: prescription.tag 
+      }]).catch(e => console.log(e));
+    }
+  };
+
+  const startTherapySession = () => {
+    sessionStorage.setItem('maeum_checkin_done', 'true');
+    setShowCheckInModal(false);
+    setShowReflection(false);
+    if (activePrescription) {
+      setActiveCategory(activePrescription.tag);
+      if (!isPlaying) toggleAudio();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <main className={`min-h-screen pb-24 font-light transition-colors duration-500 ${isDark ? 'bg-neutral-950 text-neutral-300' : 'bg-white text-neutral-800'}`}>
       
       <header className={`sticky top-0 z-40 border-b flex flex-col transition-all duration-500 backdrop-blur-md ${isDark ? 'bg-neutral-950/90 border-neutral-900' : 'bg-white/90 border-neutral-100'}`}>
         <div className="py-6 px-6 flex justify-between items-center">
           <h1 className={`text-xl tracking-widest uppercase font-normal ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Maeum</h1>
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             
+            {user && (
+              <button 
+                onClick={() => { setActivePrescription(null); setShowCheckInModal(true); }}
+                className={`p-2 rounded-full transition-all active:scale-95 ${isDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-400 hover:text-neutral-900'}`}
+                title="Somatic Check-in"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
+            )}
+
             {!isStandalone && (
               <button 
                 onClick={handleInstallClick} 
@@ -765,7 +961,7 @@ export default function Home() {
               <p className={`text-xs italic px-2 py-1.5 ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.profileTagsHint}</p>
             ) : (
               selectedTags.map(cat => (
-                <button key={cat} onClick={() => setActiveCategory(cat)} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${activeCategory === cat ? (isDark ? 'border-neutral-300 text-neutral-100 bg-neutral-900' : 'border-neutral-900 text-neutral-900') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-400')}`}>
+                <button key={cat} onClick={() => { setActiveCategory(cat); setActivePrescription(null); setShowReflection(false); }} className={`snap-center whitespace-nowrap px-4 py-1.5 text-xs rounded-full border transition-all active:scale-95 ${activeCategory === cat ? (isDark ? 'border-neutral-300 text-neutral-100 bg-neutral-900' : 'border-neutral-900 text-neutral-900') : (isDark ? 'border-neutral-800 text-neutral-500' : 'border-neutral-200 text-neutral-400')}`}>
                   {t.tags?.[cat] ? t.tags[cat].toUpperCase() : cat.toUpperCase()}
                 </button>
               ))
@@ -775,7 +971,24 @@ export default function Home() {
       </header>
 
       {currentTab === "explore" && (
-        <section className="max-w-6xl mx-auto p-4 mt-4">
+        <section className="max-w-6xl mx-auto p-4 mt-4 relative">
+          
+          {showReflection && activePrescription && (
+            <div className="fixed bottom-28 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[28rem] z-30 animate-fade-in-up">
+              <div className={`backdrop-blur-xl p-6 rounded-2xl shadow-2xl border flex flex-col gap-4 relative ${isDark ? 'bg-neutral-900/90 border-neutral-800 text-neutral-200' : 'bg-white/90 border-neutral-100 text-neutral-800'}`}>
+                <button onClick={() => setShowReflection(false)} className="absolute top-4 right-4 opacity-50 hover:opacity-100 text-xs">✕</button>
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                  <p className="text-[10px] uppercase tracking-widest opacity-60">Maeum</p>
+                </div>
+                <p className="text-sm font-light leading-relaxed">{activePrescription.reflection}</p>
+                <button onClick={() => setShowReflection(false)} className={`mt-2 text-[10px] uppercase tracking-widest py-2 rounded-md transition-colors ${isDark ? 'bg-neutral-800 hover:bg-neutral-700' : 'bg-neutral-100 hover:bg-neutral-200'}`}>
+                  {t.closeReflection || "Cerrar"}
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {feedPhotos.map((photo, index) => {
               const isLiked = likes.some(p => p.id === photo.id);
@@ -850,7 +1063,6 @@ export default function Home() {
                         <span className={`text-[10px] uppercase tracking-[0.3em] mb-10 font-medium text-center ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.pricingTitle}</span>
                         
                         <div className="flex flex-col md:flex-row gap-8 w-full justify-center">
-                          {/* Plan Free */}
                           <div className={`flex-1 p-8 rounded-2xl border ${isDark ? 'border-neutral-800 bg-neutral-900/50' : 'border-neutral-200 bg-white'}`}>
                             <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingFree}</h3>
                             <p className={`text-2xl font-light mb-8 ${isDark ? 'text-white' : 'text-black'}`}>Gratis</p>
@@ -861,7 +1073,6 @@ export default function Home() {
                             </ul>
                           </div>
 
-                          {/* Plan Premium */}
                           <div className={`flex-1 p-8 rounded-2xl border relative overflow-hidden ${isDark ? 'border-neutral-700 bg-neutral-800/50' : 'border-neutral-900 bg-neutral-50'}`}>
                             <div className="absolute top-0 right-0 px-3 py-1 bg-neutral-900 text-white text-[10px] tracking-widest uppercase rounded-bl-lg">Premium</div>
                             <h3 className={`text-xl font-normal mb-2 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>{t.pricingPremium}</h3>
@@ -887,7 +1098,6 @@ export default function Home() {
                   >
                     <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" style={{ willChange: "transform" }} />
                     
-                    {/* Botón de Información Elegante */}
                     <button 
                       onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }}
                       className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
@@ -895,7 +1105,6 @@ export default function Home() {
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </button>
 
-                    {/* Overlay de Información Glassmorphism */}
                     {activeInfoId === photo.id && (
                       <div 
                         onClick={(e) => { e.stopPropagation(); setActiveInfoId(null); }}
@@ -989,7 +1198,6 @@ export default function Home() {
                 >
                   <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover" />
                   
-                  {/* Botón de Información Elegante en Galería */}
                   <button 
                     onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }}
                     className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}
@@ -997,7 +1205,6 @@ export default function Home() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                   </button>
 
-                  {/* Overlay de Información Glassmorphism */}
                   {activeInfoId === photo.id && (
                     <div 
                       onClick={(e) => { e.stopPropagation(); setActiveInfoId(null); }}
@@ -1165,7 +1372,6 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Selector de idiomas agregado al perfil */}
             <div>
               <label className={`text-xs tracking-widest uppercase mb-2 block ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>{t.language}</label>
               <div className="flex gap-2">
@@ -1222,7 +1428,6 @@ export default function Home() {
               ) : t.save}
             </button>
 
-            {/* SECCIÓN STRIPE EN PERFIL */}
             {userPlan === 'free' && (
               <div className="flex flex-col gap-3 mt-4">
                 <button 
@@ -1277,7 +1482,6 @@ export default function Home() {
               {t.followInstagram}
             </a>
 
-            {/* BOTÓN PARA ELIMINAR CUENTA (AHORA ABRE EL MODAL CUSTOM) */}
             <div className="mt-12 mb-8 flex justify-center">
               <button 
                 onClick={() => setShowDeleteConfirm(true)} 
@@ -1360,7 +1564,6 @@ export default function Home() {
             <button onClick={() => setShowTerms(false)} className={`absolute top-4 right-4 rounded-full w-8 h-8 flex items-center justify-center transition-colors ${isDark ? 'text-neutral-400 bg-neutral-800 hover:bg-neutral-700' : 'text-neutral-400 bg-white hover:bg-neutral-100'}`}>✕</button>
             <h3 className={`text-lg font-normal mb-6 text-center ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>Términos y Política de Privacidad</h3>
             
-            {/* TEXTOS LEGALES (Siempre en idioma base por estándares de App) */}
             <div className={`text-xs space-y-4 font-light leading-relaxed text-justify ${isDark ? 'text-neutral-400' : 'text-neutral-600'}`}>
               <h4 className={`font-semibold uppercase tracking-widest text-[10px] mt-6 ${isDark ? 'text-neutral-200' : 'text-neutral-900'}`}>1. Términos y Condiciones de Uso</h4>
               <p className="italic">Última actualización: Julio de 2026</p>
@@ -1663,6 +1866,57 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* NUEVO MODAL: Check-in Somático */}
+      {showCheckInModal && user && (
+        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-md z-[120] flex items-center justify-center p-4 animate-fade-in">
+          <div className={`p-8 md:p-12 rounded-3xl max-w-lg w-full relative shadow-2xl transition-all ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
+            <button onClick={() => setShowCheckInModal(false)} className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600 transition-colors">✕</button>
+            
+            {!activePrescription ? (
+              <>
+                <div className="flex flex-col items-center mb-8">
+                  <span className={`p-3 rounded-full mb-4 ${isDark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
+                    <svg className={`w-6 h-6 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                  </span>
+                  <h3 className={`text-xl md:text-2xl font-light text-center mb-2 leading-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.checkinTitle}</h3>
+                  <p className={`text-sm text-center font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.checkinSubtitle}</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+                  {t.therapyStates?.map(state => (
+                    <button 
+                      key={state.id} 
+                      onClick={() => handleSelectState(state)}
+                      className={`text-left p-4 rounded-xl border text-sm transition-all active:scale-95 ${isDark ? 'border-neutral-800 hover:bg-neutral-800 hover:border-neutral-700 text-neutral-300' : 'border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 text-neutral-700'}`}
+                    >
+                      {state.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="animate-fade-in flex flex-col items-center text-center">
+                <span className={`text-[10px] uppercase tracking-[0.2em] mb-6 font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                  Etiqueta: {t.tags?.[activePrescription.tag] || activePrescription.tag}
+                </span>
+                
+                <p className={`text-base md:text-lg font-light leading-relaxed mb-10 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>
+                  {activePrescription.instruction}
+                </p>
+
+                <button 
+                  onClick={startTherapySession} 
+                  className={`w-full py-4 text-xs uppercase tracking-widest rounded-full transition-colors active:scale-95 shadow-lg ${isDark ? 'bg-neutral-100 text-neutral-900 hover:bg-white' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+                >
+                  {t.startPause}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
