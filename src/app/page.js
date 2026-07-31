@@ -10,7 +10,7 @@ const dict = {
     newPass: "Nueva contraseña", forgot: "¿Olvidaste tu contraseña?", recover: "Recuperar contraseña", newest: "Más recientes", 
     oldest: "Más antiguas", random: "Aleatorio", installApp: "Instalar App", loginBtn: "Iniciar sesión", 
     profileTagsHint: "En tu perfil puedes elegir las etiquetas de inspiración que prefieras.",
-    photoBy: "Foto por", onUnsplash: "en Unsplash", download: "Descargar imagen", deleteFromGallery: "Borrar de mi galería",
+    photoBy: "Foto por", onUnsplash: "en Pexels", download: "Descargar imagen", deleteFromGallery: "Borrar de mi galería",
     pauseTitle1: "Pausa y Contemplación", pauseDesc1: "El mundo hace demasiado ruido.", 
     pauseText1: "Maeum es tu refugio íntimo. Un espacio libre de algoritmos y exigencias diseñado como medicina para tu sistema nervioso.",
     createRefuge: "Crear mi refugio", pauseTitle2: "Contemplación y Calma", pauseDesc2: "Scroll infinito y presencia.",
@@ -45,7 +45,7 @@ const dict = {
     newPass: "New password", forgot: "Forgot your password?", recover: "Recover password", newest: "Newest first", 
     oldest: "Oldest first", random: "Random", installApp: "Install App", loginBtn: "Log In", 
     profileTagsHint: "You can choose your preferred inspiration tags in your profile.",
-    photoBy: "Photo by", onUnsplash: "on Unsplash", download: "Download image", deleteFromGallery: "Delete from gallery",
+    photoBy: "Photo by", onUnsplash: "on Pexels", download: "Download image", deleteFromGallery: "Delete from gallery",
     pauseTitle1: "Pause & Contemplation", pauseDesc1: "The world is too loud.", 
     pauseText1: "Maeum is your intimate refuge. A space free of algorithms designed as medicine for your nervous system.",
     createRefuge: "Create my refuge", pauseTitle2: "Contemplation & Calm", pauseDesc2: "Infinite scroll & presence.",
@@ -80,7 +80,7 @@ const dict = {
     newPass: "Nouveau mot de passe", forgot: "Mot de passe oublié?", recover: "Récupérer", newest: "Plus récents", 
     oldest: "Plus anciens", random: "Aléatoire", installApp: "Installer l'App", loginBtn: "Connexion", 
     profileTagsHint: "Choisissez vos tags d'inspiration dans votre profil.",
-    photoBy: "Photo de", onUnsplash: "sur Unsplash", download: "Télécharger", deleteFromGallery: "Supprimer de la galerie",
+    photoBy: "Photo de", onUnsplash: "sur Pexels", download: "Télécharger", deleteFromGallery: "Supprimer de la galerie",
     pauseTitle1: "Pause et Contemplation", pauseDesc1: "Le monde fait trop de bruit.", 
     pauseText1: "Maeum est votre refuge intime. Un espace sans algorithmes conçu comme un remède pour votre système nerveux.",
     createRefuge: "Créer mon refuge", pauseTitle2: "Contemplation et Calme", pauseDesc2: "Défilement infini.",
@@ -115,7 +115,7 @@ const dict = {
     newPass: "새 비밀번호", forgot: "비밀번호를 잊으셨나요?", recover: "비밀번호 찾기", newest: "최신순", 
     oldest: "오래된순", random: "무작위", installApp: "앱 설치", loginBtn: "로그인", 
     profileTagsHint: "프로필에서 원하는 영감 태그를 선택할 수 있습니다.",
-    photoBy: "사진 작가:", onUnsplash: "on Unsplash", download: "이미지 다운로드", deleteFromGallery: "갤러리에서 삭제",
+    photoBy: "사진 작가:", onUnsplash: "on Pexels", download: "이미지 다운로드", deleteFromGallery: "갤러리에서 삭제",
     pauseTitle1: "휴식과 명상", pauseDesc1: "세상은 너무 시끄럽습니다.", 
     pauseText1: "Maeum은 당신의 은밀한 피난처입니다. 신경계를 위한 약으로 설계된 알고리즘 없는 공간입니다.",
     createRefuge: "나만의 피난처 만들기", pauseTitle2: "명상과 평온", pauseDesc2: "무한 스크롤과 존재감.",
@@ -200,7 +200,7 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
-  const [activeCategory, setActiveCategory] = useState("blanco");
+  const [activeCategory, setActiveCategory] = useState("Minimalista");
   const [feedPhotos, setFeedPhotos] = useState([]);
   const [galleryLimit, setGalleryLimit] = useState(12);
   
@@ -386,7 +386,7 @@ export default function Home() {
 
     loadingRef.current = true;
     try {
-      const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "blanco");
+      const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "Minimalista");
       // Añadimos una página aleatoria entre 1 y 5 para asegurar variedad con Pexels
       const randomPage = Math.floor(Math.random() * 5) + 1;
       
@@ -409,18 +409,26 @@ export default function Home() {
 
       const data = await res.json();
       
+      const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl'];
+
       if (data.photos && Array.isArray(data.photos)) {
-        const newPhotos = data.photos.filter(img => !seenIds.current.has(img.id.toString())).map(img => {
-          seenIds.current.add(img.id.toString());
-          return { 
-            id: img.id.toString(), 
-            url: img.src.large2x || img.src.large, 
-            title: img.alt || "Destello",
-            authorName: img.photographer || "Pexels",
-            authorUsername: img.photographer_url || "https://www.pexels.com",
-            downloadLocation: null
-          };
-        });
+        const newPhotos = data.photos
+          .filter(img => {
+            const altText = (img.alt || "").toLowerCase();
+            return !forbiddenWords.some(word => altText.includes(word));
+          })
+          .filter(img => !seenIds.current.has(img.id.toString()))
+          .map(img => {
+            seenIds.current.add(img.id.toString());
+            return { 
+              id: img.id.toString(), 
+              url: img.src.large2x || img.src.large, 
+              title: img.alt || "Destello",
+              authorName: img.photographer || "Pexels",
+              authorUsername: img.photographer_url || "https://www.pexels.com",
+              downloadLocation: null
+            };
+          });
         setFeedPhotos(prev => [...prev, ...newPhotos]);
       }
     } catch (error) { console.log("Cargando..."); }
@@ -1287,7 +1295,7 @@ export default function Home() {
       <nav className={`fixed bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-lg px-8 py-4 rounded-full shadow-2xl z-40 flex items-center gap-12 text-white ${isDark ? 'bg-neutral-800/90 border border-neutral-700/50' : 'bg-neutral-900/90'}`}>
         <button onClick={() => { 
             setCurrentTab("explore"); 
-            setActiveCategory("blanco"); 
+            setActiveCategory("Minimalista"); 
             setTimeout(() => { window.scrollTo({top: 0, behavior: 'smooth'}); }, 100); 
           }} 
           className={`active:scale-90 transition-transform ${currentTab === "explore" ? "opacity-100" : "opacity-40"}`}>
@@ -1359,7 +1367,7 @@ export default function Home() {
               <p>Bienvenido a Maeum. Al acceder, registrarte o utilizar nuestra aplicación web y PWA (en adelante, "la App"), aceptas cumplir y estar sujeto a los siguientes Términos y Condiciones de Uso. Por favor, léelos detenidamente.</p>
               
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>1. Descripción del Servicio</p>
-              <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Unsplash), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
+              <p>Maeum es una plataforma digital de inspiración visual y bienestar diseñada para ofrecer un espacio de pausa, contemplación y refugio estético. Permite a los usuarios explorar contenido visual curado (proveniente de la API de Pexels), guardar favoritos en una galería personal, personalizar frases de inspiración y reproducir audio ambiental.</p>
               
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>2. Cuentas de Usuario y Registro</p>
               <ul className="list-disc pl-4 space-y-2">
@@ -1384,11 +1392,11 @@ export default function Home() {
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>5. Propiedad Intelectual y Contenido</p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>El diseño, código fuente, logotipos y la marca Maeum son propiedad exclusiva de sus creadores.</li>
-                <li>Las imágenes mostradas son proporcionadas a través de la API de Unsplash y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
+                <li>Las imágenes mostradas son proporcionadas a través de la API de Pexels y pertenecen a sus respectivos fotógrafos. Está prohibido extraer masivamente o utilizar las imágenes con fines comerciales no autorizados fuera de la App.</li>
               </ul>
               
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>6. Limitación de Responsabilidad</p>
-              <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Unsplash.</p>
+              <p>Maeum se proporciona "tal cual". No garantizamos que el servicio sea interrumpido o libre de errores en todo momento. No nos hacemos responsables de interrupciones temporales en la transmisión de audio ambiental (SomaFM) o de la API de Pexels.</p>
               
               <p className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>7. Modificaciones</p>
               <p>Podemos actualizar estos Términos ocasionalmente. Notificaremos cambios significativos a través de la App. El uso continuado tras dichos cambios implica su aceptación.</p>
