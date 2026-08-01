@@ -1,33 +1,20 @@
 "use client";
 import { useState, useEffect, useRef, useMemo, Fragment } from "react";
+import { createClient } from '@supabase/supabase-js';
 
-// Mocking supabase for preview environment
-const makeQuery = (result) => {
-  const query = {
-    select: () => query,
-    eq: () => query,
-    single: () => makeQuery({ data: null, error: null }),
-    insert: () => makeQuery({ error: null }),
-    delete: () => query,
-    then: (resolve, reject) => Promise.resolve(result).then(resolve, reject),
-    catch: (reject) => Promise.resolve(result).catch(reject),
-    finally: (cb) => Promise.resolve(result).finally(cb)
-  };
-  return query;
-};
+// Initialize the real Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-const supabase = {
-  auth: {
-    getUser: async () => ({ data: { user: null } }),
-    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-    signInWithPassword: async () => ({ error: { message: "La autenticación está simulada en esta vista previa." } }),
-    signUp: async () => ({ error: { message: "La autenticación está simulada en esta vista previa." } }),
-    resetPasswordForEmail: async () => ({ error: null }),
-    updateUser: async () => ({ error: null }),
-    signOut: async () => {},
-  },
-  from: () => makeQuery({ data: [], error: null })
-};
+// Fallback error handling if environment variables are missing
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Missing Supabase environment variables. Please check your .env file.");
+}
+
+const supabase = createClient(
+  supabaseUrl || 'YOUR_SUPABASE_URL', // Placeholder if env is missing
+  supabaseKey || 'YOUR_SUPABASE_ANON_KEY' // Placeholder if env is missing
+);
 
 const dict = {
   es: { 
@@ -184,7 +171,7 @@ const dict = {
         { tag: 'landscape', instruction: 'Permite que tu mirada abarque el horizonte. Celebrar la ausencia de amenazas refuerza biológicamente tus vías neuronales de seguridad.', reflection: '¿Hay una sensación de apertura en tu pecho?' },
         { tag: 'botanical', instruction: 'Sintoniza con el crecimiento silencioso. Rodearte de biomasa verde estabiliza tu sistema parasimpático en su estado óptimo de "descansar y digerir".', reflection: '¿Puedes percibir una quietud profunda y reparadora?' },
         { tag: 'macro', instruction: 'Contempla la perfección geométrica de lo diminuto desde un lugar de gratitud, estimulando las ondas alfa de tu cerebro.', reflection: '¿Te maravilla la belleza sutil de este momento?' },
-        { tag: 'warm', instruction: 'Deja que la luz dorada te envuelva. Estos tonos refuerzan la secreción natural de melatonina y serotonina, prolongando tu bienestar.', reflection: '¿Sientes un calor reconfortante abrazando tu piel?' },
+        { tag: 'warm', instruction: 'Deja que la luz dorada te envuelva. Estos tonos refuerzan la secreción natural de melatonina y serotonina, prolonging tu bienestar.', reflection: '¿Sientes un calor reconfortante abrazando tu piel?' },
         { tag: 'animals', instruction: 'Observa la quietud de otros seres vivos. La corregulación interespecie magnifica tu propia sensación de paz y seguridad.', reflection: '¿Sientes una conexión tranquila con la vida que te rodea?' },
         { tag: 'art', instruction: 'Aprecia la armonía visual. La belleza estética activa la red neuronal por defecto de forma saludable, permitiendo una introspección serena.', reflection: '¿Qué sensación de equilibrio despierta esta imagen en ti?' },
         { tag: 'space', instruction: 'Siente cómo tu paz interior resuena con la inmensidad del universo. El micro y el macrocosmos en perfecta alineación silenciosa.', reflection: '¿Sientes que eres parte de un todo armónico?' }
@@ -494,7 +481,7 @@ const dict = {
         { tag: 'nature', instruction: 'Observez la solidez de arbres. La nature survit à toutes les tempêtes en s\'ancrant profondément. Empruntez cette force visuelle.', reflection: 'Sentez-vous vos pieds plus ancrés au sol en ce moment ?' },
         { tag: 'vintage', instruction: 'Connectez-vous à la permanence. Les choses du passé qui perdurent nous rappellent que nous avons aussi la résilience pour survivre au temps.', reflection: 'Sentez-vous un peu plus de sécurité dans votre propre histoire ?' },
         { tag: 'botanical', instruction: 'Observez la croissance constante. Chaque plante trouve un moyen de chercher la lumière, même dans des terrains difficiles. Tout comme vous.', reflection: 'Ressentez-vous un éclair de confianza en vos propios recursos ?' },
-        { tag: 'landscape', instruction: 'Cherchez refuge dans l\'immensité. Un environnement visuel vaste mais pacífico dit à votre subconscient qu\'il y a un espace sûr pour vous dans le mundo.', reflection: 'Sentez-vous que le monde est un peu moins menaçant aujourd\'hui ?' },
+        { tag: 'landscape', instruction: 'Cherchez refuge dans l\'immensité. Un environnement visuel vaste mais pacífico dit à votre subconscient qu\'il y a un espace sûr pour vous dans le mundo.', reflection: 'Sentez-vous que le mundo est un peu moins menaçant aujourd\'hui ?' },
         { tag: 'minimal', instruction: 'Reposez-vous dans le silence visuel. Quand vous vous sentez exposé, l\'excès d\'informations blesse. La simplicité vous embrasse sans poser de questions.', reflection: 'Ressentez-vous du soulagement à ne pas avoir à vous protéger de ce que vous voyez ?' },
         { tag: 'ocean', instruction: 'Laissez la profondeur de l\'eau vous soutenir. Visualisez que l\'océan est assez fort pour porter vos doutes à votre place.', reflection: 'Vous sentez-vous un peu plus soutenu(e) par la vie ?' },
         { tag: 'clouds', instruction: 'Contemplez la douceur. En l\'absence de bords tranchants dans les nuages, votre esprit détend ses barrières défensives instinctives.', reflection: 'Le besoin de vous protéger a-t-il un peu diminué ?' }
@@ -544,7 +531,7 @@ const dict = {
         { tag: 'art', instruction: 'Laissez la créativité sans limites stimuler votre esprit. L\'art vibrant agit comme un catalyseur pour l\'expression de soi et l\'euphorie émotionnelle.', reflection: 'Sentez-vous l\'inspiration jaillir de l\'intérieur ?' },
         { tag: 'macro', instruction: 'Nourrissez votre émerveillement d\'enfant. Découvrir la complexité cachée dans les petits détails déclenche la noradrénaline, vous gardant joyeusement alerte.', reflection: 'Êtes-vous émerveillé(e) par la magie cachée dans le quotidien ?' },
         { tag: 'nature', instruction: 'Absorbez la vitalité de l\'environnement naturel. La lumière du soleil filtrée signale à votre horloge circadienne qu\'il est temps pour l\'énergie maximale.', reflection: 'Vous sentez-vous profondément vivant(e) et présent(e) ?' },
-        { tag: 'warm', instruction: 'Laissez ces tons radieux amplifier la chaleur de votre joie. Le jaune y l\'orange sont interprétés par la psyché comme pure énergie solaire et optimisme.', reflection: 'Votre corps se sent-il radieux, comme s\'il émettait de la lumière ?' },
+        { tag: 'warm', instruction: 'Laissez ces tons radieux amplifier la chaleur de votre joie. Le jaune y l\'orange sont interprétés par la psyché comme pure énergie solaire y optimisme.', reflection: 'Votre corps se sent-il radieux, comme s\'il émettait de la lumière ?' },
         { tag: 'geometry', instruction: 'Profitez du rythme des motifs. Le cerveau humain éprouve un plaisir ludique à déchiffrer les symétries, le ressentant comme une danse cognitive.', reflection: 'Votre esprit se sent-il agile, brillant et joueur ?' }
       ]}
     ]
@@ -850,10 +837,16 @@ export default function Home() {
     audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
     audioRef.current.loop = true;
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) loadUserData(user);
+    // Use the real Supabase client here
+    supabase.auth.getUser().then(({ data: { user }, error }) => {
+      if (error) {
+        console.error("Error fetching user:", error);
+      } else if (user) {
+        loadUserData(user);
+      }
     });
 
+    // Use the real Supabase client here
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         loadUserData(session.user);
@@ -872,7 +865,7 @@ export default function Home() {
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
@@ -890,7 +883,11 @@ export default function Home() {
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    const { data: profileData } = await supabase.from('profiles').select('plan').eq('id', u.id).single();
+    // Use the real Supabase client here
+    const { data: profileData, error: profileError } = await supabase.from('profiles').select('plan').eq('id', u.id).single();
+    if (profileError) {
+        console.error("Error fetching profile:", profileError);
+    }
     if (profileData && profileData.plan) setUserPlan(profileData.plan);
     else setUserPlan("free");
     
@@ -898,7 +895,11 @@ export default function Home() {
     if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { setLang(u.user_metadata.lang); localStorage.setItem('maeum-lang', u.user_metadata.lang); }
     if (u.user_metadata?.tags) setSelectedTags(u.user_metadata.tags); else setSelectedTags([]);
 
+    // Use the real Supabase client here
     const { data, error } = await supabase.from('user_likes').select('*').eq('user_id', u.id);
+    if (error) {
+        console.error("Error fetching likes:", error);
+    }
     if (!error && data) {
       setLikes(data.map(item => ({
         id: item.photo_id, url: item.photo_url, title: item.title, authorName: item.author_name,
@@ -909,11 +910,13 @@ export default function Home() {
 
   const changeTheme = async (newTheme) => {
     setTheme(newTheme); localStorage.setItem('maeum-theme', newTheme);
+    // Use the real Supabase client here
     if (user) supabase.auth.updateUser({ data: { theme: newTheme } }).catch(console.error);
   };
 
   const changeLang = async (newLang) => {
     setLang(newLang); localStorage.setItem('maeum-lang', newLang);
+    // Use the real Supabase client here
     if (user) supabase.auth.updateUser({ data: { lang: newLang } }).catch(console.error);
   };
 
@@ -998,6 +1001,7 @@ export default function Home() {
   const handleAuth = async (e) => {
     e.preventDefault(); setIsAuthenticating(true);
     if (isForgotPassword) {
+      // Use the real Supabase client here
       const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
       if (error) setAppMessage({ title: "Error", text: error.message });
       else { setAppMessage({ title: "Email", text: t.magicLinkText }); setShowAuthModal(false); }
@@ -1009,8 +1013,12 @@ export default function Home() {
     const currentTheme = localStorage.getItem('maeum-theme') || "light";
     const currentLang = localStorage.getItem('maeum-lang') || "es";
     
-    if (isLogin) authResult = await supabase.auth.signInWithPassword({ email, password });
-    else authResult = await supabase.auth.signUp({ email, password, options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme, lang: currentLang, plan: "free" } } });
+    // Use the real Supabase client here
+    if (isLogin) {
+        authResult = await supabase.auth.signInWithPassword({ email, password });
+    } else {
+        authResult = await supabase.auth.signUp({ email, password, options: { data: { full_name: name, phrase: "", tags: [], theme: currentTheme, lang: currentLang, plan: "free" } } });
+    }
     
     if (authResult.error) {
       if (isLogin) {
@@ -1027,6 +1035,7 @@ export default function Home() {
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
+    // Use the real Supabase client here
     try { await supabase.auth.signOut(); } catch(e) { console.warn("Limpieza", e); }
     for (let key in localStorage) { if (key.startsWith('sb-')) localStorage.removeItem(key); }
     setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); setUserPlan("free"); setCurrentTab("explore"); setIsSigningOut(false);
@@ -1036,6 +1045,7 @@ export default function Home() {
     setShowDeleteConfirm(false); setIsSigningOut(true);
     try {
       await fetch('/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: user.id }) });
+      // Use the real Supabase client here
       await supabase.auth.signOut();
       for (let key in localStorage) { if (key.startsWith('sb-')) localStorage.removeItem(key); }
       setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); setUserPlan("free"); setCurrentTab("explore");
@@ -1049,6 +1059,7 @@ export default function Home() {
     const exists = likes.find(p => p.id === photo.id);
     if (exists) {
       setLikes(likes.filter(p => p.id !== photo.id));
+      // Use the real Supabase client here
       await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', photo.id);
     } else {
       if (likes.length >= currentLimits.gallery) {
@@ -1056,6 +1067,7 @@ export default function Home() {
       }
       const newRecord = { user_id: user.id, photo_id: photo.id, photo_url: photo.url, title: photo.title, author_name: photo.authorName, author_username: photo.authorUsername, download_location: photo.downloadLocation };
       setLikes(prev => [...prev, photo]);
+      // Use the real Supabase client here
       const { error } = await supabase.from('user_likes').insert([newRecord]);
       if (error) { setAppMessage({ title: "Error", text: "Error base de datos." }); setLikes(likes); }
     }
@@ -1063,6 +1075,7 @@ export default function Home() {
 
   const confirmDelete = async (id) => {
     setLikes(likes.filter(p => p.id !== id)); setPhotoToDelete(null); setActiveMenuPhotoId(null);
+    // Use the real Supabase client here
     if (user) await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', id);
   };
 
@@ -1093,9 +1106,11 @@ export default function Home() {
     setIsSavingProfile(true);
     try {
       const updates = { data: { full_name: profileName, phrase: userPhrase } };
+      // Use the real Supabase client here
       const { error } = await supabase.auth.updateUser(updates);
       if (error) throw error;
       if (newPassword) {
+        // Use the real Supabase client here
         const { error: passError } = await supabase.auth.updateUser({ password: newPassword });
         if (passError) throw passError; setNewPassword("");
       }
@@ -1109,6 +1124,7 @@ export default function Home() {
     if (newTags.includes(tag)) newTags = newTags.filter(t => t !== tag);
     else { if (newTags.length < 5) newTags.push(tag); }
     setSelectedTags(newTags);
+    // Use the real Supabase client here
     if (user) await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
   };
 
@@ -1118,6 +1134,7 @@ export default function Home() {
     if (selectedTags.includes(tag)) { setCustomTag(""); return; }
     if (selectedTags.length >= 5) { setAppMessage({ title: "Info", text: "Max 5 tags." }); return; }
     const newTags = [...selectedTags, tag]; setSelectedTags(newTags); setCustomTag("");
+    // Use the real Supabase client here
     if (user) await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
   };
 
@@ -1139,6 +1156,7 @@ export default function Home() {
     setActivePrescription(prescription);
     
     if (user) {
+      // Use the real Supabase client here
       supabase.from('therapy_logs').insert([{ 
         user_id: user.id, state_selected: stateObj.id, tag_recommended: prescription.tag 
       }]).catch(e => console.log(e));
