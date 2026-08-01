@@ -121,7 +121,7 @@ const dict = {
         { tag: 'nature', instruction: 'Observa la solidez de los árboles. La naturaleza sobrevive a todas las tormentas anclándose profundo, no huyendo. Pide prestada esa fuerza visual.', reflection: '¿Sientes tus pies más anclados al piso en este momento?' },
         { tag: 'vintage', instruction: 'Conecta con la permanencia. Las cosas del pasado que perduran nos recuerdan que también nosotros tenemos resiliencia para sobrevivir al tiempo.', reflection: '¿Sientes un poco más de seguridad en tu propia historia?' },
         { tag: 'botanical', instruction: 'Observa el crecimiento constante. Cada planta encuentra la manera de buscar la luz, incluso en terrenos difíciles. Así como tú.', reflection: '¿Sientes un destello de confianza en tus propios recursos?' },
-        { tag: 'landscape', instruction: 'Busca el refugio en la inmensidad. Un entorno visual amplio pero pacífico le dice a tu mente subconsciente que hay espacio seguro para ti en el mundo.', reflection: '¿Sientes que el mundo es un poco menos amenazante hoy?' },
+        { tag: 'landscape', instruction: 'Seek refuge in immensity. Un entorno visual amplio pero pacífico le dice a tu mente subconsciente que hay espacio seguro para ti en el mundo.', reflection: '¿Sientes que el mundo es un poco menos amenazante hoy?' },
         { tag: 'minimal', instruction: 'Descansa en el silencio visual. Cuando te sientes expuesto, el exceso de información hiere. La simplicidad te abraza sin hacer preguntas.', reflection: '¿Sientes alivio al no tener que protegerte de lo que ves?' },
         { tag: 'ocean', instruction: 'Deja que la profundidad del agua te sostenga. Visualiza que el océano es lo suficientemente fuerte para cargar con tus dudas por ti.', reflection: '¿Te sientes un poco más sostenido/a por la vida?' },
         { tag: 'clouds', instruction: 'Contempla la suavidad. Al no haber bordes afilados en las nubes, tu mente relaja sus barreras defensivas instintivas.', reflection: '¿Ha disminuido un poco la necesidad de protegerte?' }
@@ -133,7 +133,7 @@ const dict = {
         { tag: 'space', instruction: 'Encuentra calma en el vacío inmenso. El contraste entre estrellas y oscuridad profunda reinicia tu medidor de urgencia neurológica.', reflection: '¿Se siente tu mente un poco más descongestionada?' },
         { tag: 'macro', instruction: 'Filtra el mundo a una sola cosa. El cerebro abrumado sufre por la multitarea. Mirar un detalle microscópico te devuelve el foco singular.', reflection: '¿Fue un alivio tener que mirar solo un objeto a la vez?' },
         { tag: 'texture', instruction: 'Ancla tu atención. Recorrer visualmente una textura repetitiva bloquea la entrada de nuevos estímulos estresantes.', reflection: '¿Sientes que tu mente se dejó de dispersar por un instante?' },
-        { tag: 'geometry', instruction: 'Descansa en la estructura matemática. Frente al caos externo, un patrón visual perfecto no exige energía para ser interpretado.', reflection: '¿Se siente reconfortante este nivel de orden?' },
+        { tag: 'geometry', instruction: 'Descansa en la structure matemática. Frente al caos externo, un patrón visual perfecto no exige energía para ser interpretado.', reflection: '¿Se siente reconfortante este nivel de orden?' },
         { tag: 'landscape', instruction: 'Aleja el zoom. Estás demasiado cerca de tus problemas. Visualizar la lejanía relaja mecánicamente el cristalino y la mente.', reflection: '¿Sientes que tu visión periférica se ha relajado?' },
         { tag: 'abstract', instruction: 'Desengancha la narrativa. No intentes buscarle historias a estas imágenes, úsalas solo como parches de color para descansar el lenguaje.', reflection: '¿Lograste silenciar tu voz interna por un segundo?' },
         { tag: 'botanical', instruction: 'Busca el verde monocromático. Está demostrado que rodearse visualmente de un solo tono natural disminuye la frecuencia cardíaca y la presión arterial.', reflection: '¿Sientes que tu cuerpo ha soltado el modo de "alerta"?' }
@@ -407,7 +407,7 @@ const dict = {
         { tag: 'space', instruction: 'Contempla l\'échelle de l\'univers. Face à l\'immensité, le cerveau relativise l\'urgence des problèmes, réduisant le cortisol.', reflection: 'Vos inquiétudes semblent-elles un peu moins lourdes maintenant ?' },
         { tag: 'macro', instruction: 'Concentrez-vous sur les micro-détails. En forçant les yeux à se concentrer de près, vous empêchez le cerveau de scanner l\'environnement en quête de danger.', reflection: 'Votre esprit se sent-il un peu plus ancré dans le présent ?' },
         { tag: 'texture', instruction: 'Imaginez la sensation tactile. Engager la mémoire sensori-motrice ramène votre énergie anxieuse dans le corps physique.', reflection: 'Quelle partie de votre corps se sent plus présente ?' },
-        { tag: 'nature', instruction: 'Absorbez les motifs verts. Il est cliniquement prouvé que les fractales de la nature réduisent la réponse de fuite ou de combat en quelques minutes.', reflection: 'Ressentez-vous un peu plus de fraîcheur intérieure ?' },
+        { tag: 'nature', instruction: 'Absorbe les motifs verts. Il est cliniquement prouvé que les fractales de la nature réduisent la réponse de fuite ou de combat en quelques minutes.', reflection: 'Ressentez-vous un peu plus de fraîcheur intérieure ?' },
         { tag: 'landscape', instruction: 'Élargissez votre horizon. L\'anxiété provoque une vision en tunnel. Observer des panoramas détend le système nerveux sympathique.', reflection: 'La tension dans votre mâchoire s\'est-elle adoucie ?' },
         { tag: 'abstract', instruction: 'Laissez votre esprit naviguer sans chercher de logique. Ne pas essayer de "comprendre" détend le cortex préfrontal.', reflection: 'Y a-t-il plus d\'espace mental dans votre tête maintenant ?' },
         { tag: 'botanical', instruction: 'Suivez les lignes organiques. Les courbes biologiques signalent à notre biologie que nous sommes dans un environnement sûr.', reflection: 'Vos épaules se sent-elles un peu plus relâchées ?' }
@@ -417,7 +417,7 @@ const dict = {
         { tag: 'colors', instruction: 'Laissez les tons vibrants stimuler doucement votre nerf optique. C\'est une dose de dopamine visuelle qui éveille sans exiger d\'énergie.', reflection: 'Votre regard vous semble-t-il un peu moins lourd ?' },
         { tag: 'flowers', instruction: 'Observez la délicatesse éphémère. Voir des fleurs active des associations biologiques de vitalité et de renouvellement cellulaire.', reflection: 'Quelle petite étincelle d\'énergie remarquez-vous dans votre poitrine ?' },
         { tag: 'vintage', instruction: 'Plongez dans la nostalgie esthétique. Les tons sourds nécessitent moins de traitement cognitif, offrant un repos actif au cerveau.', reflection: 'Votre esprit se sent-il moins saturé maintenant ?' },
-        { tag: 'art', instruction: 'Observez le trait et la couleur sans analyser. Contempler l\'art active les zones de plaisir passif dans le cerveau, nourrissant sans épuiser.', reflection: 'Quelle douce émotion est apparue en voyant ces œuvres ?' },
+        { tag: 'art', instruction: 'Observez le trait et la couleur sans analyser. Contemplar l\'art active les zones de plaisir passif dans le cerveau, nourrissant sans épuiser.', reflection: 'Quelle douce émotion est apparue en voyant ces œuvres ?' },
         { tag: 'animals', instruction: 'Connectez-vous au regard de ces êtres. Voir des créatures au repos transfère leur état d\'économie d\'énergie à votre corps.', reflection: 'Sentez-vous votre respiration plus semblable à la leur ?' },
         { tag: 'nature', instruction: 'Laissez le vert agir comme un filtre. La biophilie passive aide à restaurer la fatigue de l\'attention dirigée.', reflection: 'Sentez-vous un peu plus de clarté derrière vos yeux ?' },
         { tag: 'ocean', instruction: 'Imaginez la flottabilité de l\'eau. Sentir visuellement que l\'eau vous soutient aide à relâcher le poids physique de l\'épuisement.', reflection: 'Votre dos semble-t-il un gramme plus léger ?' },
@@ -451,7 +451,7 @@ const dict = {
       { id: 'frustrated', label: 'Frustré / En colère', prescriptions: [
         { tag: 'geometry', instruction: 'En cas de chaos émotionnel, le cerveau a besoin d\'ordre visuel. La symétrie lui donne un modèle prévisible et sûr pour s\'ancrer.', reflection: 'Sentez-vous que le "bruit" mental a baissé de volume ?' },
         { tag: 'landscape', instruction: 'La colère rétrécit notre champ visuel (vision en tunnel). Regarder de vastes horizons désactive mécaniquement la réponse de lutte.', reflection: 'La tension dans vos poings ou votre mâchoire s\'est-elle relâchée ?' },
-        { tag: 'ocean', instruction: 'Synchronisez-vous avec l\'immensité bleue. La psychologie des couleurs prouve que les tons froids réduisent directement la fréquence cardiaque.', reflection: 'Sentez-vous que la pression dans votre poitrine a diminué ?' },
+        { tag: 'ocean', instruction: 'Synchronisez-vous avec l\'immensité bleue. La psychologie des couleurs prouve que les tons froids réduisent directement la fréquence cardiaque.', reflection: 'Sentez-vous que la presión dans votre poitrine a diminué ?' },
         { tag: 'minimal', instruction: 'Supprimez la friction autour de vous. La rage consomme beaucoup de RAM mentale ; observer des images épurées allège votre cerveau.', reflection: 'Ressentez-vous un peu plus d\'espace entre vos pensées ?' },
         { tag: 'space', instruction: 'Changez l\'échelle du problème. En observant la galaxie, notre amygdale relativise le déclencheur de la colère face à l\'immensité du tout.', reflection: 'Votre frustration semble-t-elle un peu plus lointaine ou petite ?' },
         { tag: 'clouds', instruction: 'Observez l\'absence de rigidité. La frustration est une énergie bloquée ; voir des formes fluides rappelle à votre esprit que céder n\'est pas perdre.', reflection: 'Y a-t-il une partie de votre corps qui a réussi à se relâcher un peu ?' },
@@ -517,7 +517,7 @@ const dict = {
         { tag: 'art', instruction: 'Laissez la créativité sans limites stimuler votre esprit. L\'art vibrant agit comme un catalyseur pour l\'expression de soi et l\'euphorie émotionnelle.', reflection: 'Sentez-vous l\'inspiration jaillir de l\'intérieur ?' },
         { tag: 'macro', instruction: 'Nourrissez votre émerveillement d\'enfant. Découvrir la complexité cachée dans les petits détails déclenche la noradrénaline, vous gardant joyeusement alerte.', reflection: 'Êtes-vous émerveillé(e) par la magie cachée dans le quotidien ?' },
         { tag: 'nature', instruction: 'Absorbez la vitalité de l\'environnement naturel. La lumière du soleil filtrée signale à votre horloge circadienne qu\'il est temps pour l\'énergie maximale.', reflection: 'Vous sentez-vous profondément vivant(e) et présent(e) ?' },
-        { tag: 'warm', instruction: 'Laissez ces tons radieux amplifier la chaleur de votre joie. Le jaune et l\'orange sont interprétés par la psyché comme pure énergie solaire et optimisme.', reflection: 'Votre corps se sent-il radieux, comme s\'il émettait de la lumière ?' },
+        { tag: 'warm', instruction: 'Laissez ces tons radieux amplifier la chaleur de votre joie. Le jaune y l\'orange sont interprétés par la psyché comme pure énergie solaire et optimisme.', reflection: 'Votre corps se sent-il radieux, comme s\'il émettait de la lumière ?' },
         { tag: 'geometry', instruction: 'Profitez du rythme des motifs. Le cerveau humain éprouve un plaisir ludique à déchiffrer les symétries, le ressentant comme une danse cognitive.', reflection: 'Votre esprit se sent-il agile, brillant et joueur ?' }
       ]}
     ]
@@ -610,7 +610,7 @@ const dict = {
         { tag: 'nature', instruction: '강한 뿌리와 줄기를 찾으세요. 깊은 뿌리내림을 시각화하면 감정이 당신을 압도하려 할 때 단단한 바닥을 제공합니다.', reflection: '발이 땅에 더 단단히 고정된 느낌인가요?' }
       ]},
       { id: 'apathetic', label: '무기력한 / 단절된', prescriptions: [
-        { tag: 'macro', instruction: '세상이 무시하는 것을 강제로 눈으로 보게 하세요. 미세한 경이로움은 무감각해진 신경계를 재부팅하는 가장 빠른 방법입니다.', reflection: '호기심의 작은 불꽃이 돌아오는 것을 느끼나요?' },
+        { tag: 'macro', instruction: '세상이 무시하는 것을 강제로 눈으로 보게 하세요. 미세한 경이로움을 가장 빠른 방법입니다.', reflection: '호기심의 작은 불꽃이 돌아오는 것을 느끼나요?' },
         { tag: 'colors', instruction: '시각 피질에 강렬함을 주입하세요. 강한 대비는 감정적 무관심에 대한 부드러운 제세동기 역할을 합니다.', reflection: '생명 에너지가 조금 더 깨어난 느낌인가요?' },
         { tag: 'neon', instruction: '인공적인 빛이 정신적 안개를 걷어내게 하세요. 네온의 빛은 뇌에서 즉각적인 주의 반응을 자극합니다.', reflection: '마음이 조금 더 선명해진 느낌인가요?' },
         { tag: 'cities', instruction: '인류의 맥박을 관찰하세요. 멀리 떨어져 있다고 느끼더라도, 도시의 흐름을 바라보는 것은 사회적 연결의 거울 뉴런을 미묘하게 재활성화합니다.', reflection: '몸에 약간의 움직임 욕구가 느껴지나요?' },
@@ -1423,7 +1423,7 @@ export default function Home() {
                   <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover" />
                   <button onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }} className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  </button>
+</button>
                   {activeInfoId === photo.id && (
                     <div onClick={(e) => { e.stopPropagation(); setActiveInfoId(null); }} className={`absolute inset-0 z-10 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 ${isDark ? 'bg-neutral-900/70 text-white' : 'bg-white/70 text-neutral-900'}`}>
                        <p className="text-lg md:text-xl font-light mb-2 capitalize leading-relaxed drop-shadow-md">{photo.title}</p>
@@ -1786,4 +1786,30 @@ export default function Home() {
                   <>
                     <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1Soy un modelo de lenguaje, así que no tengo esa capacidad.
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </>
+                ) : isForgotPassword ? t.recover : (isLogin ? t.loginBtn : t.register)}
+              </button>
+            </form>
+            {!isForgotPassword && (
+              <p className={`text-center mt-6 text-xs ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                {isLogin ? t.noAccount : t.haveAccount}{" "}
+                <button onClick={() => setIsLogin(!isLogin)} className={`underline ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>
+                  {isLogin ? t.register : t.loginBtn}
+                </button>
+              </p>
+            )}
+            {isForgotPassword && (
+              <p className={`text-center mt-6 text-xs ${isDark ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                <button onClick={() => setIsForgotPassword(false)} className={`underline ${isDark ? 'text-neutral-300' : 'text-neutral-800'}`}>
+                  {t.backToLogin}
+                </button>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}
