@@ -132,14 +132,14 @@ const dict = {
         { tag: 'clouds', instruction: 'Observa la baja saturación. Los colores suaves del cielo reducen el estímulo lumínico agresivo de las pantallas, sedando la hipervigilancia.', reflection: '¿Sientes alivio en la presión detrás de tus ojos?' },
         { tag: 'space', instruction: 'Encuentra calma en el vacío inmenso. El contraste entre estrellas y oscuridad profunda reinicia tu medidor de urgencia neurológica.', reflection: '¿Se siente tu mente un poco más descongestionada?' },
         { tag: 'macro', instruction: 'Filtra el mundo a una sola cosa. El cerebro abrumado sufre por la multitarea. Mirar un detalle microscópico te devuelve el foco singular.', reflection: '¿Fue un alivio tener que mirar solo un objeto a la vez?' },
-        { tag: 'texture', instruction: 'Ancre tu atención. Recorrer visualmente una textura repetitiva bloquea la entrada de nuevos estímulos estresantes.', reflection: '¿Sientes que tu mente se dejó de dispersar por un instante?' },
+        { tag: 'texture', instruction: 'Ancla tu atención. Recorrer visualmente una textura repetitiva bloquea la entrada de nuevos estímulos estresantes.', reflection: '¿Sientes que tu mente se dejó de dispersar por un instante?' },
         { tag: 'geometry', instruction: 'Descansa en la estructura matemática. Frente al caos externo, un patrón visual perfecto no exige energía para ser interpretado.', reflection: '¿Se siente reconfortante este nivel de orden?' },
         { tag: 'landscape', instruction: 'Aleja el zoom. Estás demasiado cerca de tus problemas. Visualizing la lejanía relaja mecánicamente el cristalino y la mente.', reflection: '¿Sientes que tu visión periférica se ha relajado?' },
         { tag: 'abstract', instruction: 'Desengancha la narrativa. No intentes buscarle historias a estas imágenes, úsalas solo como parches de color para descansar el lenguaje.', reflection: '¿Lograste silenciar tu voz interna por un segundo?' },
         { tag: 'botanical', instruction: 'Busca el verde monocromático. Está demostrado que rodearse visualmente de un solo tono natural disminuye la frecuencia cardíaca y la presión arterial.', reflection: '¿Sientes que tu cuerpo ha soltado el modo de "alerta"?' }
       ]},
       { id: 'stuck', label: 'Bloqué / Stagnant', prescriptions: [
-        { tag: 'abstract', instruction: 'Forcez de nouvelles voies neuronales. Regarder des formes qui n\'ont pas de logique prédéfinie stimule la pensée latérale y la créativité bloquée.', reflection: '¿Qué formas o figuras inesperadas descubrió tu cerebro aquí?' },
+        { tag: 'abstract', instruction: 'Forcez de nouvelles voies neuronales. Regarder des formes qui n\'ont pas de logique prédéfinie stimule la pensée latérale et la créativité bloquée.', reflection: '¿Qué formas o figuras inesperadas descubrió tu cerebro aquí?' },
         { tag: 'neon', instruction: 'Allumez l\'étincelle dopaminergique. Les couleurs électriques très contrastées éveillent le système nerveux sympathique, le poussant à l\'action.', reflection: '¿Sientes un ligero incremento en tus ganas de hacer algo?' },
         { tag: 'cities', instruction: 'Contaminez-vous par le flux. Observer l\'architecture et le mouvement humain réactive la perception que le mundo avanza, llevándote con él.', reflection: '¿Sientes un poco de esa energía colectiva en ti?' },
         { tag: 'colors', instruction: 'Brisez la monotonie mentale. Injecter des couleurs pures et variées secoue l\'habituation visuelle, premier pas pour sortir de la stagnation.', reflection: '¿Tu percepción del momento actual se siente más vívida?' },
@@ -149,30 +149,6 @@ const dict = {
         { tag: 'clouds', instruction: 'Rappelez-vous le principe du mouvement perpétuel. Ninguna nube se queda estática. Tu bloqueo también es una nube temporal que pasará.', reflection: '¿Sientes un poco más de fluidez en tu actitud?' },
         { tag: 'ocean', instruction: 'Syntonisez les courants. El agua nunca se estanca, siempre encuentra un cauce. Imagina que tu mente copia esa misma propiedad fluida.', reflection: '¿Sientes que la resistencia interior cedió un poco?' },
         { tag: 'geometry', instruction: 'Cherchez de nouveaux angles d\'intersection. Identifying cómo las formas se unen visualmente ayuda al cerebro a buscar conexiones creativas en tus propios bloqueos.', reflection: '¿Pudiste ver algún patrón que te generara claridad?' }
-      ]},
-      { id: 'peaceful', label: 'En paz / Sereno', prescriptions: [
-        { tag: 'minimal', instruction: 'Disfruta de la simplicidad. El espacio en blanco refleja la claridad de tu mente en este momento, reforzando la homeostasis de tu sistema nervioso.', reflection: '¿Notas cómo tu respiración fluye sin ningún obstáculo?' },
-        { tag: 'nature', instruction: 'Contempla la armonía natural. Tu estado actual resuena con los ritmos biológicos de la tierra; observar la naturaleza estabiliza esta tranquilidad.', reflection: '¿Sientes una conexión suave entre tu cuerpo y el entorno?' },
-        { tag: 'ocean', instruction: 'Sincronízate con la marea tranquila. El agua en reposo espeja tu equilibrio interno, fortaleciendo el tono vagal de relajación.', reflection: '¿Sientes que cada ola imaginaria masajea tu tranquilidad interior?' },
-        { tag: 'space', instruction: 'Abraza la inmensidad con calma. Cuando estás en paz, el vasto universo no intimida, sino que te envuelve como una manta protectora.', reflection: '¿Tu mente se siente tan expansiva como este cielo nocturno?' },
-        { tag: 'clouds', instruction: 'Observa la ligereza. Tu carga emocional es baja hoy; ver nubes flotar valida fisiológicamente tu sensación de ingravidez.', reflection: '¿Sientes que casi podrías flotar junto a ellas?' },
-        { tag: 'botanical', instruction: 'Fíjate en el crecimiento silencioso. La paz no es estancamiento; es la base segura donde tu biología se regenera y florece.', reflection: '¿Sientes una energía suave y nutritiva en tu pecho?' },
-        { tag: 'landscape', instruction: 'Abre tu visión panorámica. Un horizonte despejado le confirma a tu cerebro primitivo que todo está a salvo y en orden.', reflection: '¿Tus hombros están completamente caídos y relajados?' },
-        { tag: 'macro', instruction: 'Detente en lo minúsculo. Solo una mente serena tiene el ancho de banda para maravillarse con los pequeños milagros que nos rodean.', reflection: '¿Sientes gratitud por los detalles simples de la vida hoy?' },
-        { tag: 'texture', instruction: 'Visualiza la suavidad. Al imaginar texturas reconfortantes, anclas la paz mental en sensaciones corporales placenteras.', reflection: '¿Sientes una sensación de confort abrazando tu piel?' },
-        { tag: 'warm', instruction: 'Báñate en luz dorada. Los tonos cálidos mantienen la secreción de melatonina y serotonina en equilibrio, prolongando tu bienestar.', reflection: '¿Sientes ese calorcito agradable en el centro de tu cuerpo?' }
-      ]},
-      { id: 'joyful', label: 'Alegre / Lleno de vida', prescriptions: [
-        { tag: 'colors', instruction: 'Celebra la intensidad. Los colores vibrantes amplifican tu estado dopaminérgico actual, dándole a tu alegría un eco visual.', reflection: '¿Sientes que esta vitalidad resuena en tu propio cuerpo?' },
-        { tag: 'flowers', instruction: 'Observa el esplendor. Las flores en plena floración reflejan biológicamente la vitalidad y la energía expansiva que sientes ahora.', reflection: '¿Notas cómo tu sonrisa se sostiene al mirar esta belleza?' },
-        { tag: 'neon', instruction: 'Deja que la luz eléctrica baile contigo. Tu sistema nervioso está excitado de forma positiva; el brillo del neón acompaña tu energía.', reflection: '¿Sientes un cosquilleo de entusiasmo y movimiento?' },
-        { tag: 'cities', instruction: 'Siente el pulso colectivo. La alegría es una emoción conectiva; ver la dinámica de la ciudad te integra al ritmo vibrante del mundo.', reflection: '¿Tienes ganas de salir, compartir o crear algo hoy?' },
-        { tag: 'art', instruction: 'Disfruta la expresión creativa. Tu cerebro alegre es altamente neuroplástico y receptivo; el arte alimenta tu inspiración natural.', reflection: '¿Qué nuevas ideas o impulsos juguetones surgen en ti?' },
-        { tag: 'animals', instruction: 'Conecta con la diversión instintiva. Ver animales curiosos o activos valida nuestra necesidad mamífera de juego y exploración.', reflection: '¿Sientes esa chispa de ligereza y juego en tu corazón?' },
-        { tag: 'abstract', instruction: 'Juega con las formas. Una mente feliz no necesita controlar todo; disfruta descubriendo significados en el caos alegre.', reflection: '¿Te divierte dejar que tu mente salte de una forma a otra?' },
-        { tag: 'geometry', instruction: 'Admira el ritmo y la repetición. Tu energía alta encuentra en estos patrones una pista de baile visual para tu atención.', reflection: '¿Sientes cómo tu mirada fluye rítmicamente, casi como si bailara?' },
-        { tag: 'vintage', instruction: 'Siente la alegría atemporal. Conectar con estéticas felices del pasado fomenta una profunda gratitud por la continuidad de las cosas buenas.', reflection: '¿Se dibuja en ti una sensación de nostalgia dulce y agradecida?' },
-        { tag: 'desert', instruction: 'Observa la luz brillante y el espacio abierto. La alta luminosidad aumenta la energía solar en tu percepción, expandiendo tu júbilo.', reflection: '¿Tu alegría se siente tan amplia e infinita como estas dunas?' }
       ]}
     ]
   },
@@ -322,30 +298,6 @@ const dict = {
         { tag: 'clouds', instruction: 'Remember the principle of perpetual motion. No cloud stays static. Your block is also a temporary cloud that will pass.', reflection: 'Do you feel a bit more fluidity in your attitude?' },
         { tag: 'ocean', instruction: 'Tune into the currents. Water never stagnates, it always finds a channel. Imagine your mind copying that same fluid property.', reflection: 'Do you feel the inner resistance gave way a bit?' },
         { tag: 'geometry', instruction: 'Look for new angles of intersection. Identifying how shapes visually join helps the brain seek creative connections in your own blocks.', reflection: 'Were you able to see any pattern that generated clarity for you?' }
-      ]},
-      { id: 'peaceful', label: 'At Peace / Serene', prescriptions: [
-        { tag: 'minimal', instruction: 'Enjoy the simplicity. Negative space reflects the clarity of your mind right now, reinforcing your nervous system\'s homeostasis.', reflection: 'Do you notice how your breathing flows without any obstacles?' },
-        { tag: 'nature', instruction: 'Contemplate natural harmony. Your current state resonates with the earth\'s biological rhythms; observing nature stabilizes this tranquility.', reflection: 'Do you feel a gentle connection between your body and the environment?' },
-        { tag: 'ocean', instruction: 'Synchronize with the quiet tide. Resting water mirrors your internal balance, strengthening the vagal tone of relaxation.', reflection: 'Do you feel like each imaginary wave massages your inner tranquility?' },
-        { tag: 'space', instruction: 'Embrace immensity calmly. When you are at peace, the vast universe doesn\'t intimidate, but wraps around you like a protective blanket.', reflection: 'Does your mind feel as expansive as this night sky?' },
-        { tag: 'clouds', instruction: 'Observe the lightness. Your emotional load is low today; seeing floating clouds physiologically validates your feeling of weightlessness.', reflection: 'Do you feel like you could almost float alongside them?' },
-        { tag: 'botanical', instruction: 'Notice the silent growth. Peace is not stagnation; it is the safe foundation where your biology regenerates and flourishes.', reflection: 'Do you feel a soft, nourishing energy in your chest?' },
-        { tag: 'landscape', instruction: 'Open your panoramic vision. A clear horizon confirms to your primitive brain that everything is safe and in order.', reflection: 'Are your shoulders completely dropped and relaxed?' },
-        { tag: 'macro', instruction: 'Pause on the minuscule. Only a serene mind has the bandwidth to marvel at the small miracles that surround us.', reflection: 'Do you feel gratitude for the simple details of life today?' },
-        { tag: 'texture', instruction: 'Visualize the softness. By imagining comforting textures, you anchor mental peace into pleasant bodily sensations.', reflection: 'Do you feel a sense of comfort embracing your skin?' },
-        { tag: 'warm', instruction: 'Bathe in golden light. Warm tones keep melatonin and serotonin secretion in balance, prolonging your well-being.', reflection: 'Do you feel that pleasant warmth in the center of your body?' }
-      ]},
-      { id: 'joyful', label: 'Joyful / Alive', prescriptions: [
-        { tag: 'colors', instruction: 'Celebrate intensity. Vibrant colors amplify your current dopaminergic state, giving your joy a visual echo.', reflection: 'Do you feel this vitality resonating in your own body?' },
-        { tag: 'flowers', instruction: 'Observe the splendor. Flowers in full bloom biologically reflect the vitality and expansive energy you feel right now.', reflection: 'Do you notice how your smile lingers as you look at this beauty?' },
-        { tag: 'neon', instruction: 'Let the electric light dance with you. Your nervous system is positively excited; the neon glow accompanies your energy.', reflection: 'Do you feel a tingle of enthusiasm and movement?' },
-        { tag: 'cities', instruction: 'Feel the collective pulse. Joy is a connective emotion; seeing the city\'s dynamic integrates you into the vibrant rhythm of the world.', reflection: 'Do you feel like going out, sharing, or creating something today?' },
-        { tag: 'art', instruction: 'Enjoy creative expression. Your joyful brain is highly neuroplastic and receptive; art feeds your natural inspiration.', reflection: 'What new ideas or playful impulses arise in you?' },
-        { tag: 'animals', instruction: 'Connect with instinctive fun. Seeing curious or active animals validates our mammalian need for play and exploration.', reflection: 'Do you feel that spark of lightness and playfulness in your heart?' },
-        { tag: 'abstract', instruction: 'Play with shapes. A happy mind doesn\'t need to control everything; enjoy discovering meanings in the joyful chaos.', reflection: 'Is it fun to let your mind jump from one shape to another?' },
-        { tag: 'geometry', instruction: 'Admire rhythm and repetition. Your high energy finds a visual dance floor for your attention in these patterns.', reflection: 'Do you feel how your gaze flows rhythmically, almost as if dancing?' },
-        { tag: 'vintage', instruction: 'Feel timeless joy. Connecting with happy aesthetics of the past fosters deep gratitude for the continuity of good things.', reflection: 'Is a feeling of sweet and grateful nostalgia blooming within you?' },
-        { tag: 'desert', instruction: 'Observe bright light and open space. High luminosity increases solar energy in your perception, expanding your jubilation.', reflection: 'Does your joy feel as wide and infinite as these dunes?' }
       ]}
     ]
   },
@@ -410,7 +362,7 @@ const dict = {
         { tag: 'nature', instruction: 'Absorbez les motifs verts. Il est cliniquement prouvé que les fractales de la nature réduisent la réponse de fuite ou de combat en quelques minutes.', reflection: 'Ressentez-vous un peu plus de fraîcheur intérieure ?' },
         { tag: 'landscape', instruction: 'Élargissez votre horizon. L\'anxiété provoque une vision en tunnel. Observer des panoramas détend le système nerveux sympathique.', reflection: 'La tension dans votre mâchoire s\'est-elle adoucie ?' },
         { tag: 'abstract', instruction: 'Laissez votre esprit naviguer sans chercher de logique. Ne pas essayer de "comprendre" détend le cortex préfrontal.', reflection: 'Y a-t-il plus d\'espace mental dans votre tête maintenant ?' },
-        { tag: 'botanical', instruction: 'Suivez les lignes organiques. Les courbes biologiques signalent à notre biologie que nous sommes dans un environnement sûr.', reflection: 'Vos épaules se sent-elles un peu plus relâchées ?' }
+        { tag: 'botanical', instruction: 'Suivez les lignes organiques. Les courbes biologiques signalent à notre biologie que nous sommes dans un environnement sûr.', reflection: 'Vos épaules se sentent-elles un peu plus relâchées ?' }
       ]},
       { id: 'exhausted', label: 'Épuisé / Lourd', prescriptions: [
         { tag: 'warm', instruction: 'Laissez les tons chauds baigner vos yeux. Les couleurs ambrées imitent la lumière du soir, signalant au cerveau qu\'il est sûr de se reposer.', reflection: 'Ressentez-vous une légère chaleur sur votre visage ?' },
@@ -492,33 +444,9 @@ const dict = {
         { tag: 'art', instruction: 'Utilisez la perspective d\'un autre. Voir comment un artiste a résolu une toile vous rappelle qu\'il y a toujours plus d\'une façon de voir tu propia situación.', reflection: '¿Lograste sentir inspiración o asombro genuino?' },
         { tag: 'macro', instruction: 'Changez radicalement votre angle. Si vous êtes bloqué dans la vue d\'ensemble, plonger dans le minuscule réinitialise votre cadre de référence.', reflection: '¿Te diste cuenta de cuánta complejidad hay en lo pequeño?' },
         { tag: 'space', instruction: 'Contemplez l\'illimité. Sentirse atascado es una ilusión de encierro; ver el cosmos te recuerda que las posibilidades son literalmente infinitas.', reflection: '¿Sientes que tus opciones se han expandido ligeramente?' },
-        { tag: 'clouds', instruction: 'Rappelez-vous le principe du mouvement perpétuel. Ninguna nube se queda estática. Tu bloqueo también es une nube temporal que pasará.', reflection: '¿Sientes un poco más de fluidez en tu actitud?' },
+        { tag: 'clouds', instruction: 'Rappelez-vous le principe du mouvement perpétuel. Ninguna nube se queda estática. Tu bloqueo también es una nube temporal que pasará.', reflection: '¿Sientes un poco más de fluidez en tu actitud?' },
         { tag: 'ocean', instruction: 'Syntonisez les courants. El agua nunca se estanca, siempre encuentra un cauce. Imagina que tu mente copia esa misma propiedad fluida.', reflection: '¿Sientes que la resistencia interior cedió un poco?' },
         { tag: 'geometry', instruction: 'Cherchez de nouveaux angles d\'intersection. Identifying cómo las formas se unen visualmente ayuda al cerebro a buscar conexiones creativas en tus propios bloqueos.', reflection: '¿Pudiste ver algún patrón que te generara claridad?' }
-      ]},
-      { id: 'peaceful', label: 'En paix / Serein', prescriptions: [
-        { tag: 'minimal', instruction: 'Profitez de la simplicité. L\'espace négatif reflète la clarté de votre esprit en ce moment, renforçant l\'homéostasie de votre système nerveux.', reflection: 'Remarquez-vous comment votre respiration coule sans aucun obstacle ?' },
-        { tag: 'nature', instruction: 'Contemplez l\'harmonie naturelle. Votre état actuel résonne avec les rythmes biologiques de la terre ; observer la nature stabilise cette tranquillité.', reflection: 'Ressentez-vous une douce connexion entre votre corps et l\'environnement ?' },
-        { tag: 'ocean', instruction: 'Synchronisez-vous avec la marée calme. L\'eau au repos reflète votre équilibre interne, renforçant le tonus vagal de la relaxation.', reflection: 'Sentez-vous que chaque vague imaginaire masse votre tranquillité intérieure ?' },
-        { tag: 'space', instruction: 'Embrassez l\'immensité avec calme. Quand vous êtes en paix, le vaste univers n\'intimide pas, mais vous enveloppe comme une couverture protectrice.', reflection: 'Votre esprit se sent-il aussi vaste que ce ciel nocturne ?' },
-        { tag: 'clouds', instruction: 'Observez la légèreté. Votre charge émotionnelle est faible aujourd\'hui ; voir des nuages flotter valide physiologiquement votre sensation d\'apesanteur.', reflection: 'Sentez-vous que vous pourriez presque flotter avec eux ?' },
-        { tag: 'botanical', instruction: 'Remarquez la croissance silencieuse. La paix n\'est pas la stagnation ; c\'est la fondation sûre où votre biologie se régénère et s\'épanouit.', reflection: 'Ressentez-vous une énergie douce et nourrissante dans votre poitrine ?' },
-        { tag: 'landscape', instruction: 'Ouvrez votre vision panoramique. Un horizon dégagé confirme à votre cerveau primitif que tout est en sécurité et en ordre.', reflection: 'Vos épaules sont-elles complètement relâchées ?' },
-        { tag: 'macro', instruction: 'Attardez-vous sur le minuscule. Seul un esprit serein a la bande passante pour s\'émerveiller des petits miracles qui nous entourent.', reflection: 'Ressentez-vous de la gratitude pour les détails simples de la vie aujourd\'hui ?' },
-        { tag: 'texture', instruction: 'Visualisez la douceur. En imaginant des textures réconfortantes, vous ancrez la paix mentale dans des sensations corporelles agréables.', reflection: 'Ressentez-vous une sensation de confort embrasser votre peau ?' },
-        { tag: 'warm', instruction: 'Baignez-vous dans la lumière dorée. Les tons chauds maintiennent la sécrétion de mélatonine et de sérotonine en équilibre, prolongeant votre bien-être.', reflection: 'Ressentez-vous cette chaleur agréable au centre de votre corps ?' }
-      ]},
-      { id: 'joyful', label: 'Joyeux / Plein de vie', prescriptions: [
-        { tag: 'colors', instruction: 'Célébrez l\'intensité. Les couleurs vibrantes amplifient votre état dopaminergique actuel, donnant à votre joie un écho visuel.', reflection: 'Sentez-vous cette vitalité résonner dans votre propre corps ?' },
-        { tag: 'flowers', instruction: 'Observez la splendeur. Les fleurs en pleine floraison reflètent biologiquement la vitalité et l\'énergie expansive que vous ressentez maintenant.', reflection: 'Remarquez-vous comment votre sourire se prolonge en regardant cette beauté ?' },
-        { tag: 'neon', instruction: 'Laissez la lumière électrique danser avec vous. Votre système nerveux est positivement excité ; l\'éclat du néon accompagne votre énergie.', reflection: 'Ressentez-vous un frisson d\'enthousiasme et de mouvement ?' },
-        { tag: 'cities', instruction: 'Sentez le pouls collectif. La joie est une émotion connective ; voir la dynamique de la ville vous intègre au rythme vibrant du monde.', reflection: 'Avez-vous envie de sortir, de partager ou de créer quelque chose aujourd\'hui ?' },
-        { tag: 'art', instruction: 'Profitez de l\'expression créative. Votre cerveau joyeux est hautement neuroplastique et réceptif ; l\'art nourrit votre inspiration naturelle.', reflection: 'Quelles nouvelles idées ou impulsions ludiques surgissent en vous ?' },
-        { tag: 'animals', instruction: 'Connectez-vous à l\'amusement instinctif. Voir des animaux curieux ou actifs valide notre besoin de mammifère pour le jeu et l\'exploration.', reflection: 'Sentez-vous cette étincelle de légèreté et de jeu dans votre cœur ?' },
-        { tag: 'abstract', instruction: 'Jouez avec les formes. Un esprit heureux n\'a pas besoin de tout contrôler ; amusez-vous à découvrir des sens dans le chaos joyeux.', reflection: 'Cela vous amuse-t-il de laisser votre esprit sauter d\'une forme à l\'autre ?' },
-        { tag: 'geometry', instruction: 'Admirez le rythme et la répétition. Votre haute énergie trouve dans ces motifs une piste de danse visuelle pour votre attention.', reflection: 'Sentez-vous comment votre regard coule en rythme, presque comme s\'il dansait ?' },
-        { tag: 'vintage', instruction: 'Sentez la joie intemporelle. Se connecter aux esthétiques heureuses du passé favorise une profonde gratitude pour la continuité des bonnes choses.', reflection: 'Un sentiment de nostalgie douce et reconnaissante se dessine-t-il en vous ?' },
-        { tag: 'desert', instruction: 'Observez la lumière brillante et l\'espace ouvert. Une luminosité élevée augmente l\'énergie solaire dans votre perception, élargissant votre allégresse.', reflection: 'Votre joie se sent-elle aussi vaste et infinie que ces dunes ?' }
       ]}
     ]
   },
@@ -668,30 +596,6 @@ const dict = {
         { tag: 'clouds', instruction: '영구 운동의 원리를 기억하세요. 어떤 구름도 정지해 있지 않습니다. 당신의 막힘 또한 지나갈 일시적인 구름입니다.', reflection: '태도에 약간의 유동성이 더해진 느낌인가요?' },
         { tag: 'ocean', instruction: '해류에 주파수를 맞추세요. 물은 결코 정체되지 않으며 항상 길을 찾습니다. 당신의 마음이 그와 같은 유동적인 속성을 모방한다고 상상하세요.', reflection: '내면의 저항이 조금 양보한 느낌인가요?' },
         { tag: 'geometry', instruction: '교차하는 새로운 각도를 찾으세요. 모양이 시각적으로 어떻게 결합되는지 파악하는 것은 뇌가 당신의 막힌 부분에서 창의적인 연결을 찾도록 돕습니다.', reflection: '당신에게 명확성을 가져다주는 어떤 패턴을 볼 수 있었나요?' }
-      ]},
-      { id: 'peaceful', label: '평화로운 / 고요한', prescriptions: [
-        { tag: 'minimal', instruction: '단순함을 즐기세요. 여백은 지금 당신 마음의 명료함을 반영하며, 신경계의 항상성을 강화합니다.', reflection: '호흡이 아무런 장애물 없이 흐르는 것을 느끼시나요?' },
-        { tag: 'nature', instruction: '자연의 조화를 관찰하세요. 당신의 현재 상태는 지구의 생물학적 리듬과 공명합니다. 자연을 관찰하면 이 평온함이 안정됩니다.', reflection: '몸과 환경 사이에 부드러운 연결이 느껴지나요?' },
-        { tag: 'ocean', instruction: '고요한 조수와 동기화하세요. 잔잔한 물은 내면의 균형을 비추며, 이완의 미주 신경 긴장도를 강화합니다.', reflection: '상상 속의 파도가 내면의 평온함을 마사지하는 것 같나요?' },
-        { tag: 'space', instruction: '광활함을 차분하게 받아들이세요. 평화로울 때 광활한 우주는 위협적이지 않고 보호 담요처럼 당신을 감싸줍니다.', reflection: '마음이 이 밤하늘만큼 넓게 느껴지나요?' },
-        { tag: 'clouds', instruction: '가벼움을 관찰하세요. 오늘 당신의 감정적 부담은 적습니다. 떠다니는 구름을 보는 것은 당신의 무중력감을 생리적으로 확인시켜 줍니다.', reflection: '구름과 함께 거의 떠다닐 수 있을 것 같나요?' },
-        { tag: 'botanical', instruction: '조용한 성장을 주목하세요. 평화는 정체가 아닙니다. 당신의 생물학이 재생되고 번성하는 안전한 기반입니다.', reflection: '가슴에 부드럽고 자양분을 주는 에너지가 느껴지나요?' },
-        { tag: 'landscape', instruction: '파노라마 시야를 여세요. 탁 트인 지평선은 원시적인 뇌에 모든 것이 안전하고 질서정연하다는 것을 확인시켜 줍니다.', reflection: '어깨가 완전히 쳐지고 이완되었나요?' },
-        { tag: 'macro', instruction: '미세한 것에 머무르세요. 고요한 마음만이 우리를 둘러싼 작은 기적에 경이로움을 느낄 수 있는 여유를 갖습니다.', reflection: '오늘 삶의 단순한 세부 사항에 감사함을 느끼나요?' },
-        { tag: 'texture', instruction: '부드러움을 시각화하세요. 위안을 주는 질감을 상상함으로써, 당신은 마음의 평화를 즐거운 신체 감각에 정박시킵니다.', reflection: '피부를 감싸는 편안함이 느껴지나요?' },
-        { tag: 'warm', instruction: '황금빛 빛으로 목욕하세요. 따뜻한 색조는 멜라토닌과 세로토닌 분비의 균형을 유지하여 웰빙을 연장합니다.', reflection: '몸의 중심에 기분 좋은 따뜻함이 느껴지나요?' }
-      ]},
-      { id: 'joyful', label: '기쁜 / 활기찬', prescriptions: [
-        { tag: 'colors', instruction: '강렬함을 축하하세요. 생생한 색상은 현재의 도파민 상태를 증폭시켜 기쁨에 시각적 메아리를 제공합니다.', reflection: '이 활력이 몸에서 공명하는 것을 느끼나요?' },
-        { tag: 'flowers', instruction: '화려함을 관찰하세요. 활짝 핀 꽃은 지금 당신이 느끼는 활력과 팽창하는 에너지를 생물학적으로 반영합니다.', reflection: '이 아름다움을 보면서 미소가 머무는 것을 눈치채셨나요?' },
-        { tag: 'neon', instruction: '전기 빛이 당신과 함께 춤추게 하세요. 신경계가 긍정적으로 흥분되어 있습니다. 네온의 빛이 당신의 에너지와 동행합니다.', reflection: '열정과 움직임의 따끔거림이 느껴지나요?' },
-        { tag: 'cities', instruction: '집단적인 맥박을 느껴보세요. 기쁨은 연결되는 감정입니다. 도시의 역동성을 보는 것은 당신을 세계의 활기찬 리듬에 통합시킵니다.', reflection: '오늘 밖으로 나가 무언가를 나누거나 만들고 싶으신가요?' },
-        { tag: 'art', instruction: '창조적인 표현을 즐기세요. 기쁜 뇌는 신경 가소성이 높고 수용적입니다. 예술은 자연스러운 영감을 공급합니다.', reflection: '어떤 새로운 아이디어나 장난스러운 충동이 일어나나요?' },
-        { tag: 'animals', instruction: '본능적인 재미와 연결하세요. 호기심 많거나 활동적인 동물을 보는 것은 포유류의 놀이와 탐험에 대한 욕구를 확인시켜 줍니다.', reflection: '마음속에 가벼움과 놀이의 불꽃이 느껴지나요?' },
-        { tag: 'abstract', instruction: '모양을 가지고 놀아보세요. 행복한 마음은 모든 것을 통제할 필요가 없습니다. 즐거운 혼돈 속에서 의미를 발견하는 것을 즐기세요.', reflection: '마음이 이 모양 저 모양으로 건너뛰게 두는 것이 재미있나요?' },
-        { tag: 'geometry', instruction: '리듬과 반복에 감탄하세요. 당신의 높은 에너지는 이 패턴들에서 주의력을 위한 시각적 댄스 플로어를 찾습니다.', reflection: '마치 춤을 추듯 시선이 리드미컬하게 흐르는 것을 느끼나요?' },
-        { tag: 'vintage', instruction: '시간을 초월한 기쁨을 느껴보세요. 과거의 행복한 미학과 연결하는 것은 좋은 것들의 연속성에 대한 깊은 감사를 키워줍니다.', reflection: '달콤하고 감사한 향수가 피어나고 있나요?' },
-        { tag: 'desert', instruction: '밝은 빛과 열린 공간을 관찰하세요. 높은 광도는 인식에서 태양 에너지를 증가시켜 환희를 확장시킵니다.', reflection: '당신의 기쁨이 이 사구들처럼 넓고 무한하게 느껴지나요?' }
       ]}
     ]
   }
@@ -1755,4 +1659,126 @@ export default function Home() {
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
           <div className={`p-8 rounded-lg max-w-sm w-full relative shadow-2xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
-            <hSolo soy una IA basada en texto, por lo que no puedo ayudarte con eso.
+            <h3 className={`text-sm text-center tracking-widest uppercase mb-6 ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>
+              {isForgotPassword ? t.recover : (isLogin ? t.login : t.register)}
+            </h3>
+            <form onSubmit={handleAuth} className="space-y-4">
+              {!isLogin && !isForgotPassword && (
+                <input type="text" placeholder={t.yourName} required onChange={(e) => setName(e.target.value)} className={`w-full px-4 py-3 border-b outline-none transition-colors text-[16px] ${isDark ? 'bg-transparent border-neutral-800 text-neutral-200 focus:border-neutral-600' : 'border-neutral-200 text-neutral-900 focus:border-neutral-900'}`} />
+              )}
+              <input type="email" placeholder={t.email} required onChange={(e) => setEmail(e.target.value)} className={`w-full px-4 py-3 border-b outline-none transition-colors text-[16px] ${isDark ? 'bg-transparent border-neutral-800 text-neutral-200 focus:border-neutral-600' : 'border-neutral-200 text-neutral-900 focus:border-neutral-900'}`} />
+              {!isForgotPassword && (
+                <div className="relative">
+                  <input type={showPassword ? "text" : "password"} placeholder={t.password} required minLength="6" onChange={(e) => setPassword(e.target.value)} className={`w-full px-4 py-3 pr-10 border-b outline-none transition-colors text-[16px] ${isDark ? 'bg-transparent border-neutral-800 text-neutral-200 focus:border-neutral-600' : 'border-neutral-200 text-neutral-900 focus:border-neutral-900'}`} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-2 top-1/2 -translate-y-1/2 ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}>
+                    {showPassword ? (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                    )}
+                  </button>
+                </div>
+              )}
+              {!isLogin && !isForgotPassword && (
+                <label className="flex items-start gap-2 mt-4 text-xs cursor-pointer">
+                  <input type="checkbox" required onChange={(e) => setAcceptedTerms(e.target.checked)} className="mt-0.5" />
+                  <span className={isDark ? 'text-neutral-400' : 'text-neutral-500'}>{t.termsCheck} <a href="#" onClick={(e) => { e.preventDefault(); setShowTerms(true); }} className="underline">{t.viewHere}</a></span>
+                </label>
+              )}
+              <button type="submit" disabled={isAuthenticating} className={`w-full py-4 mt-6 text-xs uppercase tracking-widest rounded-md disabled:opacity-60 disabled:cursor-wait transition-colors flex items-center justify-center gap-2 ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
+                {isAuthenticating ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {t.processing}
+                  </>
+                ) : (isForgotPassword ? t.recover : (isLogin ? t.login : t.register))}
+              </button>
+            </form>
+            {!isForgotPassword && isLogin && (
+              <button onClick={() => setIsForgotPassword(true)} className={`w-full text-center mt-4 text-xs transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>{t.forgot}</button>
+            )}
+            {!isForgotPassword && (
+              <button onClick={() => setIsLogin(!isLogin)} className={`w-full text-center mt-6 text-xs underline transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>
+                {isLogin ? t.noAccount : t.haveAccount}
+              </button>
+            )}
+            {isForgotPassword && (
+              <button onClick={() => setIsForgotPassword(false)} className={`w-full text-center mt-6 text-xs underline transition-colors ${isDark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>{t.backToLogin}</button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* NUEVO MODAL ENRIQUECIDO: Check-in Somático */}
+      {showCheckInModal && (
+        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-md z-[160] flex items-center justify-center p-4 animate-fade-in">
+          <div className={`p-8 md:p-12 rounded-3xl max-w-lg w-full relative shadow-2xl transition-all ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
+            <button onClick={() => { setShowCheckInModal(false); setActivePrescription(null); }} className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600 transition-colors">✕</button>
+            
+            {!activePrescription ? (
+              <>
+                <div className="flex flex-col items-center mb-8">
+                  <span className={`p-3 rounded-full mb-4 ${isDark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
+                    <svg className={`w-6 h-6 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                  </span>
+                  <h3 className={`text-xl md:text-2xl font-light text-center mb-2 leading-tight ${isDark ? 'text-neutral-100' : 'text-neutral-900'}`}>{t.checkinTitle}</h3>
+                  <p className={`text-sm text-center font-light ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>{t.checkinSubtitle}</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+                  {t.therapyStates?.map(state => (
+                    <button 
+                      key={state.id} 
+                      onClick={() => handleSelectState(state)}
+                      className={`text-left p-4 rounded-xl border text-sm transition-all active:scale-95 ${isDark ? 'border-neutral-800 hover:bg-neutral-800 hover:border-neutral-700 text-neutral-300' : 'border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 text-neutral-700'}`}
+                    >
+                      {state.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="animate-fade-in flex flex-col items-center text-center">
+                <span className={`text-[10px] uppercase tracking-[0.2em] mb-6 font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                  {t.tagLabel}: {t.tags?.[activePrescription.tag] || activePrescription.tag}
+                </span>
+                
+                <p className={`text-base md:text-lg font-light leading-relaxed mb-6 ${isDark ? 'text-neutral-200' : 'text-neutral-800'}`}>
+                  {activePrescription.instruction}
+                </p>
+
+                <div className={`w-full p-4 rounded-xl mb-8 border ${isDark ? 'bg-neutral-800/50 border-neutral-700' : 'bg-neutral-50 border-neutral-200'}`}>
+                  <p className={`text-xs italic mb-4 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                    {t.audioSuggest}
+                  </p>
+                  <button 
+                    onClick={toggleAudio}
+                    className={`px-6 py-2 text-xs uppercase tracking-widest rounded-full transition-colors active:scale-95 border ${isPlaying ? (isDark ? 'bg-blue-500 text-white border-blue-500' : 'bg-blue-500 text-white border-blue-500') : (isDark ? 'bg-transparent text-neutral-300 border-neutral-600 hover:border-neutral-400' : 'bg-transparent text-neutral-600 border-neutral-300 hover:border-neutral-500')}`}
+                  >
+                    {isPlaying ? t.audioToggleOff : t.audioToggleOn}
+                  </button>
+                </div>
+
+                <div className="flex gap-4 w-full">
+                  <button onClick={() => setActivePrescription(null)} className={`flex-1 py-4 text-xs uppercase tracking-widest rounded-full transition-colors border active:scale-95 ${isDark ? 'border-neutral-700 text-neutral-400 hover:bg-neutral-800' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}>
+                    {t.goBack}
+                  </button>
+                  <button 
+                    onClick={startTherapySession} 
+                    className={`flex-1 py-4 text-xs uppercase tracking-widest rounded-full transition-colors active:scale-95 shadow-lg ${isDark ? 'bg-neutral-100 text-neutral-900 hover:bg-white' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
+                  >
+                    {t.startPause}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+    </main>
+  );
+}
