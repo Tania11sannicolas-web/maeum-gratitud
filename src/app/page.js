@@ -1750,3 +1750,9 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {showAuthModal && !user && (
+        <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
+          <div className={`p-8 rounded-lg max-w-sm w-full relative shadow-2xl ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
+            <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-neutral-400">✕</button>
+            <hSolo soy una IA basada en texto, por lo que no puedo ayudarte con eso.
