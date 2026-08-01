@@ -145,7 +145,7 @@ const dict = {
         { tag: 'ocean', instruction: 'Busca el ruido blanco visual. El flujo constante e ininterrumpido del agua plancha los picos de estrés causados por la sobreinformación.', reflection: '¿Sientes que tus pensamientos van un poco más despacio?' },
         { tag: 'clouds', instruction: 'Observa la baja saturación. Los colores suaves del cielo reducen el estímulo lumínico agresivo de las pantallas, sedando la hipervigilancia.', reflection: '¿Sientes alivio en la presión detrás de tus ojos?' },
         { tag: 'space', instruction: 'Encuentra calma en el vacío inmenso. El contraste entre estrellas y oscuridad profunda reinicia tu medidor de urgencia neurológica.', reflection: '¿Se siente tu mente un poco más descongestionada?' },
-        { tag: 'macro', instruction: 'Filtra el mundo a una sola cosa. El cerebro abrumado su sufre por la multitarea. Mirar un detalle microscópico te devuelve el foco singular.', reflection: '¿Fue un alivio tener que mirar solo un objeto a la vez?' },
+        { tag: 'macro', instruction: 'Filtra el mundo a una sola cosa. El cerebro abrumado sufre por la multitarea. Mirar un detalle microscópico te devuelve el foco singular.', reflection: '¿Fue un alivio tener que mirar solo un objeto a la vez?' },
         { tag: 'texture', instruction: 'Ancla tu atención. Recorrer visualmente una textura repetitiva bloquea la entrada de nuevos estímulos estresantes.', reflection: '¿Sientes que tu mente se dejó de dispersar por un instante?' },
         { tag: 'geometry', instruction: 'Descansa en la structure matemática. Frente al caos externo, un patrón visual perfecto no exige energía para ser interpretado.', reflection: '¿Se siente reconfortante este nivel de orden?' },
         { tag: 'landscape', instruction: 'Aleja el zoom. Estás demasiado cerca de tus problemas. Visualizing la lejanía relaja mecánicamente el cristalino y la mente.', reflection: '¿Sientes que tu visión periférica se ha relajado?' },
@@ -519,7 +519,7 @@ const dict = {
         { tag: 'macro', instruction: '감사하는 마음으로 미세한 것의 기하학적 완벽함을 숙고하여 뇌의 알파파를 자극하세요.', reflection: '이 순간의 미묘한 아름다움에 놀라고 있나요?' },
         { tag: 'warm', instruction: '황금빛 빛이 당신을 감싸게 하세요. 이 색조는 멜라토닌과 세로토닌의 자연적인 분비를 강화하여 웰빙을 연장합니다.', reflection: '편안한 따뜻함이 피부를 감싸는 것을 느끼나요?' },
         { tag: 'animals', instruction: '다른 생명체의 고요함을 관찰하세요. 종간 상호 조절이 당신의 평화와 안도감을 확대합니다.', reflection: '주변 생명과 차분하게 연결된 느낌인가요?' },
-        { tag: 'art', instruction: '시각적 조화를 감상하세요. 미적 아름다움은 디폴트 모드 네트워크를 건강하게 활성화하여 평온한 성찰을 가능하게 합니다.', reflection: '이 이미지가 어떤 균형감을 일깨워 주나요?' },
+        { tag: 'art', instruction: '시각적 조화를 감상하세요. 미적 아름다움은 디폴트 모드 네트워크를 건강하게 활성화하여 평온한 성찰을 가능하게 합니다.', reflection: '이 이미지가 어떤 균형감이 일깨워 주나요?' },
         { tag: 'space', instruction: '내면의 평화가 우주의 광활함과 어떻게 공명하는지 느껴보세요. 완벽하게 침묵 속에서 정렬된 미시와 거시의 세계.', reflection: '조화로운 전체의 일부라고 느끼나요?' }
       ]},
       { id: 'joyful', label: '기쁜 / 빛나는', prescriptions: [
@@ -540,9 +540,8 @@ const dict = {
 
 const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities", "flowers", "colors", "ocean", "botanical", "warm", "desert", "abstract", "vintage", "neon", "geometry", "texture", "landscape", "clouds", "macro"];
 
-// Configuración de límites
 const LIMITS = {
-  free: { apiCalls: 40, gallery: 24, intentional: 3 }, // 40 llamadas = mucha más libertad de scroll
+  free: { apiCalls: 40, gallery: 24, intentional: 3 }, 
   premium: { apiCalls: 150, gallery: 300, intentional: 5 },
   lifetime: { apiCalls: 150, gallery: 300, intentional: 5 }
 };
@@ -600,7 +599,6 @@ export default function Home() {
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
 
-  // Estados: Check-in Somático y Pausa Intencional
   const [showCheckInModal, setShowCheckInModal] = useState(false);
   const [activePrescription, setActivePrescription] = useState(null);
   const [showReflection, setShowReflection] = useState(false);
@@ -664,7 +662,6 @@ export default function Home() {
     audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
     audioRef.current.loop = true;
 
-    // Use the real Supabase client here
     supabase.auth.getUser().then(({ data: { user }, error }) => {
       if (error) {
         console.error("Error fetching user:", error);
@@ -673,7 +670,6 @@ export default function Home() {
       }
     });
 
-    // Use the real Supabase client here
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         loadUserData(session.user);
@@ -710,7 +706,6 @@ export default function Home() {
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    // Use the real Supabase client here
     const { data: profileData, error: profileError } = await supabase.from('profiles').select('plan').eq('id', u.id).single();
     if (profileError) {
         console.error("Error fetching profile:", profileError);
@@ -722,7 +717,6 @@ export default function Home() {
     if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { setLang(u.user_metadata.lang); localStorage.setItem('maeum-lang', u.user_metadata.lang); }
     if (u.user_metadata?.tags) setSelectedTags(u.user_metadata.tags); else setSelectedTags([]);
 
-    // Use the real Supabase client here
     const { data, error } = await supabase.from('user_likes').select('*').eq('user_id', u.id);
     if (error) {
         console.error("Error fetching likes:", error);
@@ -737,13 +731,11 @@ export default function Home() {
 
   const changeTheme = async (newTheme) => {
     setTheme(newTheme); localStorage.setItem('maeum-theme', newTheme);
-    // Use the real Supabase client here
     if (user) supabase.auth.updateUser({ data: { theme: newTheme } }).catch(console.error);
   };
 
   const changeLang = async (newLang) => {
     setLang(newLang); localStorage.setItem('maeum-lang', newLang);
-    // Use the real Supabase client here
     if (user) supabase.auth.updateUser({ data: { lang: newLang } }).catch(console.error);
   };
 
@@ -828,7 +820,6 @@ export default function Home() {
   const handleAuth = async (e) => {
     e.preventDefault(); setIsAuthenticating(true);
     if (isForgotPassword) {
-      // Use the real Supabase client here
       const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
       if (error) setAppMessage({ title: "Error", text: error.message });
       else { setAppMessage({ title: "Email", text: t.magicLinkText }); setShowAuthModal(false); }
@@ -840,7 +831,6 @@ export default function Home() {
     const currentTheme = localStorage.getItem('maeum-theme') || "light";
     const currentLang = localStorage.getItem('maeum-lang') || "es";
     
-    // Use the real Supabase client here
     if (isLogin) {
         authResult = await supabase.auth.signInWithPassword({ email, password });
     } else {
@@ -862,7 +852,6 @@ export default function Home() {
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
-    // Use the real Supabase client here
     try { await supabase.auth.signOut(); } catch(e) { console.warn("Limpieza", e); }
     for (let key in localStorage) { if (key.startsWith('sb-')) localStorage.removeItem(key); }
     setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); setUserPlan("free"); setCurrentTab("explore"); setIsSigningOut(false);
@@ -872,7 +861,6 @@ export default function Home() {
     setShowDeleteConfirm(false); setIsSigningOut(true);
     try {
       await fetch('/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: user.id }) });
-      // Use the real Supabase client here
       await supabase.auth.signOut();
       for (let key in localStorage) { if (key.startsWith('sb-')) localStorage.removeItem(key); }
       setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); setUserPlan("free"); setCurrentTab("explore");
@@ -886,7 +874,6 @@ export default function Home() {
     const exists = likes.find(p => p.id === photo.id);
     if (exists) {
       setLikes(likes.filter(p => p.id !== photo.id));
-      // Use the real Supabase client here
       await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', photo.id);
     } else {
       if (likes.length >= currentLimits.gallery) {
@@ -894,7 +881,6 @@ export default function Home() {
       }
       const newRecord = { user_id: user.id, photo_id: photo.id, photo_url: photo.url, title: photo.title, author_name: photo.authorName, author_username: photo.authorUsername, download_location: photo.downloadLocation };
       setLikes(prev => [...prev, photo]);
-      // Use the real Supabase client here
       const { error } = await supabase.from('user_likes').insert([newRecord]);
       if (error) { setAppMessage({ title: "Error", text: "Error base de datos." }); setLikes(likes); }
     }
@@ -902,7 +888,6 @@ export default function Home() {
 
   const confirmDelete = async (id) => {
     setLikes(likes.filter(p => p.id !== id)); setPhotoToDelete(null); setActiveMenuPhotoId(null);
-    // Use the real Supabase client here
     if (user) await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', id);
   };
 
@@ -933,11 +918,9 @@ export default function Home() {
     setIsSavingProfile(true);
     try {
       const updates = { data: { full_name: profileName, phrase: userPhrase } };
-      // Use the real Supabase client here
       const { error } = await supabase.auth.updateUser(updates);
       if (error) throw error;
       if (newPassword) {
-        // Use the real Supabase client here
         const { error: passError } = await supabase.auth.updateUser({ password: newPassword });
         if (passError) throw passError; setNewPassword("");
       }
@@ -951,7 +934,6 @@ export default function Home() {
     if (newTags.includes(tag)) newTags = newTags.filter(t => t !== tag);
     else { if (newTags.length < 5) newTags.push(tag); }
     setSelectedTags(newTags);
-    // Use the real Supabase client here
     if (user) await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
   };
 
@@ -961,7 +943,6 @@ export default function Home() {
     if (selectedTags.includes(tag)) { setCustomTag(""); return; }
     if (selectedTags.length >= 5) { setAppMessage({ title: "Info", text: "Max 5 tags." }); return; }
     const newTags = [...selectedTags, tag]; setSelectedTags(newTags); setCustomTag("");
-    // Use the real Supabase client here
     if (user) await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
   };
 
@@ -983,7 +964,6 @@ export default function Home() {
     setActivePrescription(prescription);
     
     if (user) {
-      // Use the real Supabase client here
       supabase.from('therapy_logs').insert([{ 
         user_id: user.id, state_selected: stateObj.id, tag_recommended: prescription.tag 
       }]).catch(e => console.log(e));
@@ -1118,7 +1098,6 @@ export default function Home() {
         )}
       </header>
 
-      {}
       {currentTab === "explore" && (
         <section className="max-w-6xl mx-auto p-4 mt-4 relative">
           
@@ -1144,7 +1123,6 @@ export default function Home() {
               return (
                 <Fragment key={photo.id}>
                   
-                  {}
                   {!user && !isIntentionalPauseActive && index === 0 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
@@ -1272,7 +1250,6 @@ export default function Home() {
         </section>
       )}
 
-      {}
       {currentTab === "gallery" && (
         <section className="max-w-6xl mx-auto p-4">
           <div className="flex flex-col items-center mb-10 mt-4 text-center">
@@ -1348,7 +1325,6 @@ export default function Home() {
         </section>
       )}
 
-      {}
       {currentTab === "profile" && user && (
         <section className="max-w-md mx-auto p-6 mt-6">
           <div className="text-center mb-8">
@@ -1443,7 +1419,6 @@ export default function Home() {
         </section>
       )}
 
-      {}
       <nav className={`fixed bottom-6 left-1/2 -translate-x-1/2 backdrop-blur-lg px-8 py-4 rounded-full shadow-2xl z-40 flex items-center gap-12 text-white ${isDark ? 'bg-neutral-800/90 border border-neutral-700/50' : 'bg-neutral-900/90'}`}>
         <button onClick={() => { setCurrentTab("explore"); setActiveCategory("Minimalista"); setIsIntentionalPauseActive(false); setTimeout(() => { window.scrollTo({top: 0, behavior: 'smooth'}); }, 100); }} className={`active:scale-90 transition-transform ${currentTab === "explore" ? "opacity-100" : "opacity-40"}`}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -1456,7 +1431,6 @@ export default function Home() {
         </button>
       </nav>
 
-      {}
       {showCheckInModal && (
         <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm z-[160] flex items-center justify-center p-4">
           <div className={`p-6 sm:p-8 rounded-lg max-w-lg w-full relative shadow-2xl max-h-[80vh] overflow-y-auto ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white'}`}>
