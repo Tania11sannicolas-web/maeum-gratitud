@@ -183,8 +183,8 @@ const dict = {
         { tag: 'flowers', instruction: 'Celebra el florecimiento. Evolutivamente, los colores vivos de las flores nos indican abundancia y recursos, elevando el estado de ánimo de forma automática.', reflection: '¿Sientes tu pecho más expandido y ligero?' },
         { tag: 'neon', instruction: 'Conecta con la intensidad de la luz artificial. El brillo y alto contraste aceleran suavemente tus ondas cerebrales beta, asociadas con la emoción y el enfoque.', reflection: '¿Percibes un aumento estimulante en tu vitalidad?' },
         { tag: 'cities', instruction: 'Sincronízate con el pulso urbano. Las neuronas espejo captan la energía colectiva en movimiento, multiplicando tu propia motivación y entusiasmo.', reflection: '¿Sientes el deseo físico de sonreír o moverte?' },
-        { tag: 'animals', instruction: 'Busca el juego y la curiosidad. Ver mamíferos en estados lúdicos desactiva cualquier inhibición restante y te conecta con tu alegría más primitiva.', reflection: '¿Te sorprende una sonrisa espontánea en tu rostro?' },
-        { tag: 'art', instruction: 'Deja que la creatividad sin límites estimule tu mente. El arte vibrante actúa como un catalizador para la autoexpresión y la euforia emocional.', reflection: '¿Sientes inspiración brotando de tu interior?' },
+        { tag: 'animals', instruction: 'Busca el juego y la curiosidad. Ver mamíferos en estados lúdicos desactiva cualquier inhibición restante y te conecta con tu alegría más primitive.', reflection: '¿Te sorprende una sonrisa espontánea en tu rostro?' },
+        { tag: 'art', instruction: 'Deja que la creatividad sin límites estimule tu mente. El arte vibrante acts como un catalizador para la autoexpresión y la euforia emocional.', reflection: '¿Sientes inspiración brotando de tu interior?' },
         { tag: 'macro', instruction: 'Alimenta el asombro infantil. Descubrir la complejidad oculta en los pequeños detalles dispara la noradrenalina, manteniéndote alegremente alerta.', reflection: '¿Te maravilla la magia escondida en lo cotidiano?' },
         { tag: 'nature', instruction: 'Absorbe la vitalidad del entorno natural. La luz solar filtrada (komorebi) señala a tu reloj circadiano que es momento de máxima energía y vitalidad.', reflection: '¿Te sientes profundamente vivo/a y presente?' },
         { tag: 'warm', instruction: 'Deja que estos tonos radiantes magnifiquen el calor de tu alegría. El amarillo y el naranja son interpretados por la psique como pura energía solar y optimismo.', reflection: '¿Tu cuerpo se siente radiante, como si emitiera luz?' },
@@ -860,8 +860,11 @@ export default function Home() {
         setLoginError(isInvalid ? t.invalidCredentials : authResult.error.message);
       } else setAppMessage({ title: "Error", text: authResult.error.message });
     } else {
-      if (!isLogin && authResult.data?.user && !authResult.data?.session) { setIsEmailSent(true); setShowAuthModal(false); } 
-      else setShowAuthModal(false);
+      setShowAuthModal(false);
+      // Forzar inicio de sesión automático si Supabase no devolvió la sesión al instante
+      if (!isLogin && !authResult.data?.session) {
+        await supabase.auth.signInWithPassword({ email, password });
+      }
     }
     setIsAuthenticating(false);
   };
