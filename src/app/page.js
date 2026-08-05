@@ -549,8 +549,8 @@ const AVAILABLE_TAGS = ["nature", "minimal", "art", "space", "animals", "cities"
 // Configuración de límites
 const LIMITS = {
   free: { apiCalls: 40, gallery: 24, intentional: 3 }, // 40 llamadas = mucha más libertad de scroll
-  premium: { apiCalls: 150, gallery: 300, intentional: 5 },
-  lifetime: { apiCalls: 150, gallery: 300, intentional: 5 }
+  premium: { apiCalls: Infinity, gallery: Infinity, intentional: Infinity },
+  lifetime: { apiCalls: Infinity, gallery: Infinity, intentional: Infinity }
 };
 
 export default function Home() {
