@@ -149,7 +149,7 @@ const dict = {
         { tag: 'space', instruction: 'Encuentra calma en el vacío inmenso. El contraste entre estrellas y oscuridad profunda reinicia tu medidor de urgencia neurológica.', reflection: '¿Se siente tu mente un poco más descongestionada?' },
         { tag: 'macro', instruction: 'Filtra el mundo a una sola cosa. El cerebro abrumado sufre por la multitarea. Mirar un detalle microscópico te devuelve el foco singular.', reflection: '¿Fue un alivio tener que mirar solo un objeto a la vez?' },
         { tag: 'texture', instruction: 'Ancla tu atención. Recorrer visualmente una textura repetitiva bloquea la entrada de nuevos estímulos estresantes.', reflection: '¿Sientes que tu mente se dejó de dispersar por un instante?' },
-        { tag: 'geometry', instruction: 'Descansa en la structure matemática. Frente al caos externo, un patrón visual perfecto no exige energía para ser interpretado.', reflection: '¿Se siente reconfortante este nivel de orden?' },
+        { tag: 'geometry', instruction: 'Descansa en la structure matemática. Frente al caos externo, un patrón visual perfecto no exige energía para ser interpretado.', reflection: '¿Se siente reconfortante este nivel de order?' },
         { tag: 'landscape', instruction: 'Aleja el zoom. Estás demasiado cerca de tus problemas. Visualizing la lejanía relaja mecánicamente el cristalino y la mente.', reflection: '¿Sientes que tu visión periférica se ha relajado?' },
         { tag: 'abstract', instruction: 'Desengancha la narrativa. No intentes buscarle historias a estas imágenes, úsalas solo como parches de color para descansar el lenguaje.', reflection: '¿Lograste silenciar tu voz interna por un segundo?' },
         { tag: 'botanical', instruction: 'Busca el verde monocromático. Está demostrado que rodearse visualmente de un solo tono natural disminuye la frecuencia cardíaca y la presión arterial.', reflection: '¿Sientes que tu cuerpo ha soltado el modo de "alerta"?' }
@@ -180,7 +180,7 @@ const dict = {
       ]},
       { id: 'joyful', label: 'Alegre / Radiante', prescriptions: [
         { tag: 'colors', instruction: 'Baña tu corteza visual con tonos vibrantes. La alta saturation estimula vías dopaminérgicas, amplificando tu sensación natural de recompensa y júbilo.', reflection: '¿Sientes un cosquilleo de energía positiva recorriendo tu cuerpo?' },
-        { tag: 'flowers', instruction: 'Celebra el florecimiento. Evolutivamente, los colores vivos de las flores nos indican abundancia y recursos, elevando el estado de ánimo de forma automática.', reflection: '¿Sientes tu pecho más expandido y ligero?' },
+        { tag: 'flowers', instruction: 'Celebra el florecimiento. Evolutivamente, los colores vivos de las flores nos indican abundancia y recursos, automáticamente elevating our mood.', reflection: '¿Sientes tu pecho más expandido y ligero?' },
         { tag: 'neon', instruction: 'Conecta con la intensidad de la luz artificial. El brillo y alto contraste aceleran suavemente tus ondas cerebrales beta, asociadas con la emoción y el enfoque.', reflection: '¿Percibes un aumento estimulante en tu vitalidad?' },
         { tag: 'cities', instruction: 'Sincronízate con el pulso urbano. Las neuronas espejo captan la energía colectiva en movimiento, multiplicando tu propia motivación y entusiasmo.', reflection: '¿Sientes el deseo físico de sonreír o moverte?' },
         { tag: 'animals', instruction: 'Busca el juego y la curiosidad. Ver mamíferos en estados lúdicos desactiva cualquier inhibición restante y te conecta con tu alegría más primitive.', reflection: '¿Te sorprende una sonrisa espontánea en tu rostro?' },
@@ -511,7 +511,7 @@ const dict = {
         { tag: 'colors', instruction: '정신적 단조로움을 깨세요. 순수하고 다양한 색상을 주입하면 시각적 습관화가 흔들리며, 이는 정체에서 벗어나는 첫 걸음입니다.', reflection: '현재 순간에 대한 인식이 더 생생하게 느껴지나요?' },
         { tag: 'art', instruction: '다른 사람의 관점을 사용하세요. 예술가가 캔버스를 어떻게 해결했는지 보는 것은 당신의 상황을 보는 데 항상 둘 이상의 방법이 있음을 상기시켜 줍니다.', reflection: '진정한 영감이나 경외감을 느낄 수 있었나요?' },
         { tag: 'macro', instruction: '각도를 극적으로 변경하세요. 큰 그림에서 막혀 있다면, 아주 작은 것에 몰입하는 것은 인지적 참조 틀을 재설정합니다.', reflection: '작은 것 속에 얼마나 많은 복잡성이 있는지 깨달았나요?' },
-        { tag: 'space', instruction: '무한함을 숙고하세요. 갇힌 느낌은 갇혀 있다는 환상입니다. 우주를 보는 것은 가능성이 말 그대로 무한하다는 것을 상기시켜 줍니다.', reflection: '당신의 선택지가 약간 확장된 느낌인가요?' },
+        { tag: 'space', instruction: '광활함을 숙고하세요. 갇힌 느낌은 갇혀 있다는 환상입니다. 우주를 보는 것은 가능성이 말 그대로 무한하다는 것을 상기시켜 줍니다.', reflection: '당신의 선택지가 약간 확장된 느낌인가요?' },
         { tag: 'clouds', instruction: '영구 운동의 원리를 기억하세요. 어떤 구름도 정지해 있지 않습니다. 당신의 막힘 또한 지나갈 일시적인 구름입니다.', reflection: '태도에 약간의 유동성이 더해진 느낌인가요?' },
         { tag: 'ocean', instruction: '해류에 주파수를 맞추세요. 물은 결코 정체되지 않으며 항상 길을 찾습니다. 당신의 마음이 그와 같은 유동적인 속성을 모방한다고 상상하세요.', reflection: '내면의 저항이 조금 양보한 느낌인가요?' },
         { tag: 'geometry', instruction: '교차하는 새로운 각도를 찾으세요. 모양이 시각적으로 어떻게 결합되는지 파악하는 것은 뇌가 당신의 막힌 부분에서 창의적인 연결을 찾도록 돕습니다.', reflection: '당신에게 명확성을 가져다주는 어떤 패턴을 볼 수 있었나요?' }
@@ -532,7 +532,7 @@ const dict = {
         { tag: 'colors', instruction: '시각 피질을 생생한 색상으로 목욕시키세요. 높은 채도는 도파민 경로를 자극하여 자연스러운 보상감과 기쁨을 증폭시킵니다.', reflection: '몸에 긍정적인 에너지가 찌릿찌릿 흐르는 것을 느끼나요?' },
         { tag: 'flowers', instruction: '개화를 축하하세요. 진화론적으로 꽃의 밝은 색은 풍요와 자원을 나타내며 기분을 자동으로 고양시킵니다.', reflection: '가슴이 더 확장되고 가벼워진 느낌인가요?' },
         { tag: 'neon', instruction: '인공적인 빛의 강렬함과 연결하세요. 밝음과 높은 대비는 흥분과 집중과 관련된 베타 뇌파를 부드럽게 가속시킵니다.', reflection: '활력이 자극적으로 증가하는 것을 인지하나요?' },
-        { tag: 'cities', instruction: '도시의 맥박과 동기화하세요. 거울 뉴런은 움직이는 집단적 에너지를 포착하여 당신의 동기와 열정을 배가시킵니다.', reflection: '미소를 짓거나 움직이고 싶은 신체적 충동이 느껴지나요?' },
+        { tag: 'cities', instruction: '도시의 맥박과 동기화하세요. 거울 뉴런은 거울 집단적 에너지를 포착하여 당신의 동기와 열정을 배가시킵니다.', reflection: '미소를 짓거나 움직이고 싶은 신체적 충동이 느껴지나요?' },
         { tag: 'animals', instruction: '놀이와 호기심을 찾으세요. 놀고 있는 포유류를 보는 것은 남은 억제를 비활성화하고 가장 원초적인 기쁨과 연결합니다.', reflection: '얼굴에 자연스레 번진 미소에 놀랐나요?' },
         { tag: 'art', instruction: '무한한 창의력이 당신의 마음을 자극하게 하세요. 생생한 예술은 자기 표현과 감정적 희열을 위한 촉매제 역할을 합니다.', reflection: '내면에서 영감이 솟아오르는 것을 느끼나요?' },
         { tag: 'macro', instruction: '아이 같은 경이로움을 키우세요. 작은 세부 사항에 숨겨진 복잡성을 발견하면 노르아드레날린이 분비되어 즐겁게 깨어 있게 합니다.', reflection: '일상에 숨겨진 마법에 놀라고 있나요?' },
@@ -605,6 +605,7 @@ export default function Home() {
   
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
+  const pageRef = useRef(1);
 
   // Estados: Check-in Somático y Pausa Intencional
   const [showCheckInModal, setShowCheckInModal] = useState(false);
@@ -612,9 +613,21 @@ export default function Home() {
   const [showReflection, setShowReflection] = useState(false);
   const [isIntentionalPauseActive, setIsIntentionalPauseActive] = useState(false);
 
+  // Temporizador de Música
+  const [musicTimer, setMusicTimer] = useState(null); // null, 15, 30, 60
+  const [musicTimeLeft, setMusicTimeLeft] = useState(0); // en segundos
+  const timerIntervalRef = useRef(null);
+
+  // Candado de Contemplación (Scroll Lock 5s)
+  const [isLockActive, setIsLockActive] = useState(false);
+  const [lockCountdown, setLockCountdown] = useState(0);
+  const [showLockWarning, setShowLockWarning] = useState(false);
+  const activePhotoId = useRef(null);
+  const lockIntervalRef = useRef(null);
+  const lockedScrollY = useRef(0);
+
   const isDark = theme === "dark";
   const t = dict[lang] || dict.es;
-
   const currentLimits = LIMITS[userPlan] || LIMITS.free;
 
   const checkApiLimit = () => {
@@ -670,7 +683,6 @@ export default function Home() {
     audioRef.current = new Audio("https://ice1.somafm.com/dronezone-128-mp3");
     audioRef.current.loop = true;
 
-    // Use the real Supabase client here
     supabase.auth.getUser().then(({ data: { user }, error }) => {
       if (error) {
         console.error("Error fetching user:", error);
@@ -679,7 +691,6 @@ export default function Home() {
       }
     });
 
-    // Use the real Supabase client here
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         loadUserData(session.user);
@@ -703,6 +714,98 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    if (musicTimer && isPlaying) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = setInterval(() => {
+            setMusicTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(timerIntervalRef.current);
+                    if (audioRef.current) audioRef.current.pause();
+                    setIsPlaying(false);
+                    setMusicTimer(null);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    } else {
+        clearInterval(timerIntervalRef.current);
+    }
+    return () => clearInterval(timerIntervalRef.current);
+  }, [musicTimer, isPlaying]);
+
+  const cycleTimer = () => {
+      const options = [null, 15, 30, 60];
+      const currentIndex = options.indexOf(musicTimer);
+      const nextOption = options[(currentIndex + 1) % options.length];
+      setMusicTimer(nextOption);
+
+      if (nextOption) {
+          setMusicTimeLeft(nextOption * 60);
+          if (!isPlaying) toggleAudio();
+      } else {
+          setMusicTimeLeft(0);
+      }
+  };
+
+  useEffect(() => {
+      if (currentTab !== "explore" || feedPhotos.length === 0) return;
+
+      const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                  const newId = entry.target.getAttribute('data-id');
+                  if (activePhotoId.current !== newId) {
+                      activePhotoId.current = newId;
+                      if (isLockActive) {
+                          setLockCountdown(5);
+                          setShowLockWarning(false);
+                          lockedScrollY.current = window.scrollY;
+                          clearInterval(lockIntervalRef.current);
+                          
+                          lockIntervalRef.current = setInterval(() => {
+                              setLockCountdown(prev => {
+                                  if (prev <= 1) {
+                                      clearInterval(lockIntervalRef.current);
+                                      setShowLockWarning(false);
+                                      return 0;
+                                  }
+                                  return prev - 1;
+                              });
+                          }, 1000);
+                      }
+                  }
+              }
+          });
+      }, { threshold: 0.5 });
+
+      const elements = document.querySelectorAll('.feed-photo-container');
+      elements.forEach(el => observer.observe(el));
+
+      return () => observer.disconnect();
+  }, [feedPhotos, isLockActive, currentTab]);
+
+  useEffect(() => {
+      const handleScroll = () => {
+          if (!isLockActive) return;
+
+          if (lockCountdown > 0) {
+              if (window.scrollY > lockedScrollY.current + 150) {
+                  window.scrollTo({ top: lockedScrollY.current, behavior: 'smooth' });
+                  setShowLockWarning(true);
+              } else if (window.scrollY < lockedScrollY.current - 50) {
+                  setShowLockWarning(false);
+              }
+          } else {
+              setShowLockWarning(false);
+          }
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: false });
+      return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLockActive, lockCountdown]);
+
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -716,7 +819,6 @@ export default function Home() {
     if (u.user_metadata?.phrase) setUserPhrase(u.user_metadata.phrase);
     if (u.user_metadata?.full_name) setProfileName(u.user_metadata.full_name);
     
-    // Use the real Supabase client here
     const { data: profileData, error: profileError } = await supabase.from('profiles').select('plan').eq('id', u.id).single();
     if (profileError) {
         console.error("Error fetching profile:", profileError);
@@ -728,7 +830,6 @@ export default function Home() {
     if (u.user_metadata?.lang && dict[u.user_metadata.lang]) { setLang(u.user_metadata.lang); localStorage.setItem('maeum-lang', u.user_metadata.lang); }
     if (u.user_metadata?.tags) setSelectedTags(u.user_metadata.tags); else setSelectedTags([]);
 
-    // Use the real Supabase client here
     const { data, error } = await supabase.from('user_likes').select('*').eq('user_id', u.id);
     if (error) {
         console.error("Error fetching likes:", error);
@@ -743,13 +844,11 @@ export default function Home() {
 
   const changeTheme = async (newTheme) => {
     setTheme(newTheme); localStorage.setItem('maeum-theme', newTheme);
-    // Use the real Supabase client here
     if (user) supabase.auth.updateUser({ data: { theme: newTheme } }).catch(console.error);
   };
 
   const changeLang = async (newLang) => {
     setLang(newLang); localStorage.setItem('maeum-lang', newLang);
-    // Use the real Supabase client here
     if (user) supabase.auth.updateUser({ data: { lang: newLang } }).catch(console.error);
   };
 
@@ -763,9 +862,8 @@ export default function Home() {
     loadingRef.current = true;
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "Minimalista");
-      const randomPage = Math.floor(Math.random() * 5) + 1;
-      
-      const res = await fetch(`https://api.pexels.com/v1/search?query=${querySearch}&per_page=15&page=${randomPage}`, {
+      // Se utiliza pageRef.current para avanzar correctamente de página y hacer scroll infinito real
+      const res = await fetch(`https://api.pexels.com/v1/search?query=${querySearch}&per_page=15&page=${pageRef.current}`, {
         headers: { Authorization: process.env.NEXT_PUBLIC_PEXELS_KEY }
       });
       
@@ -780,7 +878,9 @@ export default function Home() {
       const data = await res.json();
       const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv', 'machine', 'bicycle', 'bike', 'engine', 'airplane', 'train', 'subway'];
 
-      if (data.photos && Array.isArray(data.photos)) {
+      if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
+        // Incrementamos la página de referencia global para la próxima carga
+        pageRef.current += 1;
         const newPhotos = data.photos
           .filter(img => {
             const altText = (img.alt || "").toLowerCase();
@@ -801,7 +901,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!isIntentionalPauseActive) { setFeedPhotos([]); seenIds.current.clear(); loadMorePhotos(); }
+    if (!isIntentionalPauseActive) { 
+        setFeedPhotos([]); 
+        seenIds.current.clear(); 
+        pageRef.current = 1; 
+        loadMorePhotos(); 
+    }
   }, [activeCategory]);
 
   useEffect(() => { if (currentTab === "gallery") setGalleryLimit(12); }, [currentTab]);
@@ -834,7 +939,6 @@ export default function Home() {
   const handleAuth = async (e) => {
     e.preventDefault(); setIsAuthenticating(true);
     if (isForgotPassword) {
-      // Use the real Supabase client here
       const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
       if (error) setAppMessage({ title: "Error", text: error.message });
       else { setAppMessage({ title: "Email", text: t.magicLinkText }); setShowAuthModal(false); }
@@ -846,7 +950,6 @@ export default function Home() {
     const currentTheme = localStorage.getItem('maeum-theme') || "light";
     const currentLang = localStorage.getItem('maeum-lang') || "es";
     
-    // Use the real Supabase client here
     if (isLogin) {
         authResult = await supabase.auth.signInWithPassword({ email, password });
     } else {
@@ -861,7 +964,6 @@ export default function Home() {
       } else setAppMessage({ title: "Error", text: authResult.error.message });
     } else {
       setShowAuthModal(false);
-      // Forzar inicio de sesión automático si Supabase no devolvió la sesión al instante
       if (!isLogin && !authResult.data?.session) {
         await supabase.auth.signInWithPassword({ email, password });
       }
@@ -871,7 +973,6 @@ export default function Home() {
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
-    // Use the real Supabase client here
     try { await supabase.auth.signOut(); } catch(e) { console.warn("Limpieza", e); }
     for (let key in localStorage) { if (key.startsWith('sb-')) localStorage.removeItem(key); }
     setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); setUserPlan("free"); setCurrentTab("explore"); setIsSigningOut(false);
@@ -881,7 +982,6 @@ export default function Home() {
     setShowDeleteConfirm(false); setIsSigningOut(true);
     try {
       await fetch('/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: user.id }) });
-      // Use the real Supabase client here
       await supabase.auth.signOut();
       for (let key in localStorage) { if (key.startsWith('sb-')) localStorage.removeItem(key); }
       setUser(null); setLikes([]); setSelectedTags([]); setProfileName(""); setUserPlan("free"); setCurrentTab("explore");
@@ -895,7 +995,6 @@ export default function Home() {
     const exists = likes.find(p => p.id === photo.id);
     if (exists) {
       setLikes(likes.filter(p => p.id !== photo.id));
-      // Use the real Supabase client here
       await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', photo.id);
     } else {
       if (likes.length >= currentLimits.gallery) {
@@ -903,7 +1002,6 @@ export default function Home() {
       }
       const newRecord = { user_id: user.id, photo_id: photo.id, photo_url: photo.url, title: photo.title, author_name: photo.authorName, author_username: photo.authorUsername, download_location: photo.downloadLocation };
       setLikes(prev => [...prev, photo]);
-      // Use the real Supabase client here
       const { error } = await supabase.from('user_likes').insert([newRecord]);
       if (error) { setAppMessage({ title: "Error", text: "Error base de datos." }); setLikes(likes); }
     }
@@ -911,7 +1009,6 @@ export default function Home() {
 
   const confirmDelete = async (id) => {
     setLikes(likes.filter(p => p.id !== id)); setPhotoToDelete(null); setActiveMenuPhotoId(null);
-    // Use the real Supabase client here
     if (user) await supabase.from('user_likes').delete().eq('user_id', user.id).eq('photo_id', id);
   };
 
@@ -942,11 +1039,9 @@ export default function Home() {
     setIsSavingProfile(true);
     try {
       const updates = { data: { full_name: profileName, phrase: userPhrase } };
-      // Use the real Supabase client here
       const { error } = await supabase.auth.updateUser(updates);
       if (error) throw error;
       if (newPassword) {
-        // Use the real Supabase client here
         const { error: passError } = await supabase.auth.updateUser({ password: newPassword });
         if (passError) throw passError; setNewPassword("");
       }
@@ -960,7 +1055,6 @@ export default function Home() {
     if (newTags.includes(tag)) newTags = newTags.filter(t => t !== tag);
     else { if (newTags.length < 5) newTags.push(tag); }
     setSelectedTags(newTags);
-    // Use the real Supabase client here
     if (user) await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
   };
 
@@ -970,7 +1064,6 @@ export default function Home() {
     if (selectedTags.includes(tag)) { setCustomTag(""); return; }
     if (selectedTags.length >= 5) { setAppMessage({ title: "Info", text: "Max 5 tags." }); return; }
     const newTags = [...selectedTags, tag]; setSelectedTags(newTags); setCustomTag("");
-    // Use the real Supabase client here
     if (user) await supabase.auth.updateUser({ data: { tags: newTags } }).catch(console.error);
   };
 
@@ -992,7 +1085,6 @@ export default function Home() {
     setActivePrescription(prescription);
     
     if (user) {
-      // Use the real Supabase client here
       supabase.from('therapy_logs').insert([{ 
         user_id: user.id, state_selected: stateObj.id, tag_recommended: prescription.tag 
       }]).catch(e => console.log(e));
@@ -1094,14 +1186,50 @@ export default function Home() {
           </div>
         </div>
 
+        {}
         {currentTab === "explore" && !isIntentionalPauseActive && (
-          <div className="flex justify-center w-full bg-transparent pt-3 pb-1 border-b border-transparent">
+          <div className="flex justify-center w-full bg-transparent pt-3 pb-1 border-b border-transparent gap-3 items-center">
+            
             <button 
               onClick={() => { setActivePrescription(null); setShowCheckInModal(true); }}
               className={`px-6 py-2 text-[10px] uppercase tracking-[0.2em] rounded-full transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
             >
               {t.startIntentionalBtnTop}
             </button>
+
+            {/* Temporizador de Música */}
+            <button
+               onClick={cycleTimer}
+               className={`w-9 h-9 flex flex-col items-center justify-center rounded-full transition-colors text-[9px] font-medium active:scale-95 ${musicTimer ? (isDark ? 'bg-blue-900/50 text-blue-300 border border-blue-800' : 'bg-blue-100 text-blue-700 border border-blue-200') : (isDark ? 'bg-neutral-800 text-neutral-400 border border-neutral-700' : 'bg-neutral-100 text-neutral-500 border border-neutral-200')}`}
+               title="Temporizador de música"
+            >
+               {musicTimer ? (
+                   <span>{musicTimer}m</span>
+               ) : (
+                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+               )}
+            </button>
+
+            {/* Botón de Candado (Contemplación 5s) */}
+            <button
+               onClick={() => {
+                   setIsLockActive(!isLockActive);
+                   if (isLockActive) {
+                       setLockCountdown(0);
+                       setShowLockWarning(false);
+                       clearInterval(lockIntervalRef.current);
+                   }
+               }}
+               className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors active:scale-95 ${isLockActive ? (isDark ? 'bg-red-900/50 text-red-300 border border-red-800' : 'bg-red-100 text-red-700 border border-red-200') : (isDark ? 'bg-neutral-800 text-neutral-400 border border-neutral-700' : 'bg-neutral-100 text-neutral-500 border border-neutral-200')}`}
+               title="Bloqueo de contemplación (5s por foto)"
+            >
+               {isLockActive ? (
+                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+               ) : (
+                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+               )}
+            </button>
+
           </div>
         )}
 
@@ -1127,6 +1255,7 @@ export default function Home() {
         )}
       </header>
 
+      {}
       {currentTab === "explore" && (
         <section className="max-w-6xl mx-auto p-4 mt-4 relative">
           
@@ -1152,6 +1281,7 @@ export default function Home() {
               return (
                 <Fragment key={photo.id}>
                   
+                  {}
                   {!user && !isIntentionalPauseActive && index === 0 && (
                     <div className="col-span-1 sm:col-span-2 md:col-span-3 py-20 px-6 my-4 flex justify-center">
                       <div className={`max-w-2xl w-full flex flex-col items-center text-center p-8 sm:p-12 bg-gradient-to-b from-transparent to-transparent border-y ${isDark ? 'via-neutral-900/50 border-neutral-900' : 'via-neutral-50/50 border-neutral-100'}`}>
@@ -1247,7 +1377,17 @@ export default function Home() {
                     </div>
                   )}
 
-                  <div className={`relative group overflow-hidden rounded-md transition-colors ${isDark ? 'bg-neutral-900' : 'bg-neutral-50'}`} onDoubleClick={(e) => toggleLike(photo, e)} style={{ touchAction: 'manipulation' }}>
+                  {}
+                  <div data-id={photo.id} className={`feed-photo-container relative group overflow-hidden rounded-md transition-colors ${isDark ? 'bg-neutral-900' : 'bg-neutral-50'}`} onDoubleClick={(e) => toggleLike(photo, e)} style={{ touchAction: 'manipulation' }}>
+                    
+                    {/* Capa de Bloqueo de Contemplación */}
+                    {isLockActive && showLockWarning && lockCountdown > 0 && activePhotoId.current === photo.id.toString() && (
+                        <div className="absolute inset-0 z-30 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center text-white transition-opacity duration-300">
+                            <svg className="w-12 h-12 mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <span className="text-4xl font-light">{lockCountdown}</span>
+                        </div>
+                    )}
+
                     <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" style={{ willChange: "transform" }} />
                     
                     <button onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }} className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}>
@@ -1276,6 +1416,7 @@ export default function Home() {
         </section>
       )}
 
+      {}
       {currentTab === "gallery" && (
         <section className="max-w-6xl mx-auto p-4">
           <div className="flex flex-col items-center mb-10 mt-4 text-center">
@@ -1351,6 +1492,7 @@ export default function Home() {
         </section>
       )}
 
+      {}
       {currentTab === "profile" && user && (
         <section className="max-w-md mx-auto p-6 mt-6">
           <div className="text-center mb-8">
