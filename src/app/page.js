@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useMemo, Fragment } from "react";
-import { createClient } from '@supabase/supabase-js';
+// Usando un CDN compatible con el entorno para Supabase
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 // Initialize the real Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -12,8 +13,8 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 const supabase = createClient(
-  supabaseUrl || 'YOUR_SUPABASE_URL', // Placeholder if env is missing
-  supabaseKey || 'YOUR_SUPABASE_ANON_KEY' // Placeholder if env is missing
+  supabaseUrl || 'https://placeholder.supabase.co', // Placeholder if env is missing
+  supabaseKey || 'placeholder-key' // Placeholder if env is missing
 );
 
 const dict = {
@@ -140,7 +141,7 @@ const dict = {
         { tag: 'landscape', instruction: 'Seek refuge in immensity. Un entorno visual amplio pero pacífico le dice a tu mente subconsciente que hay espacio seguro para ti en el mundo.', reflection: '¿Sientes que el mundo es un poco menos amenazante hoy?' },
         { tag: 'minimal', instruction: 'Descansa en el silencio visual. Cuando te sientes expuesto, el exceso de información hiere. La simplicidad te abraza sin hacer preguntas.', reflection: '¿Sientes alivio al no tener que protegerte de lo que ves?' },
         { tag: 'ocean', instruction: 'Deja que la profundidad del agua te sostenga. Visualiza que el océano es lo suficientemente fuerte para cargar con tus dudas por ti.', reflection: '¿Te sientes un poco más sostenido/a por la vida?' },
-        { tag: 'clouds', instruction: 'Contempla la suavidad. Al no haber bordes afilados en las nubes, tu mente relaja sus barreras defensivas instintivas.', reflection: '¿Ha disminuido un poco la necesidad de protegerte?' }
+        { tag: 'clouds', instruction: 'Contemplate la suavidad. Al no haber bordes afilados en las nubes, tu mente relaja sus barreras defensivas instintivas.', reflection: '¿Ha disminuido un poco la necesidad de protegerte?' }
       ]},
       { id: 'overwhelmed', label: 'Abrumado / Sobrestimulado', prescriptions: [
         { tag: 'minimal', instruction: 'Bienvenido al silencio visual. Tu carga cognitiva está al límite; permite que el espacio negativo vacíe la caché de tu cerebro exhausto.', reflection: '¿Sientes que hay menos "ruido" compitiendo por tu atención?' },
@@ -182,7 +183,7 @@ const dict = {
         { tag: 'colors', instruction: 'Baña tu corteza visual con tonos vibrantes. La alta saturation estimula vías dopaminérgicas, amplificando tu sensación natural de recompensa y júbilo.', reflection: '¿Sientes un cosquilleo de energía positiva recorriendo tu cuerpo?' },
         { tag: 'flowers', instruction: 'Celebra el florecimiento. Evolutivamente, los colores vivos de las flores nos indican abundancia y recursos, elevando el estado de ánimo de forma automática.', reflection: '¿Sientes tu pecho más expandido y ligero?' },
         { tag: 'neon', instruction: 'Conecta con la intensidad de la luz artificial. El brillo y alto contraste aceleran suavemente tus ondas cerebrales beta, asociadas con la emoción y el enfoque.', reflection: '¿Percibes un aumento estimulante en tu vitalidad?' },
-        { tag: 'cities', instruction: 'Sincronízate con el pulso urbano. Las neuronas espejo captan la energía colectiva en movimiento, multiplicando tu propia motivación y entusiasmo.', reflection: '¿Sientes el deseo físico de sonreír o moverte?' },
+        { tag: 'cities', instruction: 'Synchronize con el pulso urbano. Las neuronas espejo captan la energía colectiva en movimiento, multiplicando tu propia motivación y entusiasmo.', reflection: '¿Sientes el deseo físico de sonreír o moverte?' },
         { tag: 'animals', instruction: 'Busca el juego y la curiosidad. Ver mamíferos en estados lúdicos desactiva cualquier inhibición restante y te conecta con tu alegría más primitive.', reflection: '¿Te sorprende una sonrisa espontánea en tu rostro?' },
         { tag: 'art', instruction: 'Deja que la creatividad sin límites estimule tu mente. El arte vibrante acts como un catalizador para la autoexpresión y la euforia emocional.', reflection: '¿Sientes inspiración brotando de tu interior?' },
         { tag: 'macro', instruction: 'Alimenta el asombro infantil. Descubrir la complejidad oculta en los pequeños detalles dispara la noradrenalina, manteniéndote alegremente alerta.', reflection: '¿Te maravilla la magia escondida en lo cotidiano?' },
@@ -605,12 +606,30 @@ export default function Home() {
   
   const seenIds = useRef(new Set()); 
   const loadingRef = useRef(false);
+  
+  // Mejora 1: Referencia para el Scroll Infinito Real
+  const pageRef = useRef(1);
 
   // Estados: Check-in Somático y Pausa Intencional
   const [showCheckInModal, setShowCheckInModal] = useState(false);
   const [activePrescription, setActivePrescription] = useState(null);
   const [showReflection, setShowReflection] = useState(false);
   const [isIntentionalPauseActive, setIsIntentionalPauseActive] = useState(false);
+
+  // Mejora 2a: Temporizador de Música
+  const [musicTimer, setMusicTimer] = useState(null); // null, 15, 30, 60
+  const [musicTimeLeft, setMusicTimeLeft] = useState(0); // en segundos
+  const timerIntervalRef = useRef(null);
+
+  // Mejora 2b: Candado de Contemplación (Scroll Lock)
+  const [isLockActive, setIsLockActive] = useState(false);
+  const [lockCountdown, setLockCountdown] = useState(0);
+  const [showLockWarning, setShowLockWarning] = useState(false);
+  const activePhotoId = useRef(null);
+  const lockEndTime = useRef(0);
+  const lockIntervalRef = useRef(null);
+  const lastScrollY = useRef(0);
+  const isForcedScroll = useRef(false);
 
   const isDark = theme === "dark";
   const t = dict[lang] || dict.es;
@@ -703,6 +722,110 @@ export default function Home() {
     };
   }, []);
 
+  // Efecto para el Temporizador de Música
+  useEffect(() => {
+      if (musicTimer && isPlaying) {
+          clearInterval(timerIntervalRef.current);
+          timerIntervalRef.current = setInterval(() => {
+              setMusicTimeLeft(prev => {
+                  if (prev <= 1) {
+                      clearInterval(timerIntervalRef.current);
+                      if (audioRef.current) audioRef.current.pause();
+                      setIsPlaying(false);
+                      setMusicTimer(null);
+                      return 0;
+                  }
+                  return prev - 1;
+              });
+          }, 1000);
+      } else {
+          clearInterval(timerIntervalRef.current);
+      }
+      return () => clearInterval(timerIntervalRef.current);
+  }, [musicTimer, isPlaying]);
+
+  // Efecto para detectar qué foto se está viendo (Candado)
+  useEffect(() => {
+      if (currentTab !== "explore" || feedPhotos.length === 0) return;
+
+      const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                  const newId = entry.target.getAttribute('data-id');
+                  if (activePhotoId.current !== newId) {
+                      activePhotoId.current = newId;
+                      if (isLockActive) {
+                          lockEndTime.current = Date.now() + 5000;
+                          setLockCountdown(5);
+                          setShowLockWarning(false);
+                          clearInterval(lockIntervalRef.current);
+                          
+                          lockIntervalRef.current = setInterval(() => {
+                              const remaining = Math.ceil((lockEndTime.current - Date.now()) / 1000);
+                              if (remaining <= 0) {
+                                  setLockCountdown(0);
+                                  setShowLockWarning(false);
+                                  clearInterval(lockIntervalRef.current);
+                              } else {
+                                  setLockCountdown(remaining);
+                              }
+                          }, 1000);
+                      }
+                  }
+              }
+          });
+      }, { threshold: 0.5 });
+
+      const elements = document.querySelectorAll('.feed-photo-container');
+      elements.forEach(el => observer.observe(el));
+
+      return () => observer.disconnect();
+  }, [feedPhotos, isLockActive, currentTab]);
+
+  // Efecto para bloquear el scroll hacia abajo si el candado está activo
+  useEffect(() => {
+      const handleScroll = () => {
+          if (!isLockActive) {
+              lastScrollY.current = window.scrollY;
+              return;
+          }
+
+          if (isForcedScroll.current) {
+              isForcedScroll.current = false;
+              return;
+          }
+
+          const currentScrollY = window.scrollY;
+          const isScrollingDown = currentScrollY > lastScrollY.current;
+
+          if (lockCountdown > 0 && isScrollingDown) {
+              isForcedScroll.current = true;
+              window.scrollTo(0, lastScrollY.current);
+              setShowLockWarning(true);
+          } else {
+              lastScrollY.current = currentScrollY;
+              if (!isScrollingDown) setShowLockWarning(false);
+          }
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: false });
+      return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLockActive, lockCountdown]);
+
+  const cycleTimer = () => {
+      const options = [null, 15, 30, 60];
+      const currentIndex = options.indexOf(musicTimer);
+      const nextOption = options[(currentIndex + 1) % options.length];
+      setMusicTimer(nextOption);
+
+      if (nextOption) {
+          setMusicTimeLeft(nextOption * 60);
+          if (!isPlaying) toggleAudio();
+      } else {
+          setMusicTimeLeft(0);
+      }
+  };
+
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -763,9 +886,8 @@ export default function Home() {
     loadingRef.current = true;
     try {
       const querySearch = activeCategory || (selectedTags.length > 0 ? selectedTags.join(",") : "Minimalista");
-      const randomPage = Math.floor(Math.random() * 5) + 1;
-      
-      const res = await fetch(`https://api.pexels.com/v1/search?query=${querySearch}&per_page=15&page=${randomPage}`, {
+      // Mejora 1: Usamos pageRef en lugar de un número aleatorio
+      const res = await fetch(`https://api.pexels.com/v1/search?query=${querySearch}&per_page=15&page=${pageRef.current}`, {
         headers: { Authorization: process.env.NEXT_PUBLIC_PEXELS_KEY }
       });
       
@@ -780,7 +902,10 @@ export default function Home() {
       const data = await res.json();
       const forbiddenWords = ['people', 'person', 'man', 'woman', 'portrait', 'face', 'model', 'child', 'boy', 'girl', 'computer', 'laptop', 'phone', 'screen', 'car', 'vehicle', 'traffic', 'crowd', 'office', 'desk', 'technology', 'device', 'smartphone', 'tablet', 'automobile', 'bus', 'truck', 'motorcycle', 'road', 'street', 'keyboard', 'monitor', 'tv', 'machine', 'bicycle', 'bike', 'engine', 'airplane', 'train', 'subway'];
 
-      if (data.photos && Array.isArray(data.photos)) {
+      if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
+        // Aumentamos la página para la próxima llamada (Scroll Infinito Real)
+        pageRef.current += 1;
+        
         const newPhotos = data.photos
           .filter(img => {
             const altText = (img.alt || "").toLowerCase();
@@ -801,7 +926,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!isIntentionalPauseActive) { setFeedPhotos([]); seenIds.current.clear(); loadMorePhotos(); }
+    if (!isIntentionalPauseActive) { 
+        setFeedPhotos([]); 
+        seenIds.current.clear(); 
+        pageRef.current = 1; // Reiniciar página al cambiar categoría
+        loadMorePhotos(); 
+    }
   }, [activeCategory]);
 
   useEffect(() => { if (currentTab === "gallery") setGalleryLimit(12); }, [currentTab]);
@@ -1095,13 +1225,47 @@ export default function Home() {
         </div>
 
         {currentTab === "explore" && !isIntentionalPauseActive && (
-          <div className="flex justify-center w-full bg-transparent pt-3 pb-1 border-b border-transparent">
+          <div className="flex justify-center w-full bg-transparent pt-3 pb-1 border-b border-transparent gap-3 items-center">
+            
             <button 
               onClick={() => { setActivePrescription(null); setShowCheckInModal(true); }}
               className={`px-6 py-2 text-[10px] uppercase tracking-[0.2em] rounded-full transition-colors ${isDark ? 'bg-neutral-800 text-white hover:bg-neutral-700' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}
             >
               {t.startIntentionalBtnTop}
             </button>
+
+            {/* Mejora 2a: Botón de Temporizador */}
+            <button
+               onClick={cycleTimer}
+               className={`w-9 h-9 flex flex-col items-center justify-center rounded-full transition-colors text-[9px] font-medium active:scale-95 ${musicTimer ? (isDark ? 'bg-blue-900/50 text-blue-300 border border-blue-800' : 'bg-blue-100 text-blue-700 border border-blue-200') : (isDark ? 'bg-neutral-800 text-neutral-400 border border-neutral-700' : 'bg-neutral-100 text-neutral-500 border border-neutral-200')}`}
+               title="Temporizador de música"
+            >
+               {musicTimer ? (
+                   <span>{musicTimer}m</span>
+               ) : (
+                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+               )}
+            </button>
+
+            {/* Mejora 2b: Botón de Candado (Contemplación 5s) */}
+            <button
+               onClick={() => {
+                   setIsLockActive(!isLockActive);
+                   if (isLockActive) {
+                       setLockCountdown(0);
+                       setShowLockWarning(false);
+                   }
+               }}
+               className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors active:scale-95 ${isLockActive ? (isDark ? 'bg-red-900/50 text-red-300 border border-red-800' : 'bg-red-100 text-red-700 border border-red-200') : (isDark ? 'bg-neutral-800 text-neutral-400 border border-neutral-700' : 'bg-neutral-100 text-neutral-500 border border-neutral-200')}`}
+               title="Bloqueo de contemplación (5s por foto)"
+            >
+               {isLockActive ? (
+                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+               ) : (
+                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+               )}
+            </button>
+
           </div>
         )}
 
@@ -1247,7 +1411,17 @@ export default function Home() {
                     </div>
                   )}
 
-                  <div className={`relative group overflow-hidden rounded-md transition-colors ${isDark ? 'bg-neutral-900' : 'bg-neutral-50'}`} onDoubleClick={(e) => toggleLike(photo, e)} style={{ touchAction: 'manipulation' }}>
+                  {/* Agregado data-id y clase feed-photo-container para el candado */}
+                  <div data-id={photo.id} className={`feed-photo-container relative group overflow-hidden rounded-md transition-colors ${isDark ? 'bg-neutral-900' : 'bg-neutral-50'}`} onDoubleClick={(e) => toggleLike(photo, e)} style={{ touchAction: 'manipulation' }}>
+                    
+                    {/* Capa de Bloqueo de Contemplación */}
+                    {isLockActive && showLockWarning && lockCountdown > 0 && activePhotoId.current === photo.id.toString() && (
+                        <div className="absolute inset-0 z-30 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center text-white transition-opacity duration-300">
+                            <svg className="w-12 h-12 mb-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <span className="text-4xl font-light">{lockCountdown}</span>
+                        </div>
+                    )}
+
                     <img src={photo.url} alt={photo.title} loading="lazy" decoding="async" className="w-full h-[28rem] object-cover transition-transform duration-700 group-hover:scale-105" style={{ willChange: "transform" }} />
                     
                     <button onClick={(e) => { e.stopPropagation(); setActiveInfoId(activeInfoId === photo.id ? null : photo.id); }} className={`absolute top-4 left-4 z-20 backdrop-blur-sm p-2 rounded-full shadow-md transition-all active:scale-90 ${isDark ? 'bg-neutral-900/80 text-neutral-200 hover:bg-neutral-800' : 'bg-white/90 text-neutral-800 hover:bg-white'}`}>
